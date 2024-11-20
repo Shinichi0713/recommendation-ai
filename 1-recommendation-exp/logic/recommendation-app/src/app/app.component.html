@@ -1,0 +1,16 @@
+<!-- src/app/app.component.html -->
+<div>
+  <h1>Item Ratings</h1>
+  <div *ngFor="let item of items">
+    <label>{{item}}</label>
+    <input type="number" [(ngModel)]="ratings[item]" min="0" max="5">
+  </div>
+  <button (click)="submitRatings()">Submit Ratings</button>
+
+  <h2>Recommendations</h2>
+  <ul>
+    <li *ngFor="let recommendation of recommendations">
+      {{recommendation.item}} - Score: {{recommendation.score}}
+    </li>
+  </ul>
+</div>

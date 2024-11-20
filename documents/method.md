@@ -23,6 +23,7 @@
 
 協調フィルタリングの実装自体は例えば以下のような感じ。
 ベクトルデータで一番近いものをとってくる感じ。
+
 ```
 import numpy as np
  
@@ -87,4 +88,8 @@ https://qiita.com/birdwatcher/items/b60822bdf9be267e1328
 Deep NNで協調フィルタリングを作るために、NCFの MLP (Multi-Layer Perceptron) バージョンを提案しています。
 
 ![alt text](image.png)
+
+### 実験
+ロジック分かったので実験できそう
+楽に実装という意味で、クラシカルな方法で実験して、感触を確認する
 
