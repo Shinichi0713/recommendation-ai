@@ -1,9 +1,10 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 // サンプルデータ
 const data = {
@@ -25,7 +26,11 @@ app.post('/rate', (req, res) => {
 // 協調フィルタリングによるおすすめを計算するエンドポイント
 app.get('/recommend/:user', (req, res) => {
   const user = req.params.user;
+  if (!data.users[user]) {
+    return res.status(404).json({ error: 'User not found' });
+  }
   const recommendations = getRecommendations(user);
+  console.log(recommendations);
   res.json(recommendations);
 });
 
