@@ -12,7 +12,7 @@ const data = {
   users: {
     "User1": {"Game1": 5, "Game2": 3, "Game3": 4, "Game4": 0},
     "User2": {"Game1": 4, "Game2": 5, "Game3": 2, "Game4": 5},
-    "User3": {"Game1": 2, "Game2": 1, "Game3": 5, "Game4": 3}
+    "User3": {"Game1": 2, "Game2": 5, "Game3": 5, "Game4": 1}
   }
 };
 
