@@ -19,9 +19,10 @@ interface Recommendation {
 })
 export class AppComponent {
   title = 'recommendation-app';
-  items = ["Item1", "Item2", "Item3", "Item4"];
+  items = ["Game1", "Game2", "Game3", "Game4"];
   ratings: {[key: string]: number}={};
   recommendations: Recommendation[] = [];
+  recommendation: string = '';
 
   constructor() {
     this.items.forEach(item => {
@@ -30,13 +31,16 @@ export class AppComponent {
   }
 
   async submitRatings() {
-    const user = 'User1'; // 固定ユーザー名（本来は動的に取得する）
-    await axios.post('http://localhost:3000/rate', {
+    const user = 'User4'; // 固定ユーザー名（本来は動的に取得する）
+    const dataRequest = {
       user,
       ratings: this.ratings
-    });
+    };
+    console.log(dataRequest);
+    await axios.post('http://localhost:3000/rate', dataRequest);
     const response = await axios.get(`http://localhost:3000/recommend/${user}`);
     console.log(response);
-    this.recommendations = response.data;
+    this.recommendation = response.data.data;
+    console.log(this.recommendations);
   }
 }
