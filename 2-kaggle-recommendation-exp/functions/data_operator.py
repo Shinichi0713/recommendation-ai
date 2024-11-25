@@ -1,8 +1,11 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 from sklearn.decomposition import TruncatedSVD
 from sklearn.manifold import TSNE
+
+
 
 class DataOperator:
     def __init__(self, file_path):
@@ -33,7 +36,6 @@ class DataOperator:
 
         plt.subplot(2, 2, 2)
         data_eval = self.df.groupby("UserId")[["Rating"]].mean()
-        print(data_eval)
         data_eval.sort_values("Rating", ascending=False, inplace=True)
         data_eval = data_eval.head(10)
 
@@ -43,11 +45,25 @@ class DataOperator:
 
     # 分析するにはデータがスカスカすぎるので、次元圧縮
     def enact_svd(self):
-        svd = TruncatedSVD(n_components=10)
+        # data整形
         self.df = self.df.head(10000)
-        X = self.df.pivot_table(values="Rating", index="UserId", columns="ProductId", fill_value=0)
-        X = X.T
-        decomposed_matrix = svd.fit_transform(X)
-        print(decomposed_matrix.shape)
+        self.X = self.df.pivot_table(values="Rating", index="UserId", columns="ProductId", fill_value=0)
+        self.X = self.X.T
+        # 次元圧縮
+        svd = TruncatedSVD(n_components=10)
+        decomposed_matrix = svd.fit_transform(self.X)
 
-    
+        # 相関行列化(これが推薦の元になる)
+        self.correlation_recommendation = np.corrcoef(decomposed_matrix)
+
+    def recommend_items(self, item_id, num=10):
+        if self.correlation_recommendation is None:
+            raise ValueError("correlation_recommendation is None")
+        else:
+            product_names = list(self.X.index)
+            product_ID = product_names.index(item_id)
+            correlation_product_ID = self.correlation_recommendation[product_ID]
+            recommend = list(self.X.index[correlation_product_ID > 0.9])
+            # ユーザーが購入した商品を除外
+            recommend.remove(item_id)
+            return recommend[0:num]
