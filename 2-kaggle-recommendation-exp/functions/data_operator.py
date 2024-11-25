@@ -1,7 +1,8 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from sklearn.decomposition import TruncatedSVD
+from sklearn.manifold import TSNE
 
 class DataOperator:
     def __init__(self, file_path):
@@ -35,7 +36,18 @@ class DataOperator:
         print(data_eval)
         data_eval.sort_values("Rating", ascending=False, inplace=True)
         data_eval = data_eval.head(10)
-        
+
         plt.xticks(rotation=90)
         plt.bar(data_eval.index, data_eval["Rating"])
         plt.show()
+
+    # 分析するにはデータがスカスカすぎるので、次元圧縮
+    def enact_svd(self):
+        svd = TruncatedSVD(n_components=10)
+        self.df = self.df.head(10000)
+        X = self.df.pivot_table(values="Rating", index="UserId", columns="ProductId", fill_value=0)
+        X = X.T
+        decomposed_matrix = svd.fit_transform(X)
+        print(decomposed_matrix.shape)
+
+    
