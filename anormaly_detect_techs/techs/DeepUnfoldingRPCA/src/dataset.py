@@ -1,80 +1,74 @@
 import os
-import shutil
-from glob import glob
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+import torch.utils.data as Data
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+import torchvision.transforms.functional as TF
+import random
 
-!git clone https://github.com/DHW-Master/NEU_Seg.git
+# 1. Datasetの定義
+class NEUSegDataset(Dataset):
+    def __init__(self, img_dir, transform=None):
+        self.img_dir = img_dir
+        self.img_names = [f for f in os.listdir(img_dir) if f.endswith(('.jpg', '.png'))]
+        self.transform = transform
 
-# 1. 設定：新しいディレクトリ構造の定義
-base_dir = "./datasets/NEU_Seg_Custom"
-structure = [
-    "train/images", "train/masks",
-    "test/images", "test/masks"
-]
+    def __len__(self):
+        return len(self.img_names)
 
-for path in structure:
-    os.makedirs(os.path.join(base_dir, path), exist_ok=True)
+    def __getitem__(self, idx):
+        img_path = os.path.join(self.img_dir, self.img_names[idx])
+        image = Image.open(img_path).convert("L") # グレースケール
+        if self.transform:
+            image = self.transform(image)
+        return image
 
-# 2. ファイルの移動（またはコピー）
-# 元のディレクトリ: /content/NEU_Seg/images と /content/NEU_Seg/annotations
-src_img_dir = "/content/NEU_Seg/images"
-src_ann_dir = "/content/NEU_Seg/annotations"
+# 2. RPCANet モデルの実装 (Deep Unfolding RPCA)
+class RPCANet(nn.Module):
+    def __init__(self, layers=5):
+        super(RPCANet, self).__init__()
+        self.layers = layers
+        # ISTAのステップサイズとしきい値を層ごとに学習
+        self.eta = nn.Parameter(torch.ones(layers) * 0.1)
+        self.theta = nn.Parameter(torch.ones(layers) * 0.01)
 
-# NEU_Segは train/test の分割が明示的にフォルダ分けされていない場合があるため、
-# ここでは「全データを一度 train に入れ、一部を test に移動」する汎用的な処理を行います。
+        # 変換行列（畳み込み層として実装することで近傍情報を活用）
+        self.conv_W = nn.ModuleList([
+            nn.Conv2d(1, 1, kernel_size=3, padding=1, bias=False) for _ in range(layers)
+        ])
+        for conv in self.conv_W:
+            nn.init.constant_(conv.weight, 1.0/9.0) # 平均化フィルタに近い初期値
 
-def organize_neu_data():
-    dirs_target = ["test", "training"]
-    for dir_target in dirs_target:
-        all_images = sorted(glob(os.path.join(src_img_dir, dir_target, "*.jpg")))
-        
-        print(f"Total images found: {len(all_images)}")
-        
-        # 8:2 で Train と Test に分割する例
-        split_idx = int(len(all_images) * 0.8)
-        train_imgs = all_images[:split_idx]
-        test_imgs = all_images[split_idx:]
-        
-        def move_files(file_list, target_sub_dir):
-            for img_path in file_list:
-                fname = os.path.basename(img_path)
-                # 対応するマスクファイル名を探す (拡張子は .png の場合が多い)
-                mask_name = fname.replace(".jpg", ".png")
-                
-                # 画像のコピー
-                shutil.copy(img_path, os.path.join(base_dir, target_sub_dir, "images", fname))
-                
-                # マスクのコピー (存在する場合のみ)
-                # annotations 内のフォルダ構成に合わせて検索
-                potential_mask_paths = [
-                    os.path.join(src_ann_dir, mask_name),
-                    os.path.join(src_ann_dir, "test", mask_name),
-                    os.path.join(src_ann_dir, "train", mask_name) # リポジトリ構造に合わせる
-                ]
-                
-                for m_path in potential_mask_paths:
-                    if os.path.exists(m_path):
-                        shutil.copy(m_path, os.path.join(base_dir, target_sub_dir, "masks", mask_name))
-                        break
+    def soft_threshold(self, x, theta):
+        return torch.sign(x) * torch.relu(torch.abs(x) - F.softplus(theta))
 
-        print("Copying to Train...")
-        move_files(train_imgs, "train")
-        print("Copying to Test...")
-        move_files(test_imgs, "test")
-        print("Data organization complete!")
+    def forward(self, M):
+        S = torch.zeros_like(M)
+        for i in range(self.layers):
+            # L = M - S (低ランク成分の推定)
+            # 勾配降下ステップの展開
+            residual = M - S
+            grad = self.conv_W[i](residual)
+            S = self.soft_threshold(S + self.eta[i] * grad, self.theta[i])
 
-organize_neu_data()
+        L = M - S
+        return L, S
 
 
 class NEUSegDataset(Data.Dataset):
-    def __init__(self, base_dir, mode='train', base_size=256):
+    def __init__(self, base_dir, mode='train', base_size=256, transform=None):
         self.img_dir = os.path.join(base_dir, mode, 'images')
         self.mask_dir = os.path.join(base_dir, mode, 'masks')
         self.img_names = sorted([f for f in os.listdir(self.img_dir) if f.endswith('.jpg')])
         self.base_size = base_size
-        self.transform = transforms.Compose([
-            transforms.Resize((base_size, base_size)),
-            transforms.ToTensor(),
-        ])
+        self.mode = mode
+        self.transform = transform
 
     def __getitem__(self, idx):
         name = self.img_names[idx]
@@ -82,12 +76,35 @@ class NEUSegDataset(Data.Dataset):
         mask_path = os.path.join(self.mask_dir, name.replace('.jpg', '.png'))
 
         image = Image.open(img_path).convert('L')
-        mask = Image.open(mask_path).convert('L') # マスクもグレースケールで読み込み
+        mask = Image.open(mask_path).convert('L')
 
-        image = self.transform(image)
-        mask = self.transform(mask)
+        # 1. 基本のリサイズ
+        image = TF.resize(image, (self.base_size, self.base_size))
+        mask = TF.resize(mask, (self.base_size, self.base_size), interpolation=transforms.InterpolationMode.NEAREST)
+
+        # 2. 訓練時のデータ拡張（PIL Imageのまま実行）
+        if self.mode == 'train':
+            if random.random() > 0.5:
+                image = TF.hflip(image)
+                mask = TF.hflip(mask)
+            if random.random() > 0.5:
+                image = TF.vflip(image)
+                mask = TF.vflip(mask)
+
+        # 3. 外部Transformの適用
+        # もし外部Transformに ToTensor() が含まれているならそのまま適用
+        # 含まれていない場合を考慮し、最後にTensor化を確認する
+        if self.transform:
+            image = self.transform(image)
         
-        # マスクを0or1のバイナリにする（SoftIoU用）
+        # もしtransform適用後もPIL ImageのままならTensorにする
+        if not isinstance(image, torch.Tensor):
+            image = TF.to_tensor(image)
+            
+        # マスクは常にここでTensor化
+        mask = TF.to_tensor(mask)
+
+        # 4. マスクをバイナリにする
         mask = (mask > 0.5).float()
 
         return image, mask
