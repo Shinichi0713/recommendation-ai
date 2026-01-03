@@ -3,4 +3,8 @@
 
 # Jupyter Notebookを除外
 *.ipynb linguist-vendored
+*.py linguist-vendored
+
+*.py linguist-detectable=false
+*.ipynb linguist-detectable=false
 
