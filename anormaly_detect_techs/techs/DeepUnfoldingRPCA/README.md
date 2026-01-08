@@ -42,3 +42,28 @@
 * **複雑なデータ（画像など）で、ラベルを使って最高精度を出したい:** **RPCANet / LISTA**
 
 これらの手法はバラバラに見えて、実は「行列を L と S に分ける」という共通のゴールに向かって進化してきた仲間たちです。
+
+
+## 異常データセット
+異常を含むデータセットのうちインターネットに公開されているものは以下のものがあります。
+
+1. [MVTec AD / MVTec AD 2](https://www.mvtec.com/company/research/datasets/mvtec-ad#:~:text=The%20MVTec%20anomaly%20detection%20dataset,Dataset%20for%20Unsupervised%20Anomaly%20Detection%22.)
+
+特徴: 産業用異常検知のデファクトスタンダードです。金属、プラスチック、皮革などのテクスチャや、ケーブル、ネジなどの物体が含まれます。
+
+傷の例: 表面の引っかき傷（scratch）、へこみ（dent）、ひび割れ（crack）などが高解像度で収録されており、ピクセル単位の正解マスクが提供されています。
+
+2. [KolektorSDD / KolektorSDD2](https://www.vicos.si/resources/kolektorsdd2/)
+
+特徴: 実際の電気部品の表面で発生した欠陥を収集したデータセットです。
+
+傷の例: 微細な擦り傷や表面のムラなど、実世界の複雑な背景下での傷検知に適しています。
+
+3. [NEU-DET (Northeastern University Surface Defect Database)](https://www.kaggle.com/datasets/yidazhang07/bridge-cracks-image)
+
+特徴: 熱延鋼板の表面欠陥に特化したデータセットです。
+
+傷の例: 鋼板表面の引っかき傷（scratches）を含む、6種類の典型的な工業欠陥が収録されています。
+
+
+
