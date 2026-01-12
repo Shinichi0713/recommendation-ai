@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x3053;&#x306e;&#x7d44;&#x307f;&#x5408;&#x308f;&#x305b;&#x304c;&#x826f;&#x3044;&#x7406;&#x7531;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 引用内の最後の要素（出典元など）の余白調整 */
+blockquote p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+            <p>RPCAで背景を分離した後、残ったスパース成分（<strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span></strong>）には「異常」だけでなく、わずかな「ノイズ」や「背景の残りカス」が含まれています。ここに <strong>RX Detector</strong> を適用することで、それらの中から <strong>「統計的に明らかに異質なもの」</strong> だけを最終的な異常として抽出できます。</p>
+<h2 id="この組み合わせが良い理由">この組み合わせが良い理由</h2>
+<p>RPCAとRX Detectorを組み合わせるアプローチは、いわば <strong>「強力な掃除機で大きなゴミを取り除いた後、精密な顕微鏡で小さな異物を見つける」</strong> ような関係にあります。</p>
+<p>それぞれの特性を整理すると、なぜこの統合が理にかなっているのかが見えてきます。</p>
+<h3 id="1-rpca-ialmなど-のメリットと弱点">1. RPCA (IALMなど) のメリットと弱点</h3>
+<ul>
+<li>
+<p><strong>メリット</strong>:</p>
+</li>
+<li>
+<p><strong>背景の自動モデル化</strong>: 「何が背景か」を教えなくても、データ全体の統計的な重なりから勝手に「低ランクな背景（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span>）」を構築できる。</p>
+</li>
+<li>
+<p><strong>大きな変化に強い</strong>: 画面の半分を占めるような大きな構造の変化も、背景として分離可能。</p>
+</li>
+<li>
+<p><strong>弱点</strong>:</p>
+</li>
+<li>
+<p><strong>「異常」と「ノイズ」の区別が曖昧</strong>: 背景ではないものはすべてスパース成分（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>）に放り込まれるため、微細なノイズも「異常」として残ってしまう。</p>
+</li>
+<li>
+<p><strong>空間統計を無視</strong>: パッチや画素を独立に扱うことが多く、「周囲のノイズの散らばり具合」までは考慮してくれない。</p>
+</li>
+</ul>
+<h3 id="2-rx-detector-のメリットと弱点">2. RX Detector のメリットと弱点</h3>
+<ul>
+<li>
+<p><strong>メリット</strong>:</p>
+</li>
+<li>
+<p><strong>統計的な「異質さ」に敏感</strong>: マハラノビス距離を使うため、周囲のデータの「広がり（分散）」に対して、どれだけ浮いているかを定量化できる。</p>
+</li>
+<li>
+<p><strong>微細な異常に強い</strong>: ノイズの分布を計算に入れるため、一見ノイズに見える小さな点でも、分布から外れていれば確実に仕留められる。</p>
+</li>
+<li>
+<p><strong>弱点</strong>:</p>
+</li>
+<li>
+<p><strong>複雑な背景に弱い</strong>: 背景に複雑な模様や大きな明暗差があると、背景そのものを「異常」と誤検知（False Alarm）しやすい。</p>
+</li>
+<li>
+<p><strong>計算負荷</strong>: 多次元データの共分散行列の逆行列計算が必要なため、生データ全体に適用すると非常に重い。</p>
+</li>
+</ul>
+<h3 id="3-処理を統合するメリットなぜ最強の組合せか">3. 処理を統合するメリット（なぜ最強の組合せか）</h3>
+<p>これらを順番に実行することで、お互いの弱点を完璧に補完し合うことができます。</p>
+<h4 id="-背景による誤検知の解消rpcaがrxを助ける">① 背景による誤検知の解消（RPCAがRXを助ける）</h4>
+<p>RXの最大の弱点は「背景の変化に騙されること」です。先にRPCAを実行して背景成分（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span>）を差し引くことで、RXに入力されるデータ（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span>）は <strong>「ほぼゼロに近い、平坦なノイズの海」</strong> になります。これにより、RXが背景に惑わされることがなくなります。</p>
+<h4 id="-ノイズと異常の選別rxがrpcaを助ける">② ノイズと異常の選別（RXがRPCAを助ける）</h4>
+<p>RPCAの弱点は「ノイズも異常も  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> に混ぜてしまうこと」です。 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 成分に対してRXを適用すると、 <strong>「ただのランダムな残りカス（ノイズ）」</strong> と <strong>「背景ルールを無視した明確な意図を持つキズ（異常）」</strong> を、マハラノビス距離によって明確に線引きできます。</p>
+<h4 id="-圧倒的なsn比信号対雑音比の向上">③ 圧倒的なSN比（信号対雑音比）の向上</h4>
+<p>単体で使うよりも、異常箇所が背景やノイズから突き抜けて高く（スコアが大きく）なるため、最終的な「しきい値判定」が非常に容易になります。</p>
+<h2 id="実装">実装</h2>
+<p>有効性を説明してみた後は、実際に動作させる実装のステップを整理します。</p>
+<h3 id="1-全体的な処理フロー">1. 全体的な処理フロー</h3>
+<ol>
+<li><strong>RPCA (IALM等) の実行</strong> : 入力画像 <strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi></mrow><annotation encoding="application/x-tex">M</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span></strong> を <strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span></strong>（背景）と <strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span></strong>（スパース/異常候補）に分解。</li>
+<li><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span> 成分のベクトル化</strong> : 画像パッチごとに、または全画素の特徴量をベクトルとして並べる。</li>
+<li><strong>背景統計（平均・共分散）の算出</strong> : <strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span></span></span></strong> 成分全体（あるいは局所領域）から、ノイズの分布を推定。</li>
+<li><strong>RXスコアの計算</strong> : 各画素（またはパッチ）のベクトルが、推定された分布からどれだけ離れているか（マハラノビス距離）を算出。</li>
+<li><strong>しきい値処理</strong> : スコアが高い箇所を最終的な「異常」と断定。</li>
+</ol>
+<h3 id="2-実装のコードイメージ-python">2. 実装のコードイメージ (Python)</h3>
+<p>RPCAの結果得られたスパース行列 <code>S</code> を入力とする、RX Detector適用の流れです。</p>
+<p><strong>Python</strong></p>
+<pre><code>import numpy as np
+
+def rx_detector_on_sparse(S_matrix):
+    &quot;&quot;&quot;
+    S_matrix: RPCAで得られたスパース成分 (例: [パッチ数, 特徴量次元])
+    &quot;&quot;&quot;
+    # 1. 平均ベクトル (mu) と共分散行列 (Sigma) の算出
+    # S成分のほとんどは0に近い「ノイズの塊」であると仮定
+    mu = np.mean(S_matrix, axis=0)
+    # 共分散行列。逆行列を計算するため、微小値を足して安定化（レギュラライズ）
+    sigma = np.cov(S_matrix, rowvar=False) + 1e-6 * np.eye(S_matrix.shape[1])
+  
+    # 2. 共分散行列の逆行列を計算
+    sigma_inv = np.linalg.inv(sigma)
+  
+    # 3. 各サンプル(パッチ)に対してマハラノビス距離（RXスコア）を計算
+    rx_scores = []
+    for i in range(S_matrix.shape[0]):
+        diff = S_matrix[i] - mu
+        # RXスコア = (x - mu)^T * Sigma^-1 * (x - mu)
+        score = np.dot(np.dot(diff, sigma_inv), diff.T)
+        rx_scores.append(score)
+      
+    return np.array(rx_scores)
+
+# --- 実行イメージ ---
+# S_hat は RPCA (IALM) から得られたスパース行列
+# 2次元画像なら、パッチごとにベクトル化しておく
+rx_map = rx_detector_on_sparse(S_hat)
+
+# スコアを元の画像サイズに戻して可視化
+# 異常箇所は値が大きく跳ね上がる
+</code></pre>
+<h3 id="実装上の注意点局所rxlocal-rxの検討">実装上の注意点：局所RX（Local RX）の検討</h3>
+<p>画像全体で一つの共分散行列 Sigma を作ると、場所によって背景の性質が違う場合に誤差が出ます。</p>
+<p>実務では、ターゲット画素の <strong>周囲の数ピクセル（スライディングウィンドウ）</strong> からその都度 Sigma を計算する Local RX を採用すると、より高精度になります。</p>
+<h2 id="実験結果">実験結果</h2>
+<p>実際に動作させた結果を示します。</p>
+<p>まずは、今回実験につかった画像です。
+クラックが入った素材の画像に対して、クラックを異常として認識できるかを実験します。</p>
+<img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\Reed_Xiasoli_det\doc\image\explanation\1768046125201.png" alt="sequential anormaly detection" width="600" style="display: block; margin: 0 auto;">
+<p>RPCA→RXのパイプラインとしました。</p>
+<p>検出結果は以下です。</p>
+<p>左側はRPCAにより異常として検出した画像です。
+この画像には実際のクラック以外に、画像全体に満遍なくノイズのデータが含まれています。</p>
+<p>右側はRPCAのSに対して、異常検知を追加で行った結果です。
+クラック部や、クラックに挟まれた部分を異常と検知しています。
+RPCAに比べると、より下を強調する結果となりました。</p>
+<img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\Reed_Xiasoli_det\doc\image\explanation\1768046110473.png" alt="sequential anormaly detection" width="600" style="display: block; margin: 0 auto;">
+<p>ということで、異常検知は手法の組合せが有効に機能する場合があります。</p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+        </body>
+        </html>
