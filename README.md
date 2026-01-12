@@ -24,7 +24,7 @@
 - [anormaly_detect_techs/](anormaly_detect_techs/) : 異常検知調査した手法概要
 - [anormaly_detect_techs/src](anormaly_detect_techs/src) : 異常検知の調査内容
 
-<details>
+<details markdown="1">
 
 <summary>
 異常検知の手法群
