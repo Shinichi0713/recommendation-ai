@@ -1,4 +1,4 @@
-# [AD-RecSys: Anomaly-Aware AI Recommendation System](https://github.com/Shinichi0713/recommendation-ai)
+# [Anomaly-Aware AI Recommendation System](https://github.com/Shinichi0713/recommendation-ai)
 
 **ユーザーの「いつもと違う」を検知し、最適な一歩を先回りして提案するレコメンデーションエンジン。**
 
