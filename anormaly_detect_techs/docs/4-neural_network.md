@@ -129,7 +129,176 @@ RX Detectorは共分散行列を使って変数間の関係を見ますが、変
 
 ### 次のステップへの視点
 
-ニューラルネットワークのこの「表現力」を最大限に引き出すのが、まさにこれまでお話しした **LISTA** です。LISTAは、**「数学的なISTAの正しさ」を「ニューラルネットワークの表現力」で包み込んだ**ハイブリッドな存在と言えます。
+ニューラルネットワークのこの「表現力」を最大限に引き出すのが、まさにこれまでお話しした **LISTA** です。LISTAは、 **「数学的なISTAの正しさ」を「ニューラルネットワークの表現力」で包み込んだ** ハイブリッドな存在と言えます。
+
+## そのほか手法
+
+Neural Network（深層学習）を用いた異常検知は、近年非常に進化しており、データの種類（画像、信号、数値）や「何をもって異常とするか」の定義によって、いくつかの大きなアプローチに分かれます。
+
+主要な手法を、その仕組みと特徴で整理して解説します。
 
 
+### 1. 再構成誤差ベース（Reconstruction-based）
+
+「正常データは完璧に復元できるが、異常データは復元に失敗する」という性質を利用します。
+
+* **AutoEncoder (AE) / Variational AutoEncoder (VAE)**:
+入力を一度ギュッと圧縮（次元圧縮）し、再び元の画像に戻すように学習します。異常な箇所はネットワークにとって「未知」のため、うまく復元できず、元の画像との差分（誤差）が大きくなります。
+* **GAN (Generative Adversarial Networks)**:
+正常データだけを生成するように学習したGAN（AnoGANなど）を使用します。入力画像に最も近い「正常な画像」をGANに作らせ、その差分を異常と見なします。
+
+
+### 2. 距離・分布ベース（Embedding & Distribution-based）
+
+データを特徴空間上のベクトルに変換し、その「位置」で判定します。
+
+* **Deep SVDD (Deep Support Vector Data Description)**:
+ニューラルネットワークを使い、全ての正常データを特徴空間上の「一つの小さな球」の中に閉じ込めるように学習します。この球の外側にプロットされたものを異常とします。
+* **Normalizing Flows (NF)**:
+複雑なデータの分布を、数学的に扱いやすい単純な分布（ガウス分布など）に変換する手法です。変換後の確率密度が低いデータは「稀なもの＝異常」と判定されます。
+
+
+### 3. 特徴抽出 + 統計ベース（Hybrid Approach）
+
+今回お話しした **Deep RX** や **PaDiM** がここに含まれます。
+
+* **Deep RX / PaDiM**:
+学習済みのCNN（ResNet等）を「巨大な特徴抽出器」として使い、得られた特徴マップに対してマハラノビス距離などの統計的判定を行います。
+* **PatchCore**:
+正常なパッチの特徴量を「メモリバンク」として全て保存しておき、新しいデータがそのメモリ内のどれとも似ていなければ異常とする手法です。現在の画像異常検知における最高峰の手法の一つです。
+
+
+### 4. 自己教師あり学習（Self-Supervised Learning）
+
+データ自体にクイズを作らせて、データの構造を深く理解させます。
+
+* **Rotation Prediction**: 「この画像は何回回転しているか？」を当てさせる学習です。正常な構造を理解していないと解けないため、異常なデータが入るとクイズの正解率が下がることを利用します。
+* **CutPaste**: 画像の一部を切り取って別の場所に貼り付け、その「違和感」を検知できるように学習させます。
+
+
+### 5. 時系列・信号向け（Temporal / Sequential）
+
+時間の流れ（コンテキスト）の異常を捉えます。
+
+* **LSTM / GRU / Transformer (Prediction-based)**:
+「過去のデータから次の一点を予測する」ように学習します。予測値と実際の値が大きくズレた場合、そこを異常（突発的な変化）と見なします。
+* **Deepを展開した手法 (LISTAなど)**:
+以前お話しした通り、スパースモデリングのアルゴリズムをNNの層として構成し、高速かつ高精度に信号を分解・抽出します。
+
+
+**Rotation Prediction**（回転予測）は、異常検知における「自己教師あり学習（Self-Supervised Learning）」の代表的な手法です。
+
+「正常な物体には決まった向きや構造がある」という前提を利用し、画像をあえて回転させて**「何度回転させたか？」を当てるクイズ**を解かせることで、モデルに正常データの構造を深く理解させます。
+
+---
+
+### 1. 実装のコンセプト
+
+1. **正常画像のみ**を準備します。
+2. 各画像を 0°, 90°, 180°, 270° の4パターンに回転させます。
+3. モデル（CNN）に画像を入力し、**「0, 1, 2, 3」の4クラス分類**を解かせます。
+4. **異常検知の仕組み**:
+* 正常な画像であれば、モデルは正しい回転角度を予測できます（確信度が高い）。
+* 異常な画像（キズや異物がある、あるいは全く別の物体）の場合、モデルにとって未知のパターンが含まれるため、回転角度の予測に失敗、あるいは確信度が低くなります。
+
+
+
+---
+
+### 2. PyTorchによる実装コード
+
+以下に、学習から推論までのエッセンスを凝縮したコードを示します。
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torchvision.models as models
+import torchvision.transforms.functional as TF
+
+# 1. 回転予測用モデルの定義
+class RotationNet(nn.Module):
+    def __init__(self):
+        super(RotationNet, self).__init__()
+        # 特徴抽出器としてResNet18を使用
+        self.backbone = models.resnet18(pretrained=True)
+        # 最終層を4クラス分類（0, 90, 180, 270度）に変更
+        num_ftrs = self.backbone.fc.in_features
+        self.backbone.fc = nn.Linear(num_ftrs, 4)
+
+    def forward(self, x):
+        return self.backbone(x)
+
+# 2. 学習ループ（正常データのみを使用）
+def train_rotation_net(model, dataloader, epochs=10):
+    optimizer = optim.Adam(model.parameters(), lr=1e-4)
+    criterion = nn.CrossEntropyLoss()
+    model.train()
+
+    for epoch in range(epochs):
+        for inputs, _ in dataloader: # ラベルは無視
+            # 1つの画像から4つの回転バリエーションを作成
+            rotated_images = []
+            labels = []
+            for angle_idx, angle in enumerate([0, 90, 180, 270]):
+                rotated_img = TF.rotate(inputs, angle)
+                rotated_images.append(rotated_img)
+                labels.append(torch.full((inputs.size(0),), angle_idx))
+            
+            # まとめてバッチ化
+            inputs_combined = torch.cat(rotated_images)
+            labels_combined = torch.cat(labels).to(device)
+            inputs_combined = inputs_combined.to(device)
+
+            optimizer.zero_grad()
+            outputs = model(inputs_combined)
+            loss = criterion(outputs, labels_combined)
+            loss.backward()
+            optimizer.step()
+
+# 3. 異常判定（推論）
+def detect_anomaly(model, image):
+    model.eval()
+    with torch.no_grad():
+        # テスト画像を4回回転させて入力し、それぞれのSoftmax確率を取得
+        probs = []
+        for angle in [0, 90, 180, 270]:
+            img_t = TF.rotate(image, angle).unsqueeze(0).to(device)
+            output = model(img_t)
+            prob = torch.softmax(output, dim=1)
+            # 正解の回転角度に対する確率を取り出す
+            probs.append(prob[0, angle//90].item())
+        
+        # 4つの予測の平均確信度を計算。低いほど「異常」
+        anomaly_score = 1.0 - np.mean(probs)
+    return anomaly_score
+
+```
+
+---
+
+### 3. この手法のメリットと限界
+
+* **メリット**:
+* **異常データが一切不要**: 正常画像さえあれば、強力な特徴抽出器を自前で作れる。
+* **意味的な理解**: 「ネジは縦に並んでいるのが正常」といった、幾何学的なルールをモデルが学習する。
+
+
+* **デメリット**:
+* **回転不変な物体に弱い**: 丸いコインや、どの向きでも同じに見える液体などの異常検知には向きません（何度回しても予測できないため）。
+* **計算コスト**: 学習時に画像を4倍に増やすため、学習に時間がかかる。
+
+
+
+---
+
+### 4. Deep RXとの組み合わせ
+
+実は、この **Rotation Prediction で学習したモデルの「途中の層」を Deep RX の特徴抽出器として使う** のが非常に強力なハックです。
+
+1. Rotation Prediction で「その製品専用の目」を作る。
+2. そのモデルの Layer 3 などから特徴マップを取り出す。
+3. その特徴マップに対して **RX Detector（マハラノビス距離）** を適用する。
+
+これにより、一般の ImageNet（犬や猫）で学習したモデルよりも、あなたの扱う特定の製品（基板や金属部品など）の異常に特化した検知が可能になります。
 
