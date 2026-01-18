@@ -134,6 +134,11 @@ blockquote::before {
     text-decoration: none;
 }
 
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-mathml {
+    display: none !important;
+}
+
 <nav>
         <h3>目次</h3>
         <ul id="toc"></ul> 
