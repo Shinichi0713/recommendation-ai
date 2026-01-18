@@ -135,8 +135,12 @@ blockquote::before {
 }
 
 /* はてなブログで見えてしまう数式データを非表示にする */
-.katex-mathml {
+.katex-html {
     display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
 }
 
 <nav>
