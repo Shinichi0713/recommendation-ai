@@ -214,3 +214,12 @@ coming soon
 ### クイックスタート
 
 coming soon
+
+## ブログ
+
+ブログをしています。
+ニューラルネットワークや異常検知関係の記事を書いています。
+
+是非ご覧ください。
+
+https://yoshishinnze.hatenablog.com/
