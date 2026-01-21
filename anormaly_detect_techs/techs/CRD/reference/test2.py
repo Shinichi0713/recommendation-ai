@@ -89,6 +89,24 @@ def crd_rgb_detection_robust(img_rgb, win_out=9, win_in=3, lamda=1e-1):
                 
     return anomaly_map
 
+def crd_rgb_detection_exercise(image_gray, win_out=9, win_in=3, lamda=0.01):
+    h, w = image_gray.shape
+    anomaly_map = np.zeros((h, w))
+
+    r_out = win_out // 2
+    r_in = win_in // 2
+
+    img_pad = np.pad(image_gray, r_out, mode='edge')
+
+    for i in range(r_out, h+r_out):
+        for j in range(r_out, w+r_out):
+            win_local = img_pad[i - r_out:i + r_out + 1, j - r_out:j + r_out + 1]
+            mask = np.ones((win_out, win_out), dtype=bool)
+            mask[r_out-r_in:r_out+r_in+1, r_out-r_in:r_out+r_in+1] = False
+            
+
+
+
 # 1. 画像の読み込み
 # 任意の画像ファイルを指定してください（例: 'sample.jpg'）
 # ここでは動作確認用にダミー画像を生成します
