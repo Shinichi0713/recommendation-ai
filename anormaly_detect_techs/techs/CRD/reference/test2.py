@@ -103,9 +103,18 @@ def crd_rgb_detection_exercise(image_gray, win_out=9, win_in=3, lamda=0.01):
             win_local = img_pad[i - r_out:i + r_out + 1, j - r_out:j + r_out + 1]
             mask = np.ones((win_out, win_out), dtype=bool)
             mask[r_out-r_in:r_out+r_in+1, r_out-r_in:r_out+r_in+1] = False
-            
+            # 背景を抽出してDに変換
+            D = win_local[mask].reshape(-1, 1)  # shape: (1, n)
+            y = img_pad[i, j].reshape(-1, 1)  # shape: (1, 1)
 
+            # 行列安定化
+            DtD = np.dot(D.T, D)
+            inv_part = 1.0 / (DtD + lamda)
+            alpha = inv_part * np.dot(D.T, y)
 
+            y_hat = np.dot(D, alpha)
+            anomaly_map[i - r_out, j - r_out] = np.abs(y - np.mean(y_hat))
+    return anomaly_map
 
 # 1. 画像の読み込み
 # 任意の画像ファイルを指定してください（例: 'sample.jpg'）
