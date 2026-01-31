@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x6982;&#x8981;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+            <p>本日は背景辞書を使った異常検知法のうち、分けた背景辞書をさらにクラスタリングすることで、CRDの持つ課題を解決した手法について説明します。</p>
+<h2 id="概要">概要</h2>
+<p>その手法の名前は <strong>クラスターベース辞書（Cluster-based Dictionary）</strong> と呼ばれる手法です。
+背景をいくつかの「種類（クラスター）」に分けて管理する方法です。</p>
+<p>作り方: 画像全体を K-means などでクラスタリングし、「芝生」「コンクリート」「影」といったグループごとの辞書（または平均ベクトル）を作成します。</p>
+<p><strong>特徴:</strong></p>
+<ul>
+<li>ターゲット画素がどのクラスターに属するかを判定し、対応する辞書だけを使って計算します。</li>
+<li>LRBに近い考え方ですが、近傍を毎回探すのではなく、あらかじめ分類しておくため高速です。</li>
+<li>得意なケース: 異なる素材が混在する風景写真や、複数の部品が並ぶ工業製品の検査。</li>
+</ul>
+<h2 id="従来課題">従来課題</h2>
+<p>クラスターベース辞書は、主に <strong>「計算コスト（速度）」</strong> , <strong>「背景の多層性（複雑な混ざり具合）」</strong> という、CRDやLRBが抱える実用上の限界を突破するために考案されました。</p>
+<p>具体的には、以下の3つの大きな課題を解決しようとしています。</p>
+<h3 id="1-毎回探す毎回解くという計算の重さ">1. 「毎回探す・毎回解く」という計算の重さ</h3>
+<p>CRDやLRBの最大の弱点は、全ピクセルに対して「窓を切り出し、行列の逆行列を解く」という重い処理を繰り返すことです。</p>
+<ul>
+<li><strong>解決策</strong>: 画像全体をあらかじめいくつかのクラスター（例えば「草地」「道路」「影」）に色やテクスチャで分類しておきます。</li>
+<li><strong>メリット</strong>: 各ピクセルで計算を行う際、ゼロから辞書を作るのではなく、 <strong>「自分はクラスターAに属するから、クラスターA専用の学習済み辞書を使う」</strong> という選択をするだけで済みます。これにより、処理速度が飛躍的に向上します。</li>
+</ul>
+<h3 id="2-混ざりすぎた背景による精度の低下">2. 「混ざりすぎた背景」による精度の低下</h3>
+<p>CRDのような局所窓方式では、ターゲットが「草地」と「コンクリート」の境界にある場合、辞書には両方の性質が混ざってしまいます。</p>
+<ul>
+<li><strong>解決策</strong>: クラスターベースでは、空間的な位置に関わらず、 <strong>「統計的に似ているもの」</strong> だけで辞書を構成します。</li>
+<li><strong>メリット</strong>: 境界線の上にあるピクセルでも、「草地クラスター」の辞書を使って草地としての整合性をチェックできるため、複数の素材が入り混じる複雑なシーン（都市部の空撮や、部品が密集した基板など）で、背景の「ボケ」を防ぎ、異常を鋭く分離できます。</li>
+</ul>
+<h3 id="3-異常の汚染contaminationへの耐性">3. 「異常の汚染（Contamination）」への耐性</h3>
+<p>局所窓方式では、大きな異常の隣のピクセルを計算する際、その異常そのものが「背景辞書」の中に紛れ込んでしまうことが多々あります。</p>
+<ul>
+<li><strong>解決策</strong>: 異常は通常、画像全体で見れば「稀な存在」です。クラスタリングを行うと、圧倒的多数を占める「正常な背景」が大きなクラスターを形成し、少数の異常はそれらのクラスターから外れるか、非常に小さな独立したグループになります。</li>
+<li><strong>メリット</strong>: 正常なクラスターから得られた辞書を使って計算することで、 <strong>「異常を使って異常を説明してしまう（見逃し）」</strong> という自己消去現象を構造的に回避しやすくなります。</li>
+</ul>
+<h3 id="クラスターベース辞書の運用フロー">クラスターベース辞書の運用フロー</h3>
+<ol>
+<li><strong>オフライン/事前学習</strong>: 画像全体（または正常なサンプル群）をクラスタリングし、各クラスター  ごとに代表的な基底ベクトル（辞書 ）を構築します。</li>
+<li><strong>クラスター割り当て</strong>: 判定したいピクセル  が、どの  に最も近いかを判定します。</li>
+<li><strong>再構成と判定</strong>: 選ばれたクラスターの辞書  を用いて協調表現（CRDの計算）を行い、その誤差で異常を判定します。</li>
+</ol>
+<h2 id="仕組み">仕組み</h2>
+<p>クラスターベース辞書（Cluster-based Dictionary）の仕組みは、 <strong>「似た者同士をあらかじめグループ化しておき、そのグループの代表ルールで個々の画素をチェックする」</strong> という、効率的かつ合理的なプロセスです。</p>
+<p><strong>1. 構築フェーズ：背景の「カタログ」作り</strong></p>
+<p>まず、画像全体（または正常な学習用画像）を分析して、その画像に存在する「背景の種類」を自動的に分類します。</p>
+<ul>
+<li>特徴抽出: 各画素をベクトル（RGBやマルチスペクトル値）として扱います。</li>
+<li>クラスタリング（分類）: K-means などのアルゴリズムを使い、全画素を <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 個のクラスターに分けます（例：クラスター1=草、2=水、3=土）。</li>
+<li>サブ辞書の生成: 各クラスターに属する画素の中から、そのクラスターを代表するベクトルを抽出・選定し、各クラスター専用の辞書 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">D_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> を作成します。</li>
+</ul>
+<p><strong>2. 検知フェーズ：代表ルールによる照合</strong></p>
+<p>次に、異常かどうかを判定したいターゲット画素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span> を、先ほど作ったカタログと照らし合わせます。</p>
+<ol>
+<li>
+<p>クラスター選択: ターゲット画素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span> が、どのクラスターの重心に最も近いかを計算し、適用する辞書 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">D_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> を一瞬で決定します。ここがLRBとの違いです。LRBは毎回全候補から探しますが、クラスターベースは「君はクラスター2担当ね」と即決します。</p>
+</li>
+<li>
+<p>協調表現の計算: 選ばれた辞書 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">D_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> を使い、CRDと同じ数式で重み <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span> を求めます。</p>
+</li>
+</ol>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>α</mi><mo>=</mo><mo stretchy="false">(</mo><msubsup><mi>D</mi><mi>c</mi><mi>T</mi></msubsup><msub><mi>D</mi><mi>c</mi></msub><mo>+</mo><mi>λ</mi><mi>I</mi><msup><mo stretchy="false">)</mo><mrow><mo>−</mo><mn>1</mn></mrow></msup><msubsup><mi>D</mi><mi>c</mi><mi>T</mi></msubsup><mi>y</mi></mrow><annotation encoding="application/x-tex">\alpha = (D_c^T D_c + \lambda I)^{-1} D_c^T y
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1413em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.453em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1413em;vertical-align:-0.25em;"></span><span class="mord mathnormal">λ</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-2.453em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span></p>
+<ol start="3">
+<li>異常スコアの算出:</li>
+</ol>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mi mathvariant="normal">∥</mi><mi>y</mi><mo>−</mo><msub><mi>D</mi><mi>c</mi></msub><mi>α</mi><msub><mi mathvariant="normal">∥</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">Score = \|y - D_c \alpha\|_2
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∥</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
+<p>もしターゲットが「クラスター2（水）」に分類されたのに、実際には「油」の成分を含んでいれば、水の辞書 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>c</mi></msub></mrow><annotation encoding="application/x-tex">D_c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> では再現しきれず、誤差（スコア）が大きくなります。</p>
+<ol start="3">
+<li>なぜこの仕組みが効くのか？（数学的メリット）</li>
+</ol>
+<p>空間的制約からの解放: CRDのような「窓」は使いません。画像上の位置が離れていても、同じ「草」であれば同じ辞書で評価します。これにより、窓の中にたまたま異常が混入して辞書が汚染されるリスク（Dictionary Contamination）を大幅に減らせます。逆行列の使い回し: 同じクラスターに属する画素であれば、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msubsup><mi>D</mi><mi>c</mi><mi>T</mi></msubsup><msub><mi>D</mi><mi>c</mi></msub><mo>+</mo><mi>λ</mi><mi>I</mi><msup><mo stretchy="false">)</mo><mrow><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">(D_c^T D_c + \lambda I)^{-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-2.453em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">c</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord mathnormal">λ</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span></span></span></span> の部分は一度計算すればそのクラスターの全画素で使い回せます。これが、この手法が爆速である理由です。</p>
+<p><strong>仕組みのイメージ</strong></p>
+<ul>
+<li>CRD/LRB: 「あなたの周りの数人に、あなたを説明してもらいなさい」</li>
+<li>クラスターベース: 「あなたはこのグループの一員ね。じゃあ、そのグループの代表メンバーの組み合わせで、あなたを再現できるか試すよ」</li>
+</ul>
+<h2 id="実権">実権</h2>
+<p>以下レポジトリにコードを保管しています。</p>
+<p><a href="https://github.com/Shinichi0713/recommendation-ai/tree/main/anormaly_detect_techs/techs/Cluster_based_Dictionary">https://github.com/Shinichi0713/recommendation-ai/tree/main/anormaly_detect_techs/techs/Cluster_based_Dictionary</a></p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\Cluster_based_Dictionary\image\README\1769774846880.png" alt="1769774846880"></p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\Cluster_based_Dictionary\image\README\1769721147569.png" alt="1769721147569"></p>
+<p>##　結論</p>
+<p>今回は異常検知の手法で辞書をつくる辞書クラスター手法について説明しました。
+この手法の得意はこんなところです。</p>
+<p>① 処理速度が圧倒的に速い</p>
+<p>CRDやLRBがピクセルごとに数千回の行列計算を行うのに対し、クラスターベースは数個の「クラスター用プロジェクション行列」を使い回します。</p>
+<p>理由: 同じクラスターに属する画素は、同じ辞書と逆行列を共有できるため、一括処理（ベクトル演算）が可能だからです。</p>
+<p>② 境界線（エッジ）での誤検知が少ない</p>
+<p>LRBと同様に、ターゲットが「草地」と「コンクリート」の境目にあっても、自分が属するクラスター（例：草地）の辞書で評価されるため、背景が混ざることによるノイズが出にくいです。</p>
+<p>③ 離れた場所にある同じ背景を活用できる</p>
+<p>CRDは「窓」の中にサンプルがないと背景を定義できませんが、クラスターベースは画像上のどこかに同じ素材があれば、それを辞書として使えます。</p>
+<p>④ 異常の「自己消去（Ghosting）」に強い</p>
+<p>異常箇所は統計的に「稀」な存在であるため、大きなクラスターには含まれません。そのため、背景辞書に異常成分が混入する確率が、局所窓方式よりも低くなります。</p>
+<p>CRDで精度が出ないような場合、こちらを試してみてください。</p>
+
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
