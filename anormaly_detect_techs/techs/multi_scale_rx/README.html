@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>LRX&#x306e;&#x5f31;&#x70b9;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+
+            <p>統計的な異常検知手法であるLRX。
+同手法は、RXと呼ばれる手法の弱点であった局所的な異常検知能力を向上したものです。
+この手法は異常を捉えるという意味では大きな改善をもたらしました。(多分、現実的な異常の定義をより現実的に包含することが出来たからと思います)</p>
+<p>しかし、LRXにも弱点があります。</p>
+<p>本日は、LRXの弱点と、改善方法となった手法について説明します。</p>
+<h2 id="lrxの弱点">LRXの弱点</h2>
+<p>はい、その認識で<strong>間違いありません。</strong></p>
+<p>より正確に「LRXが何を見ているか」を言語化すると、以下のようになります。</p>
+<blockquote>
+<p><strong>「外窓（背景エリア）の統計的なバラツキ具合に基づいた物差しで測ったとき、ターゲット（中心画素）がどれだけ平均から遠くへ突き抜けているか」</strong></p>
+</blockquote>
+<p>この仕組みを理解するための重要なポイントを整理します。</p>
+<h3 id="1-マハラノビス距離が意味すること">1. マハラノビス距離が意味すること</h3>
+<p>単なる「色の差（ユークリッド距離）」ではなく「マハラノビス距離」を使う理由は、背景の <strong>「馴染みやすさ」</strong> を考慮するためです。</p>
+<ul>
+<li><strong>背景エリアの分布</strong>: 例えば「森」の画像なら、緑色の濃淡（バラツキ）は「普通のこと」として許容されます。</li>
+<li><strong>検出の仕組み</strong>:</li>
+<li>背景エリアでよくある変動方向（例：緑の明暗）に対しては、距離を<strong>短く</strong>見積もります。</li>
+<li>背景エリアに存在しない変動方向（例：突発的な赤色）に対しては、距離を<strong>非常に長く</strong>見積もります。</li>
+</ul>
+<h3 id="2-内窓と外窓の役割分担">2. 「内窓」と「外窓」の役割分担</h3>
+<p>ご質問にあった「内窓と外窓の関係」は、LRXの検出力において以下のような数式上の役割を持っています。</p>
+<ul>
+<li>
+<p><strong>外窓（背景）</strong>: 「物差し」を作ります。</p>
+</li>
+<li>
+<p>ここで <strong>平均（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span>）と共分散行列（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span>）</strong> を求めます。これが「この場所での正常の基準」になります。</p>
+</li>
+<li>
+<p><strong>内窓（ターゲット周辺）</strong>: 「異物」を孤立させます。</p>
+</li>
+<li>
+<p>ターゲット画素 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span> がこの「物差し」にかけられます。内窓があるおかげで、ターゲット自身やそのすぐ隣の異常成分が背景の統計（物差し）に混ざるのを防ぎ、距離（スコア）を最大化させます。</p>
+</li>
+</ul>
+<h3 id="3-なぜサイズが大きい異常で不利になるのか">3. なぜ「サイズが大きい異常」で不利になるのか</h3>
+<p>前述の通り、検出力は <strong>「外窓に対する内窓の異質さ」</strong> に依存します。</p>
+<ul>
+<li><strong>異常が内窓より大きい場合</strong>:
+異常の一部が外窓（背景エリア）に漏れ出します。すると、背景の統計量（共分散行列 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span>）が「異常な色」を「よくある変動」だと勘違いして学習してしまいます。</li>
+<li><strong>結果</strong>:
+物差し自体が異常な色に合わせて伸びてしまうため、<strong>マハラノビス距離が相対的に小さくなってしまい、検知できなくなる</strong>のです。</li>
+</ul>
+<h3 id="実演">実演</h3>
+<p>実際にLRXを使って、異常のサイズを変えて異常検知を行ってみました。</p>
+<p>異常サイズが外窓よりも小さいケース</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\multi_scale_rx\image\README\1769898299734.png" alt="1769898299734"></p>
+<p>異常サイズを外窓よりも大きくしたケース</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\multi_scale_rx\image\README\1769898242568.png" alt="1769898242568"></p>
+<p>異常サイズが外窓よりも大きくなると検出できなくなります。</p>
+<h2 id="マルチスールrx">マルチスールRX</h2>
+<p>先述の課題に対応する方法としてマルチスケールRX（Multi-Scale RX）という手法が考えられます。
+以下、同手法について説明していきます。</p>
+<h2 id="マルチスケール-rxとは">マルチスケール RXとは？</h2>
+<p><strong>マルチスケール RX</strong>は、従来のRX（Reed-Xiaoli）検知器やその局所版であるLRXが抱えていた、 <strong>「異常のサイズと窓サイズが合わないと検知能力が著しく低下する」</strong> という問題を解決するために開発された手法です。</p>
+<p>簡単に言えば、 <strong>「異なる大きさの窓を複数同時に使い、小さな異常から大きな異常まで一網打尽にする」</strong> アプローチです。</p>
+<h3 id="1-解決しようとした課題窓サイズのジレンマ">1. 解決しようとした課題：窓サイズのジレンマ</h3>
+<p>LRXのような局所検知器には、常に以下の <strong>「二律背反（トレードオフ）」</strong> がつきまといます。</p>
+<ul>
+<li><strong>小さい窓（Small Window）の限界</strong>:
+点状の小さな異常には敏感ですが、<strong>大きな異常</strong>に対しては、異常そのものが背景統計（共分散行列）に混入してしまい、異常を背景として処理してしまう <strong>「自己消去（Self-reconstruction）」</strong> が起きます。</li>
+<li><strong>大きい窓（Large Window）の限界</strong>:
+大きな異常を背景に混ぜずに捉えられますが、<strong>小さな異常</strong>に対しては、背景の平均化効果が強まりすぎて、異常の信号が統計的に薄まって（希釈されて）見逃してしまいます。</li>
+</ul>
+<p>実世界の画像（空撮、工業製品検査など）では、<strong>サイズの異なる異常が混在している</strong>ことが多く、単一の窓サイズではどうしても「取りこぼし」が発生していました。</p>
+<h3 id="2-マルチスケール-rx-の仕組み">2. マルチスケール RX の仕組み</h3>
+<p>この手法は、一つの画素に対して <strong>「異なるスケールの検知器を並列で動かす」</strong> という構造を持っています。</p>
+<h4 id="-複数のスケールで計算">① 複数のスケールで計算</h4>
+<p>例えば、以下の3つの窓セットで同時にRXスコアを計算します。</p>
+<ul>
+<li><strong>Scale 1</strong>: 内窓 3x3 / 外窓 7x7（極小の異常用）</li>
+<li><strong>Scale 2</strong>: 内窓 7x7 / 外窓 15x15（中くらいの異常用）</li>
+<li><strong>Scale 3</strong>: 内窓 15x15 / 外窓 31x31（大きな塊の異常用）</li>
+</ul>
+<h4 id="-スコアの統合fusion">② スコアの統合（Fusion）</h4>
+<p>各スケールから出力された異常スコアマップ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>S</mi><mn>2</mn></msub><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>S</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">S_1, S_2, \dots, S_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> を、最終的な1枚のマップに統合します。最も一般的な統合ルールは 「Max-Pooling（最大値採用）」 です。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><msub><mi>e</mi><mrow><mi>f</mi><mi>i</mi><mi>n</mi><mi>a</mi><mi>l</mi></mrow></msub><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>max</mi><mo>⁡</mo><mo stretchy="false">{</mo><msub><mi>S</mi><mn>1</mn></msub><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><msub><mi>S</mi><mn>2</mn></msub><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><msub><mi>S</mi><mi>k</mi></msub><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">Score_{final}(x, y) = \max \{S_1(x,y), S_2(x,y), \dots, S_k(x,y)\}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.02778em;">cor</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.10764em;">f</span><span class="mord mathnormal mtight">ina</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)}</span></span></span></span></span></p>
+<p>これにより、どれか一つの窓サイズで強く反応すれば、最終結果として採用されるようになります。</p>
+<h3 id="3-この手法のメリットデメリット">3. この手法のメリット・デメリット</h3>
+<table>
+<thead>
+<tr>
+<th>特徴</th>
+<th>メリット</th>
+<th>デメリット</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>検知能力</strong></td>
+<td><strong>異常のサイズを問わず</strong>高い感度を維持できる。</td>
+<td>小さな異常が密集している場合、大きな窓で「一つの巨大な異常」と誤認することがある。</td>
+</tr>
+<tr>
+<td><strong>ロバスト性</strong></td>
+<td>背景のテクスチャが複雑でも、適切なスケールがどこかで補足してくれる。</td>
+<td>背景の不均一な部分（エッジなど）で <strong>誤報（False Alarm）</strong> が増える傾向がある。</td>
+</tr>
+<tr>
+<td><strong>計算負荷</strong></td>
+<td><strong>非常に高い</strong>。窓の数だけ計算を繰り返すため、処理時間が倍増する。</td>
+<td>リアルタイム処理にはGPUやアルゴリズムの工夫が必須。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-まとめなぜこれが選ばれるのか">4. まとめ：なぜこれが選ばれるのか</h3>
+<p>マルチスケール RX は、 <strong>「ターゲットがどれくらいの大きさか分からない」</strong> という実務上の不安を解消するための最も堅実な解決策です。</p>
+<h2 id="実験">実験</h2>
+<p>マルチスケールRXを実際に実装してみました。</p>
+<p>レポジトリは以下に保管しています。</p>
+<p><a href="https://github.com/Shinichi0713/recommendation-ai/tree/main/anormaly_detect_techs/techs/multi_scale_rx">https://github.com/Shinichi0713/recommendation-ai/tree/main/anormaly_detect_techs/techs/multi_scale_rx</a></p>
+<p>先程検知できなかったサイズを含む異常が検知できるかについて確認してみます。</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\multi_scale_rx\image\README\1769899065734.png" alt="1769899065734"></p>
+<p>検知出来ました。
+窓サイズをマルチにしたので、結果も想像つきやすいものだったかと思います。</p>
+<h2 id="まとめ">まとめ</h2>
+<p>LRXは実装が簡単で、検知力が高いので初めの異常検知のトライアルではやりやすい手法と言えます。</p>
+<p>しかし、窓サイズにかかわる課題があるため、うまくいかない原因を抱えています。</p>
+<p>そこで窓サイズをマルチに変化させて、検知を行うことで弱点を補うマルチスケールRXという手法が次に行うおススメ手法になります。</p>
+<p>また。
+最近では、単に最大値をとるだけでなく、各スケールの結果を重み付けして統合する手法や、ディープラーニングと組み合わせて最適なスケールを自動選択する発展的な手法も研究されています。</p>
+
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
