@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x89e3;&#x6c7a;&#x3057;&#x305f;&#x3044;&#x8ab2;&#x984c;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+            <p>セグメンテーション・ベース RX (Segmentation-based RX) が解決しようとした最大の課題は、 <strong>「背景の不均一性による統計モデルの破綻（および、それに伴うエッジでの誤報）」</strong> です。</p>
+<p>具体的にどのような物理的・数学的課題を解決しようとしたのか、3つのポイントに分けて解説します。</p>
+<h2 id="解決したい課題">解決したい課題</h2>
+<h3 id="1-境界線エッジでの偽陽性false-alarmの抑制">1. 境界線（エッジ）での「偽陽性（False Alarm）」の抑制</h3>
+<p>従来のLRXが抱える最大の弱点は、先ほど議論した「草原と道路の境界」のように、窓の中に2つ以上の異なる背景が混ざることでした。</p>
+<ul>
+<li><strong>課題</strong> : 従来のLRXでは、境界線上に窓がくると「草原の緑」と「道路の灰色」が混ざった統計量（平均と分散）が作られます。すると、ターゲットが純粋な「道路」であっても、混合平均からは遠いため「異常」と判定されてしまいます。</li>
+<li><strong>解決</strong> : セグメンテーションにより、まず「ここは草原の塊」「ここは道路の塊」と領域を分けます。ターゲットが道路上にあるなら、<strong>背景統計を同じ「道路」のセグメントからのみ抽出</strong>します。これにより、草原の情報が混ざらなくなり、境界線での誤報を根本から消去しました。</li>
+</ul>
+<h3 id="2-背景統計の希釈dilutionの防止">2. 背景統計の「希釈（Dilution）」の防止</h3>
+<ul>
+<li><strong>課題</strong> : 従来のLRXで外窓の中に異なる素材（例：木、土、水）が混ざると、共分散行列（物差し）が不必要に巨大化します。これを「統計の希釈」と呼びます。</li>
+<li><strong>影響</strong> : 物差しがガバガバになると、その中に本来見つけたいはずの「真の異常」が収まってしまい、検知できなくなります。</li>
+<li><strong>解決</strong> : セグメンテーション・ベースでは、統計をとる対象を「同じ素材」に限定するため、<strong>背景の分散が非常に小さく、鋭い物差し</strong>になります。その結果、わずかな異変でも敏感に察知できる（検出力が高まる）ようになります。</li>
+</ul>
+<h3 id="3-四角い窓という幾何学的制約からの脱却">3. 「四角い窓」という幾何学的制約からの脱却</h3>
+<ul>
+<li><strong>課題</strong> : 実際の地形や対象物は、LRXが仮定するような「四角形」ではありません。川は曲がっていますし、森の境界は複雑です。スライディングウィンドウ（四角い窓）では、どうしても周囲の不要な情報を取り込んでしまいます。</li>
+<li><strong>解決</strong> : セグメンテーション（特にスーパーピクセルなど）を使うことで、<strong>背景の「形状」に合わせて適応的に比較対象を選ぶ</strong>ことができます。これにより、地形の複雑さに左右されないロバストな検知が可能になりました。</li>
+</ul>
+<h3 id="まとめ何が変わったのか">まとめ：何が変わったのか？</h3>
+<table>
+<thead>
+<tr>
+<th><strong>特徴</strong></th>
+<th><strong>従来の LRX</strong></th>
+<th><strong>Segmentation-based RX</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>背景の仮定</strong></td>
+<td>窓内は単一の素材である</td>
+<td>画像は複数の意味ある塊で構成される</td>
+</tr>
+<tr>
+<td><strong>エッジの扱い</strong></td>
+<td>激しく反応（誤報の原因）</td>
+<td><strong>「隣の領域」として無視できる</strong></td>
+</tr>
+<tr>
+<td><strong>検出感度</strong></td>
+<td>混合背景では鈍くなる</td>
+<td>均一な領域内のみで測るため<strong>非常に鋭い</strong></td>
+</tr>
+</tbody>
+</table>
+<p>**「同じ仲間（セグメント）の中で、お前だけ変じゃないか？」**と問うのがセグメンテーション・ベース RX の本質です。</p>
+<h2 id="仕組み">仕組み</h2>
+<p>セグメンテーション・ベース RX（Segmentation-based RX）が異常を検出するロジックは、一言でいえば <strong>「村社会（セグメント）の常識から外れた異分子探し」</strong> です。</p>
+<p>従来のLRXが「機械的な四角い窓」という境界線に縛られていたのに対し、この手法は <strong>「色の似ている塊（セグメント）」を一つの基準</strong> として利用します。具体的な検出の仕組みは以下の3段階で行われます。</p>
+<h3 id="1-背景の定義似た者同士でグループを作る">1. 「背景」の定義：似た者同士でグループを作る</h3>
+<p>まず、画像全体を色の類似性に基づいてバラバラの領域（セグメント）に分けます。これにより、草原は「草原グループ」、道路は「道路グループ」という風に、地形に沿った背景の「物差し」が作成されます。</p>
+<ul>
+<li><strong>ここがポイント</strong>: 四角い窓とは違い、<strong>境界線（エッジ）をまたいで統計を計算することがありません。</strong></li>
+</ul>
+<h3 id="2-物差しの作成セグメント内の普通を数値化する">2. 「物差し」の作成：セグメント内の「普通」を数値化する</h3>
+<p>各セグメントの中で、そこに属する画素たちの <strong>平均色（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi></mrow><annotation encoding="application/x-tex">\mu</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">μ</span></span></span></span>）</strong> と <strong>バラツキ具合（共分散行列 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span> ）</strong> を計算します。</p>
+<ul>
+<li><strong>草原グループの場合</strong>: 「緑色のバリエーション」がこのグループの「普通」になります。</li>
+<li><strong>道路グループの場合</strong>: 「灰色の明暗の範囲」がこのグループの「普通」になります。</li>
+</ul>
+<p>セグメンテーションによって背景が純粋な（混ざりもののない）状態になるため、この物差しは非常に精密で鋭いものになります。</p>
+<h3 id="3-異常スコアの算出マハラノビス距離による判定">3. 「異常スコア」の算出：マハラノビス距離による判定</h3>
+<p>各ピクセル  に対して、そのピクセルが所属しているグループの物差しを使って、どれだけ「普通」から離れているかを計算します。</p>
+<ul>
+<li><strong>背景ピクセル（正常）</strong>: 自分のグループの平均に近く、バラツキの範囲内に収まるため、スコアは<strong>低く</strong>なります。</li>
+<li><strong>異常ピクセル（異物）</strong>: セグメント内に紛れ込んだ「色の違う点」は、そのグループの平均から大きく突き抜け、物差しの外側へとはみ出します。その結果、スコアが<strong>高く</strong>なり、異常として検出されます。</li>
+</ul>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo>=</mo><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><msub><mi>μ</mi><mrow><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi></mrow></msub><msup><mo stretchy="false">)</mo><mi>T</mi></msup><msubsup><mi mathvariant="normal">Σ</mi><mrow><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi></mrow><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><msub><mi>μ</mi><mrow><mi>t</mi><mi>a</mi><mi>r</mi><mi>g</mi><mi>e</mi><mi>t</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Score = (x - \mu_{target})^T \Sigma_{target}^{-1} (x - \mu_{target})
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.2744em;vertical-align:-0.3831em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">t</span></span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3831em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<h3 id="なぜこれが境界線の誤報を消せるのか">なぜこれが「境界線の誤報」を消せるのか？</h3>
+<p>これがこの手法の最大のメリットです。</p>
+<ul>
+<li><strong>草原側の道路際ピクセル</strong>: 「草原グループ」の物差しで測られます。少し灰色っぽくても、草原の統計（物差し）からは「草とは違うが、道路とも違う何か」ではなく、単に <strong>「草の端っこ」として処理される、あるいは別のセグメントとして孤立する</strong> ため、境界線が派手に光るのを防げます。</li>
+<li><strong>道路側の草際ピクセル</strong>: 同様に「道路グループ」の物差しで測られるため、草原が混ざることによる統計の歪みが起きません。</li>
+</ul>
+<h3 id="まとめ検出のプロセス">まとめ：検出のプロセス</h3>
+<ol>
+<li><strong>領域分割</strong>: 地形に沿った「背景の村」を作る。</li>
+<li><strong>統計抽出</strong>: 各村の「常識（平均と分散）」を計算する。</li>
+<li><strong>距離測定</strong>: 村の常識から浮いている画素を「異常」として炙り出す。</li>
+</ol>
+<p>この仕組みによって、 <strong>「道路と草原の境界」という複雑な場所でも、それぞれの背景に馴染ませることで誤報を消し、その中に隠れた「本当の異物」だけを際立たせる</strong> ことができるのです。</p>
+<h2 id="実装">実装</h2>
+<p>セグメンテーション・ベース RX（Segmentation-based RX）を実装するための具体的な手順を解説します。</p>
+<p>この手法の鍵は、 <strong>「四角いスライディングウィンドウ」を捨て、「スーパーピクセル（似た色の画素の集合体）」を単位として統計を計算する</strong> 点にあります。</p>
+<h3 id="実装の4ステップ">実装の4ステップ</h3>
+<h4 id="1-画像のセグメンテーション領域分割">1. 画像のセグメンテーション（領域分割）</h4>
+<p>まず、画像を「スーパーピクセル」と呼ばれる小さな塊に分割します。一般的には <strong>SLIC (Simple Linear Iterative Clustering)</strong> アルゴリズムが使われます。</p>
+<ul>
+<li><strong>役割</strong>: 隣り合う似た色の画素をひとまとめにします。道路は道路、草地は草地の塊になります。</li>
+</ul>
+<h4 id="2-セグメントごとの統計量平均共分散の算出">2. セグメントごとの統計量（平均・共分散）の算出</h4>
+<p>各セグメント（ラベル番号ごと）に属する全画素のスペクトルデータを取り出し、そのセグメント内での平均 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\mu_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> と 共分散行列 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Σ</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">\Sigma_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> を計算します。</p>
+<ul>
+<li><strong>ポイント</strong>: これが「その領域における正常の基準」になります。</li>
+</ul>
+<h4 id="3-異常スコアの計算">3. 異常スコアの計算</h4>
+<p>各画素に対して、 <strong>「自分が属しているセグメントの統計量」</strong> を用いてマハラノビス距離を計算します。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mi>c</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><msub><mi>μ</mi><mi>k</mi></msub><msup><mo stretchy="false">)</mo><mi>T</mi></msup><msubsup><mi mathvariant="normal">Σ</mi><mi>k</mi><mrow><mo>−</mo><mn>1</mn></mrow></msubsup><mo stretchy="false">(</mo><mi>x</mi><mo>−</mo><msub><mi>μ</mi><mi>k</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Score(x) = (x - \mu_k)^T \Sigma_k^{-1} (x - \mu_k)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">core</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1828em;vertical-align:-0.2914em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord"><span class="mord">Σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-2.4086em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2914em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>ここで <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> は画素の値、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> はその画素が属するセグメント番号です。</p>
+<h4 id="4-ガード内窓の概念の適用オプション">4. ガード（内窓）の概念の適用（オプション）</h4>
+<p>もし異常がセグメントの大部分を占めてしまう可能性がある場合は、計算対象の画素を統計から除外する処理（LRXの内窓に相当する処理）を加えます。</p>
+<h3 id="実験">実験</h3>
+<p><code>scikit-image</code> の SLIC を利用した実装例です。</p>
+<p>実装コードは以下に置いています。</p>
+<p><a href="https://github.com/Shinichi0713/recommendation-ai/tree/main/anormaly_detect_techs/techs/segmentation-based-RX">https://github.com/Shinichi0713/recommendation-ai/tree/main/anormaly_detect_techs/techs/segmentation-based-RX</a></p>
+<p>セグメンテーションRXで。ダミーで作った異常を検知した結果を示します。</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\segmentation-based-RX\image\README\1770238799552.png" alt="1770238799552"></p>
+<p>ご提示したコードを実行した際に得られる結果（特に「草原と道路の境界線」があるシーン）について、<strong>なぜ境界線の誤報が消え、異常だけが浮き彫りになるのか</strong>、その内部的なメカニズムを3つの観点から分析します。</p>
+<p><strong>1. セグメンテーションによる「統計の純道」の確保</strong></p>
+<p>このコードの最大の特徴は、統計を計算する前に「背景を仲間ごとに分断した」ことにあります。</p>
+<ul>
+<li><strong>境界線付近の挙動</strong>:
+従来のLRXでは、境界線上の画素を測る際、窓の中に「緑（草）」と「灰色（道）」が混ざり、平均が「汚れた色」になっていました。
+しかし、このコードでは、境界の左側（草）の画素は <strong>「草だけのセグメント統計」</strong> で測られ、右側（道）は <strong>「道だけのセグメント統計」</strong> で測られます。</li>
+<li><strong>分析結果</strong>:
+どちらの画素も「自分のコミュニティの平均」に非常に近いため、マハラノビス距離は極小になります。これにより、 <strong>境界線に沿って発生していた「光る筋（誤報）」が消失</strong> します。</li>
+</ul>
+<p><strong>2. 「鋭い物差し」による異常の際立ち</strong></p>
+<p>セグメント内の画素は色が非常に似通っているため、共分散行列 （データのバラツキ）が非常に小さく計算されます。</p>
+<ul>
+<li><strong>異常箇所の挙動</strong>:
+道路セグメントの中に「赤い物体」がある場合、道路セグメントの物差しは「灰色の微小な変化」しか許容しない非常に厳しいものになっています。</li>
+<li><strong>分析結果</strong>:
+「赤」という色は、この鋭い物差し（小さな分散）で測ると、**背景の平均から見て「天文学的な距離」**にあると判定されます。
+結果として、背景のスコアが <code>0.1</code> 程度であるのに対し、異常箇所だけが <code>100</code> や <code>1000</code> といった圧倒的なハイスコアを叩き出し、コントラストが劇的に向上します。</li>
+</ul>
+<p><strong>3. 注意すべき「自己消去（Self-purging）」のリスク</strong></p>
+<p>分析において一点、注意が必要な「負の側面」もあります。</p>
+<ul>
+<li><strong>現象</strong>:
+もし異常物体が大きく、一つのセグメントの大部分を占めてしまった場合、そのセグメントの「平均 」自体が異常物体の色に引きずられてしまいます。</li>
+<li><strong>分析結果</strong>:
+「異常な色」がそのセグメントの「標準」として学習されてしまうため、<strong>異常であるはずの場所のスコアが逆に低くなってしまう</strong>現象が起きます。
+これを防ぐには、<code>n_segments</code> を増やしてセグメントを細かくしすぎない、あるいは異常サイズよりも明らかに大きなセグメントが形成されるように調整する必要があります。</li>
+</ul>
+<h3 id="この手順で境界線の誤報が消える理由">この手順で「境界線の誤報」が消える理由</h3>
+<p>このコードを実行すると、境界線（エッジ）の挙動が劇的に変わります。</p>
+<ul>
+<li><strong>従来のLRX</strong>: エッジ部分では「緑」と「灰色」が混ざった無理な統計で計算するため、エッジ上の画素がすべて異常（高スコア）になります。</li>
+<li><strong>セグメンテーション・ベース</strong>: エッジの「緑側」の画素は「緑のセグメント統計」で計算され、「灰色側」は「灰色のセグメント統計」で計算されます。どちらも<strong>自分の仲間の基準で測られる</strong>ため、境界線が異常として光ることはありません。</li>
+</ul>
+<h3 id="次のステップ精度をさらに高めるには">次のステップ：精度をさらに高めるには？</h3>
+<p>この手法の弱点は、 <strong>「セグメンテーション自体が失敗する（異常と背景を一つの塊にしてしまう）」</strong> ことです。</p>
+<p>これを防ぐために、 <strong>「最初は細かく分割し、隣り合うセグメントの統計が似ていれば結合する」</strong> という適応的なアプローチ（Hierarchical Segmentation）を組み合わせることが多いです。</p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+
+        </body>
+        </html>
