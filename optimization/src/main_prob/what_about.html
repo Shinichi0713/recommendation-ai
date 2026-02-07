@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x4e3b;&#x53cc;&#x5bfe;&#x554f;&#x984c;&#x3068;&#x306f;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+
+            <p>最適化問題は、与えられた問題のことを主問題。
+主問題の制約条件から目的関数を導入した双対問題から構成されます。
+本日はそんな双対問題について説明していきます。</p>
+<h2 id="主双対問題とは">主双対問題とは</h2>
+<p>最適化における <strong>「双対性（Duality）」</strong> は、ある問題を <strong>「別の視点」</strong> から眺めることを指します。
+元々の問題を <strong>「主問題（Primal Problem）」</strong> 、それと表裏一体の関係にある問題を <strong>「双対問題（Dual Problem）」</strong> と呼びます。</p>
+<h3 id="1-視点の違い生産者-vs-資源価値">1. 視点の違い：生産者 vs 資源価値</h3>
+<p>先日のジュース工場の例を使うと、非常に直感的に理解できます。</p>
+<p><strong>先日のジュース工場の例</strong></p>
+<blockquote>
+<p>読者の方は一旦、ジュース工場の店長だとしていください。
+リンゴとオレンジを使って、「特製ミックス」と「濃厚ブレンド」の2種類のジュースを作っています。在庫のフルーツをどう配分すれば、 <strong>売上を最大化</strong> できるかを考えてみます。</p>
+</blockquote>
+<p>主問題と双対問題は、同じ状況を「攻め」と「守り」の視点で捉え直したものです。</p>
+<table>
+<thead>
+<tr>
+<th>視点</th>
+<th>主問題 (Primal)</th>
+<th>双対問題 (Dual)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>主役</strong></td>
+<td>工場長（生産者）</td>
+<td>資源評価者（経営者）</td>
+</tr>
+<tr>
+<td><strong>目的</strong></td>
+<td>売上を<strong>最大化</strong>したい</td>
+<td>資源の価値（コスト）を<strong>最小化</strong>したい</td>
+</tr>
+<tr>
+<td><strong>変数</strong></td>
+<td>どれだけ作るか (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo separator="true">,</mo><mi>y</mi></mrow><annotation encoding="application/x-tex">x, y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>)</td>
+<td>資源1gにいくらの価値があるか (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo separator="true">,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u, v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>)</td>
+</tr>
+<tr>
+<td><strong>制約</strong></td>
+<td>在庫（リソース）の限界</td>
+<td>商品1杯を作るのに必要なコスト（利益以上）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-ジュース工場で考える双対問題">2. ジュース工場で考える双対問題</h3>
+<p>主問題が <strong>「材料を使っていくら儲けるか」</strong> だったのに対し、双対問題は <strong>「材料（リンゴとオレンジ）そのものの価値をどう評価するか」</strong> を考えます。</p>
+<h3 id="双対問題の考え方">双対問題の考え方</h3>
+<p>もし、別の業者が「あなたの工場のリンゴとオレンジを全部買い取りたい」と言ってきたら、いくらで売るべきでしょうか？</p>
+<ul>
+<li>**変数 **：リンゴ 1g の価値（影の価格）</li>
+<li>**変数 **：オレンジ 1g の価値（影の価格）</li>
+</ul>
+<h4 id="制約条件価値の正当化">制約条件（価値の正当化）</h4>
+<p>業者が提示する価格 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo separator="true">,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u, v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span>) は、あなたがジュースを作って得る利益よりも安くてはいけません。</p>
+<ul>
+<li><strong>特製ミックスの制約</strong>:<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mi>u</mi><mo>+</mo><mn>200</mn><mi>v</mi><mo>≥</mo><mn>500</mn></mrow><annotation encoding="application/x-tex">100u + 200v \ge 500</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mord mathnormal">u</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">200</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">500</span></span></span></span> 円</li>
+<li><strong>濃厚ブレンドの制約</strong>:<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>200</mn><mi>u</mi><mo>+</mo><mn>100</mn><mi>v</mi><mo>≥</mo><mn>400</mn></mrow><annotation encoding="application/x-tex">200u + 100v \ge 400</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">200</span><span class="mord mathnormal">u</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">400</span></span></span></span> 円</li>
+</ul>
+<h4 id="目的関数買い取り価格の最小化">目的関数（買い取り価格の最小化）</h4>
+<p>業者は、できるだけ安く買い取りたいと考えます。</p>
+<ul>
+<li><strong>合計価値</strong>: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2000</mn><mi>u</mi><mo>+</mo><mn>2000</mn><mi>v</mi></mrow><annotation encoding="application/x-tex">2000u + 2000v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2000</span><span class="mord mathnormal">u</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2000</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span> を最小化する。</li>
+</ul>
+<h2 id="主双対問題が必要な理由">主双対問題が必要な理由</h2>
+<p>主双対問題を考えるのは、単なる数学的なお遊びではありません。これが必要な理由は、主に <strong>「経営判断のヒント」「計算効率の向上」「アルゴリズムの安定」</strong> という3つの実利があるからです。</p>
+<p>特に実務において重要な「なぜそれが必要か」という理由を紐解いていきます。</p>
+<h3 id="1-影の価格shadow-priceがわかるから">1. 「影の価格（Shadow Price）」がわかるから</h3>
+<p>これがビジネスにおいて最も強力な理由です。主問題を解くだけでは「今ある在庫でいくら儲かるか」しかわかりませんが、双対問題を解くと <strong>「あと1単位リソースが増えたとき、いくら利益が跳ね上がるか」</strong> がわかります。</p>
+<ul>
+<li><strong>例</strong>: リンゴの「影の価格」が2円だとわかったとします。</li>
+<li><strong>判断</strong>: 市場でリンゴが1gあたり1.5円で売っていたら、迷わず「買う」という判断ができます。なぜなら、1.5円投資して2円の利益が出ることが数学的に保証されているからです。</li>
+<li><strong>逆に</strong>: 影の価格が0円のリソースがあれば、それは「在庫が余っている」ことを意味し、追加で購入する必要がないことがわかります。</li>
+</ul>
+<h3 id="2-計算が劇的に早くなる場合があるから">2. 計算が劇的に早くなる場合があるから</h3>
+<p>最適化問題には、 <strong>「変数の数」と「制約の数」</strong> があります。</p>
+<ul>
+<li><strong>主問題</strong>: 変数が100万個、制約が10個</li>
+<li><strong>双対問題</strong>: 変数が10個、制約が100万個</li>
+</ul>
+<p>数学的に、 <strong>「変数が少なく制約が多い」問題よりも「変数が多く制約が少ない」問題の方が解きやすい</strong> ケースが多々あります。
+複雑すぎる主問題を、双対問題に「ひっくり返す」ことで、スパコンを使わなくても一瞬で解けるようになることがあるのです。</p>
+<h3 id="3-解の正しさを証明する物差しになるから">3. 「解の正しさ」を証明する物差しになるから</h3>
+<p>難しい最適化問題では、計算機が出した答えが本当に「世界で一番良い答え（大域最適解）」なのか確信が持てないことがあります。</p>
+<p>ここで双対性が役立ちます。</p>
+<ul>
+<li><strong>弱双対性</strong>: 「主問題の売上（最大化）」は、常に「双対問題のコスト（最小化）」以下になります。</li>
+<li><strong>双対ギャップ</strong>: もし「主問題の答え」と「双対問題の答え」が一致すれば、その瞬間、 <strong>「これ以上の正解は絶対に存在しない」という完璧な証明</strong> になります。</li>
+</ul>
+<p>これを <strong>「双対ギャップがゼロになる」</strong> と言い、アルゴリズムが終了して良いかどうかの判定基準に使われます。</p>
+<h2 id="4-機械学習などのアルゴリズム設計に不可欠">4. 機械学習などのアルゴリズム設計に不可欠</h2>
+<p>現代のAI技術、例えば「サポートベクターマシン (SVM)」などのモデルでは、主問題を直接解くよりも、双対問題を解く方が「カーネル法」という強力なテクニックを使いやすくなるという性質があります。</p>
+<p>双対性を利用することで、元の次元では見えなかったデータの境界線（最適解）が、高次元の視点からスッキリ見えるようになるのです。</p>
+<h2 id="双対問題にすると良いケース">双対問題にすると良いケース</h2>
+<p>計算が劇的に楽になる最も有名な例は、 <strong>「変数の数が膨大で、制約条件が少ない」</strong> というパターンの問題です。</p>
+<p>具体的には、現代のAI技術の基礎である <strong>サポートベクターマシン（SVM）</strong> や、物流・ネットワークの<strong>最大流問題</strong>などが挙げられます。</p>
+<h3 id="1-サポートベクターマシンsvmのカーネル法">1. サポートベクターマシン（SVM）の「カーネル法」</h3>
+<p>機械学習において、データを分類する境界線を見つけるSVMは、双対問題にすることの恩恵を最も受けているアルゴリズムの一つです。</p>
+<ul>
+<li><strong>主問題の悩み</strong>:
+データを高次元（例えば1万次元など）に飛ばして複雑な境界線を作ろうとすると、計算量がその次元数に応じて爆発します。</li>
+<li><strong>双対問題のメリット</strong>:
+双対問題に書き換えると、計算量は「次元数」ではなく <strong>「データ数（サンプル数）」</strong> に依存するようになります。</li>
+<li><strong>劇的な変化</strong>:
+この変換のおかげで、実質的に「無限次元」の計算を、データ同士の距離計算（カーネルトリック）だけで済ませることが可能になります。双対問題にしなければ、現代の高度な画像認識などは実現していなかったかもしれません。</li>
+</ul>
+<h3 id="2-列生成法大規模なスケジューリング">2. 列生成法（大規模なスケジューリング）</h3>
+<p>航空機の乗務員スケジューリングや、配送ルートの最適化など、<strong>「組み合わせのパターン数」が数億通りを超える</strong>ような問題です。</p>
+<ul>
+<li><strong>主問題</strong>:
+「数億通りのルート候補」の中から最適なものを選ぶため、変数が数億個になり、メモリがパンクして解けません。</li>
+<li><strong>双対問題を利用したアプローチ（列生成法）</strong>:
+双対問題を解くことで得られる「影の価格」をヒントに、 <strong>「今の答えを改善しそうな有望なルート（列）」だけをピンポイントで生成</strong> します。</li>
+<li><strong>劇的な変化</strong>:
+数億個の変数をすべて用意する代わりに、双対問題を「ナビゲーター」として使い、必要な数十〜数百個の変数だけを扱うことで、不可能な計算を可能にします。</li>
+</ul>
+<h3 id="3-ネットワークの最大流問題と最小カット問題">3. ネットワークの「最大流問題」と「最小カット問題」</h3>
+<p>あるネットワーク（例えばインターネットや道路網）で、A地点からB地点へ「最大どれだけのデータを送れるか」を考える問題です。</p>
+<ul>
+<li><strong>主問題（最大流）</strong>:
+各経路にどれだけ流すかをすべて計算する。</li>
+<li><strong>双対問題（最小カット）</strong>:
+ネットワークのどこを「切断」すればAとBが分断され、かつその切断コストが最小になるかを探す。</li>
+<li><strong>劇的な変化</strong>:
+最大流を直接求めるよりも、ネットワークの「ボトルネック（最小カット）」を探す双対問題の方が構造がシンプルになり、非常に高速なアルゴリズム（フォード・ファルカーソン法など）で解けるようになります。</li>
+</ul>
+<h2 id="実験">実験</h2>
+<p>先日のジュース工場を例に双対問題にしたうえで最適化を行ってみます。</p>
+<h3 id="問題ジュース工場の生産最適化">問題：ジュース工場の生産最適化</h3>
+<p>読者の方は一旦、ジュース工場の店長だとしていください。
+リンゴとオレンジを使って、「特製ミックス」と「濃厚ブレンド」の2種類のジュースを作っています。在庫のフルーツをどう配分すれば、 <strong>売上を最大化</strong> できるかを考えてみます。</p>
+<h4 id="1-意思決定変数あなたが決めること">1. 意思決定変数（あなたが決めること）</h4>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> ：特製ミックスの生産量（杯）</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span> ：濃厚ブレンドの生産量（杯）</li>
+</ul>
+<h4 id="2-制約条件守らなければならないルール">2. 制約条件（守らなければならないルール）</h4>
+<p>現在、手元にある材料の在庫には限りがあります。</p>
+<ul>
+<li><strong>リンゴの在庫</strong>: 特製ミックス1杯に100g、濃厚ブレンド1杯に200g使います。在庫は合計で <strong>2,000g</strong> です。</li>
+<li><strong>オレンジの在庫</strong>: 特製ミックス1杯に200g、濃厚ブレンド1杯に100g使います。在庫は合計で <strong>2,000g</strong> です。</li>
+<li><strong>非負制約</strong>: 生産量はマイナスにはなりません（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≥</mo><mn>0</mn><mo separator="true">,</mo><mi>y</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x \ge 0, y \ge 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>）。</li>
+</ul>
+<h4 id="3-目的関数最大化したいもの">3. 目的関数（最大化したいもの）</h4>
+<ul>
+<li><strong>売上</strong>: 特製ミックスは1杯 <strong>500円</strong>、濃厚ブレンドは1杯 <strong>400円</strong> で売れます。</li>
+<li>この売上の合計  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>500</mn><mi>x</mi><mo>+</mo><mn>400</mn><mi>y</mi></mrow><annotation encoding="application/x-tex">z = 500x + 400y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">500</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">400</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span>  を最大にしてください。</li>
+</ul>
+<h3 id="解法">解法</h3>
+<p>実際に、最初にご紹介した「ジュース工場の最適化問題」を例に、 <strong>主問題（生産最大化）</strong> と <strong>双対問題（資源価値最小化）</strong> の両方をPythonで解き、その結果を比較してみましょう。</p>
+<h4 id="1-主問題と双対問題の整理">1. 主問題と双対問題の整理</h4>
+<p>まず、プログラムに落とし込むために問題を整理します。</p>
+<h5 id="主問題primal"><strong>主問題（Primal）</strong></h5>
+<ul>
+<li><strong>目的</strong>: 売上 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>500</mn><mi>x</mi><mo>+</mo><mn>400</mn><mi>y</mi></mrow><annotation encoding="application/x-tex">z = 500x + 400y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">500</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">400</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span> を 最大化 する</li>
+<li><strong>制約</strong>:</li>
+</ul>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mi>x</mi><mo>+</mo><mn>200</mn><mi>y</mi><mo>≤</mo><mn>2000</mn></mrow><annotation encoding="application/x-tex">100x + 200y \le 2000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">200</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2000</span></span></span></span> （リンゴ）</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>200</mn><mi>x</mi><mo>+</mo><mn>100</mn><mi>y</mi><mo>≤</mo><mn>2000</mn></mrow><annotation encoding="application/x-tex">200x + 100y \le 2000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">200</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2000</span></span></span></span> （オレンジ）</li>
+</ul>
+<h5 id="双対問題dual"><strong>双対問題（Dual）</strong></h5>
+<ul>
+<li><strong>目的</strong>: 総資源価値 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mn>2000</mn><mi>u</mi><mo>+</mo><mn>2000</mn><mi>v</mi></mrow><annotation encoding="application/x-tex">w = 2000u + 2000v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2000</span><span class="mord mathnormal">u</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2000</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span></span></span></span> を 最小化 する</li>
+<li><strong>制約</strong>:</li>
+</ul>
+<ul>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn><mi>u</mi><mo>+</mo><mn>200</mn><mi>v</mi><mo>≥</mo><mn>500</mn></mrow><annotation encoding="application/x-tex">100u + 200v \ge 500</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">100</span><span class="mord mathnormal">u</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">200</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">500</span></span></span></span> （特製ミックスの価値）</li>
+<li><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>200</mn><mi>u</mi><mo>+</mo><mn>100</mn><mi>v</mi><mo>≥</mo><mn>400</mn></mrow><annotation encoding="application/x-tex">200u + 100v \ge 400</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">200</span><span class="mord mathnormal">u</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">400</span></span></span></span> （濃厚ブレンドの価値）</li>
+</ul>
+<h4 id="2-pythonでの実装">2. Pythonでの実装</h4>
+<p>Pythonの最適化ライブラリである <code>SciPy</code> を使用します。
+<code>scipy.optimize.linprog</code> はデフォルトで「最小化」を行うため、主問題を解く際は目的関数にマイナスを掛けます。</p>
+<p>実装コードは以下に保管しています。</p>
+<p><a href="https://github.com/Shinichi0713/recommendation-ai/tree/main/optimization/src/main_prob">https://github.com/Shinichi0713/recommendation-ai/tree/main/optimization/src/main_prob</a></p>
+<pre><code>=== 主問題 (Primal) の結果 ===
+最適な生産量: 特製ミックス 6.67杯, 濃厚ブレンド 6.67杯
+最大売上: 6000円
+
+=== 双対問題 (Dual) の結果 ===
+リンゴの価値(u): 1.00円/g
+オレンジの価値(v): 2.00円/g
+最小資源価値: 6000円
+</code></pre>
+<h4 id="3-計算結果からわかること">3. 計算結果からわかること</h4>
+<p>このコードを実行すると、以下のような驚くべき結果が得られます。</p>
+<table>
+<thead>
+<tr>
+<th>項目</th>
+<th>主問題 (生産者視点)</th>
+<th>双対問題 (資源視点)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>導き出された値</strong></td>
+<td>6.67杯, 6.67杯</td>
+<td>1.00円, 2.00円</td>
+</tr>
+<tr>
+<td><strong>最終的な目的関数の値</strong></td>
+<td><strong>6,000円</strong></td>
+<td><strong>6,000円</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="面白い点">面白い点</h3>
+<ol>
+<li><strong>強双対性の証明</strong>:
+「最大売上」と「最小資源価値」がどちらも <strong>6,000円</strong> で一致しました。これは計算が正しく行われ、最適解に達した証拠です。</li>
+<li><strong>影の価格 (Shadow Price)</strong>:
+双対問題の解  は、「リンゴ1gには1円の価値があり、オレンジ1gには2円の価値がある」ことを示しています。</li>
+<li><strong>経営のヒント</strong>:
+オレンジの価値（2円）はリンゴ（1円）の2倍です。もし追加で材料を買うなら、オレンジを優先的に確保したほうが利益への貢献度が大きいことが一瞬でわかります。</li>
+</ol>
+<h2 id="総括">総括</h2>
+<p>最適化問題は通常解く対象の主問題に対して、主問題の制約条件から目的関数を作る双対問題を導出する意義や、問題の具体例を挙げて説明をしました。
+主問題が説明変数が爆発しているようなケースで是非利用下さいませ。</p>
+
+<div style="text-align: center; margin: 20px 0;">
+    <a href="https://amzn.to/4bFesZV" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 12px 24px; background-color: #ff9900; color: white; text-decoration: none; border-radius: 8px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+        本が気になったらここから
+    </a>
+</div>
+<img alt="これなら分かる最適化数学: 基礎原理から計算手法まで" src="https://m.media-amazon.com/images/I/711tUHSHN1L._SY342_.jpg" data-old-hires="https://m.media-amazon.com/images/I/711tUHSHN1L._SL1500_.jpg" onload="markFeatureRenderForImageBlock(); this.onload='';setCSMReq('af');if(typeof addlongPoleTag === 'function'){ addlongPoleTag('af','desktop-image-atf-marker');};setCSMReq('cf')" data-a-image-name="landingImage" class="a-dynamic-image a-stretch-vertical" id="landingImage" data-a-dynamic-image="{&quot;https://m.media-amazon.com/images/I/711tUHSHN1L._SY466_.jpg&quot;:[466,331],&quot;https://m.media-amazon.com/images/I/711tUHSHN1L._SY425_.jpg&quot;:[425,302],&quot;https://m.media-amazon.com/images/I/711tUHSHN1L._SY522_.jpg&quot;:[522,371],&quot;https://m.media-amazon.com/images/I/711tUHSHN1L._SY342_.jpg&quot;:[342,243],&quot;https://m.media-amazon.com/images/I/711tUHSHN1L._SY385_.jpg&quot;:[385,274]}" style="max-width: 193px; max-height: 271.716px;">
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+
+        </body>
+        </html>
