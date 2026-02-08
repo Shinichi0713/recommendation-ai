@@ -222,4 +222,4 @@ coming soon
 
 是非ご覧ください。
 
-https://yoshishinnze.hatenablog.com/
+[著者のブログ](https://yoshishinnze.hatenablog.com/)
