@@ -134,242 +134,11 @@
 .markdown-alert.markdown-alert-caution .markdown-alert-title {
   color: var(--color-caution);
 }
-nav {
-    background-color: #f8f9fa;
-    border: 1px solid #e1e4e8;
-    border-radius: 12px;
-    padding: 24px;
-    margin: 20px 0 40px 0;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
 
-/* 「目次」というタイトル */
-nav h3 {
-    margin-top: 0;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #0969da;
-    color: #24292f;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-}
-
-/* タイトルの前にアイコン（絵文字）を追加 */
-nav h3::before {
-    content: "📖";
-    margin-right: 8px;
-}
-
-/* リストのスタイル調整 */
-#toc {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-#toc li {
-    margin-bottom: 8px;
-    line-height: 1.4;
-}
-
-/* リンクのスタイル */
-#toc a {
-    color: #0969da;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    display: inline-block;
-}
-
-#toc a:hover {
-    color: #cf222e;
-    transform: translateX(5px); /* ホバー時に少し右に動く */
-}
-
-/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
-.toc-h3 {
-    padding-left: 20px;
-    font-size: 0.9em;
-    opacity: 0.8;
-}
-
-
-/* 記事タイトル (h1) */
-h1 {
-    font-size: 2rem;
-    color: #24292f;
-    line-height: 1.3;
-    padding: 20px 0;
-    margin-bottom: 30px;
-    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
-    text-align: center; /* タイトルを中央に寄せて特別感を出す */
-}
-
-/* セクション見出し (h2) */
-h2 {
-    font-size: 1.5rem;
-    color: #24292f;
-    padding: 0.5rem 1rem;
-    margin: 40px 0 20px 0;
-    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
-    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-}
-
-/* 強調文字 (strong) */
-strong {
-    font-weight: bold;
-    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
-    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
-    padding: 0 2px;
-}
-
-/* 引用のコンテナ */
-blockquote {
-    position: relative;
-    padding: 20px 30px;
-    margin: 30px 0;
-    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
-    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
-    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
-    font-style: italic;
-    border-radius: 0 8px 8px 0;
-}
-
-/* 引用符のアイコンを装飾として追加 */
-blockquote::before {
-    content: "“";
-    position: absolute;
-    top: -5px;
-    left: 10px;
-    font-size: 40px;
-    color: #d0d7de;
-    font-family: serif;
-    line-height: 1;
-}
-
-/* 読者になるボタンのデザイン */
-.btn-subscribe {
-    display: inline-block;
-    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
-    background-color: #383838; /* お好みの色に変更してください */
-    color: #ffffff !important;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.btn-subscribe:hover {
-    background-color: #555555;
-    text-decoration: none;
-}
-
-/* はてなブログで見えてしまう数式データを非表示にする */
-.katex-html {
-    display: none !important;
-}
-
-.katex-mathml {
-    display: inline !important;
-}
-/* Amazonカード型のオシャレなデザイン */
-.shop-card {
-    display: flex;
-    max-width: 500px;
-    margin: 20px auto;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* マウスホップした時の動き */
-.shop-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-.shop-card-image {
-    width: 150px;
-    min-width: 150px;
-    background-color: #f9f9f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.shop-card-image img {
-    max-width: 100%;
-    height: auto;
-    padding: 10px;
-}
-
-.shop-card-content {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.shop-card-title {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 8px;
-    line-height: 1.4;
-}
-
-.shop-card-description {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 16px;
-}
-
-/* Amazonらしいオレンジボタン */
-.shop-card-link a {
-    display: inline-block;
-    background-color: #ff9900;
-    color: #fff !important;
-    text-decoration: none !important;
-    padding: 8px 20px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-
-.shop-card-link a:hover {
-    background-color: #e68a00;
-}
-
-/* スマホ対応：縦並びにする */
-@media (max-width: 480px) {
-    .shop-card {
-        flex-direction: column;
-        max-width: 100%;
-    }
-    .shop-card-image {
-        width: 100%;
-        height: 200px;
-    }
-}
 </style>
         
         </head>
         <body class="vscode-body vscode-light">
-<nav>
-        <h3>目次</h3>
-        <ul id="toc"></ul> 
-</nav>
-
-
             <p>リッジ回帰は、最適化の視点で見ると <strong>「不安定な逆問題を、数学的な小細工で『確実に解ける問題』に作り替える」</strong> という、極めて実用的かつ基礎的な立ち位置にあります。</p>
 <p>エンジニアやデータサイエンティストにとって、Ridgeは単なる「回帰の手法」ではなく、特定の数理構造を持つ最適化問題の代表例として扱われます。</p>
 <p>本日は、Ridge回帰の前に最小２乗誤差の最小化についての説明を行い、その上でRidge回帰そのものについて説明を行います。</p>
@@ -393,38 +162,72 @@ blockquote::before {
 <p><strong>「2乗」という操作が、マイナスをプラスに反転させつつ、原点でカドを作らずになだらかに繋いでくれる</strong>のです。</p>
 <h3 id="2-l_1-ノルム絶対値との決定的な違い">2. <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">L_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ノルム（絶対値）との決定的な違い</h3>
 <p>微分できない代表例である <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">L_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ノルム <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∥</mi><mi>x</mi><msub><mi mathvariant="normal">∥</mi><mn>1</mn></msub><mo>=</mo><mo>∑</mo><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mi>i</mi></msub><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">\|x\|_1 = \sum |x_i|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∥</span><span class="mord mathnormal">x</span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span> と比較すると、理由がより鮮明になります。</p>
-<p>| 特徴 | <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">L_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ノルムの2乗 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∥</mi><mi>x</mi><msup><mi mathvariant="normal">∥</mi><mn>2</mn></msup><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\|x\|^2 = x^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord">∥</span><span class="mord mathnormal">x</span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span>) | <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">L_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ノルム (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∥</mi><mi>x</mi><mi mathvariant="normal">∥</mi><mo>=</mo><mi mathvariant="normal">∣</mi><mi>x</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">\|x\| = |x|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∥</span><span class="mord mathnormal">x</span><span class="mord">∥</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal">x</span><span class="mord">∣</span></span></span></span>) |
-| :--- | :--- | :--- |
-| <strong>グラフの形状</strong> | 放物線（U字型） | V字型 |
-| <strong>原点 (0) での挙動</strong> | <strong>なだらか</strong>。傾きが 0 に近づく。 | <strong>急激</strong>。折れ曲がっている。 |
-| <strong>微分 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f&#x27;(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>)</strong> | <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">2x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal">x</span></span></span></span>（連続） | <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> または <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span> （不連続） |</p>
+<table>
+<thead>
+<tr>
+<th>特徴</th>
+<th><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">L_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+<th><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">L_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>グラフの形状</strong></td>
+<td>放物線（U字型）</td>
+<td>V字型</td>
+</tr>
+<tr>
+<td><strong>原点 (0) での挙動</strong></td>
+<td><strong>なだらか</strong>。傾きが 0 に近づく。</td>
+<td><strong>急激</strong>。折れ曲がっている。</td>
+</tr>
+<tr>
+<td><strong>微分 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>f</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f&#x27;(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0019em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span>)</strong></td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">2x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span><span class="mord mathnormal">x</span></span></span></span>（連続）</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> または <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span> （不連続）</td>
+</tr>
+</tbody>
+</table>
 <p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">L_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ノルムは原点で「カド」があるため、そこで右から近づいたときの傾きと左から近づいたときの傾きが一致せず、微分が定義できません。
 一方、最小二乗法の誤差項（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">L_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>）は、2乗のおかげで原点付近でも非常に滑らかです。</p>
 <h3 id="3-微分した結果勾配はどうなるか">3. 微分した結果（勾配）はどうなるか？</h3>
 <p>実際に微分（勾配 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∇</mi><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\nabla f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∇</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span> を計算）すると、非常に綺麗な形になります。</p>
 <p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">∇</mi><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mn>2</mn><msup><mi>A</mi><mi>T</mi></msup><mo stretchy="false">(</mo><mi>A</mi><mi>x</mi><mo>−</mo><mi>b</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\nabla f(x) = 2 A^T (Ax - b)
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∇</span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1413em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span></span></span></span></span></p>
-<p class="katex-block katex-error" title="\nabla f(x) = 2 A^T (Ax - b)$$この結果も $x$ に関する線形（1次）の式であり、どこにも「不連続な点」や「定義できない場所」がありません。
-エンジニアが勾配降下法を実装する際、`grad = 2 * A.T @ (A @ x - b)` と一行で書けるのは、この関数が全領域で微分可能だからです。
-
-
-### 4. エンジニアにとっての「微分可能」のメリット
-
-1. **勾配降下法がそのまま使える**:
-「今の場所の傾き」が常に計算できるため、少しずつ坂を下るだけで最適解にたどり着けます。
-2. **解析的に解ける（正規方程式）**:
-微分した結果を「$= 0$」とおくことで、計算機で反復計算をしなくても $x = (A^T A)^{-1} A^T b$ という一発の行列計算で答えを出すことも可能です。
-
-## Ridge回帰について
-リッジ回帰（Ridge Regression）は、Lasso回帰と並んで「正則化」の代表格ですが、その目的は **「モデルの複雑さを抑え、過学習を防ぐこと」** に特化しています。
-
-Lassoが「変数を0にして削る」のに対し、リッジは**「変数を0にせず、全体的に値を小さく抑える」**というアプローチを取ります。
-
-### 1. リッジ回帰の数式
-
-リッジ回帰の目的関数は、最小二乗誤差に **「重みの2乗和（$L_2$ノルム）」** を加えたものです。
-
-$$\min_{x} \underbrace{\|Ax - b\|^2}_{\text{最小二乗誤差}} + \underbrace{\lambda \|x\|_2^2}_{\text{L2正則化項}}">ParseError: KaTeX parse error: Can&#039;t use function &#039;$&#039; in math mode at position 29: … 2 A^T (Ax - b)$̲$この結果も $x$ に関する…</p>
+<p>この結果も <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> に関する線形（1次）の式であり、どこにも「不連続な点」や「定義できない場所」がありません。
+エンジニアが勾配降下法を実装する際、<code>grad = 2 * A.T @ (A @ x - b)</code> と一行で書けるのは、この関数が全領域で微分可能だからです。</p>
+<h3 id="4-エンジニアにとっての微分可能のメリット">4. エンジニアにとっての「微分可能」のメリット</h3>
+<ol>
+<li><strong>勾配降下法がそのまま使える</strong>:
+「今の場所の傾き」が常に計算できるため、少しずつ坂を下るだけで最適解にたどり着けます。</li>
+<li><strong>解析的に解ける（正規方程式）</strong>:
+微分した結果を「<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">= 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.3669em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>」とおくことで、計算機で反復計算をしなくても <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false">(</mo><msup><mi>A</mi><mi>T</mi></msup><mi>A</mi><msup><mo stretchy="false">)</mo><mrow><mo>−</mo><mn>1</mn></mrow></msup><msup><mi>A</mi><mi>T</mi></msup><mi>b</mi></mrow><annotation encoding="application/x-tex">x = (A^T A)^{-1} A^T b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0913em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathnormal">A</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8413em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathnormal">b</span></span></span></span> という一発の行列計算で答えを出すことも可能です。</li>
+</ol>
+<h2 id="ridge回帰について">Ridge回帰について</h2>
+<p>リッジ回帰（Ridge Regression）は、Lasso回帰と並んで「正則化」の代表格ですが、その目的は <strong>「モデルの複雑さを抑え、過学習を防ぐこと」</strong> に特化しています。</p>
+<p>Lassoが「変数を0にして削る」のに対し、リッジは**「変数を0にせず、全体的に値を小さく抑える」**というアプローチを取ります。</p>
+<h3 id="1-リッジ回帰の数式">1. リッジ回帰の数式</h3>
+<p>リッジ回帰の目的関数は、最小二乗誤差に <strong>「重みの2乗和（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>L</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">L_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">L</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>ノルム）」</strong> を加えたものです。</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><munder><mrow><mi>min</mi><mo>⁡</mo></mrow><mi>x</mi></munder><munder><munder><mrow><mi mathvariant="normal">∥</mi><mi>A</mi><mi>x</mi><mo>−</mo><mi>b</mi><msup><mi mathvariant="normal">∥</mi><mn>2</mn></msup></mrow><mo stretchy="true">⏟</mo></munder><mtext>最小二乗誤差</mtext></munder><mo>+</mo><munder><munder><mrow><mi>λ</mi><mi mathvariant="normal">∥</mi><mi>x</mi><msubsup><mi mathvariant="normal">∥</mi><mn>2</mn><mn>2</mn></msubsup></mrow><mo stretchy="true">⏟</mo></munder><mtext>L2正則化項</mtext></munder></mrow><annotation encoding="application/x-tex">\min_{x} \underbrace{\|Ax - b\|^2}_{\text{最小二乗誤差}} + \underbrace{\lambda \|x\|_2^2}_{\text{L2正則化項}}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.4404em;vertical-align:-1.5763em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-2.4em;margin-left:0em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">x</span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span><span class="mop">min</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.7em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-1.4237em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord cjk_fallback mtight">最小二乗誤差</span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span class="svg-align" style="top:-2.102em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMinYMin slice"><path d="M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13
+ 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688
+ 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7
+-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z"/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMidYMin slice"><path d="M199572 214
+c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
+ 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3
+ 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0
+-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z"/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3
+ 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
+-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"/></svg></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∥</span><span class="mord mathnormal">A</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">b</span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.898em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5763em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.4404em;vertical-align:-1.5763em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-1.4237em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">L2</span><span class="mord cjk_fallback mtight">正則化項</span></span></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord munder"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span class="svg-align" style="top:-2.102em;"><span class="pstrut" style="height:3em;"></span><span class="stretchy" style="height:0.548em;min-width:1.6em;"><span class="brace-left" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMinYMin slice"><path d="M0 6l6-6h17c12.688 0 19.313.3 20 1 4 4 7.313 8.3 10 13
+ 35.313 51.3 80.813 93.8 136.5 127.5 55.688 33.7 117.188 55.8 184.5 66.5.688
+ 0 2 .3 4 1 18.688 2.7 76 4.3 172 5h399450v120H429l-6-1c-124.688-8-235-61.7
+-331-161C60.687 138.7 32.312 99.3 7 54L0 41V6z"/></svg></span><span class="brace-center" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMidYMin slice"><path d="M199572 214
+c100.7 8.3 195.3 44 280 108 55.3 42 101.7 93 139 153l9 14c2.7-4 5.7-8.7 9-14
+ 53.3-86.7 123.7-153 211-199 66.7-36 137.3-56.3 212-62h199568v120H200432c-178.3
+ 11.7-311.7 78.3-403 201-6 8-9.7 12-11 12-.7.7-6.7 1-18 1s-17.3-.3-18-1c-1.3 0
+-5-4-11-12-44.7-59.3-101.3-106.3-170-141s-145.3-54.3-229-60H0V214z"/></svg></span><span class="brace-right" style="height:0.548em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="0.548em" viewBox="0 0 400000 548" preserveAspectRatio="xMaxYMin slice"><path d="M399994 0l6 6v35l-6 11c-56 104-135.3 181.3-238 232-57.3
+ 28.7-117 45-179 50H-300V214h399897c43.3-7 81-15 113-26 100.7-33 179.7-91 237
+-174 2.7-5 6-9 10-13 .7-1 7.3-1 20-1h17z"/></svg></span></span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">λ</span><span class="mord">∥</span><span class="mord mathnormal">x</span><span class="mord"><span class="mord">∥</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-2.453em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.898em;"><span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.5763em;"><span></span></span></span></span></span></span></span></span></span></p>
 <ul>
 <li><strong>第2項（L2正則化項）</strong>: 重み <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> の「大きさ」にペナルティを与えます。</li>
 <li><strong><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">λ</span></span></span></span>（ラムダ）</strong>: この値が大きいほど、重みはより小さく制限されます。</li>
@@ -582,55 +385,7 @@ w_closed = ridge_closed_form(X, y, alpha)
 <p>リッジ回帰は、 <strong>「モデルをシンプルに保ちつつ、すべてのデータを大切に扱う」</strong> ための手法です。</p>
 <p>「精度は出したいけれど、変数を完全に消してしまうのは不安だ」「データの動きが激しいので安定させたい」という場面では、まずリッジ回帰を試すのがエンジニアとしての堅実な判断と言えます。</p>
 
-
-<div class="shop-card">
-    <div class="shop-card-image">
-        <img src="https://m.media-amazon.com/images/I/711tUHSHN1L._SY425_.jpg" alt="商品画像">
-    </div>
-    <div class="shop-card-content">
-        <div class="shop-card-title">これなら分かる最適化数学</div>
-        <div class="shop-card-description">最適化の理論から実践までを体系立ててる参考書籍です。使いたいという場合とても良い本です</div>
-        <div class="shop-card-link">
-            <a href="https://www.amazon.co.jp/%E3%81%93%E3%82%8C%E3%81%AA%E3%82%89%E5%88%86%E3%81%8B%E3%82%8B%E6%9C%80%E9%81%A9%E5%8C%96%E6%95%B0%E5%AD%A6%E2%80%95%E5%9F%BA%E7%A4%8E%E5%8E%9F%E7%90%86%E3%81%8B%E3%82%89%E8%A8%88%E7%AE%97%E6%89%8B%E6%B3%95%E3%81%BE%E3%81%A7-%E9%87%91%E8%B0%B7-%E5%81%A5%E4%B8%80/dp/4320017862?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&crid=10SSYB3PZPV26&dib=eyJ2IjoiMSJ9.NlvE9XgJTt4gKEBif4JNFgABFhi3T9epyrrVimXjzECGbV6GEaG0lhgZduGF-1x2fE4g7AedPwS8QQ4J5jd49Y5vXC3wl2k9rYvInsXvkam3rEct7nrqkcGmBMbVlhUprsExC1Tp8IAFXOuki9KH54Ex4G8H21e_AYCURPPjXhXfKo3x-9sKEhuI7uTZdCQxsN31zirPnzVfGNcl3pJ6HtGahxk5ZGl1iXC4dZEgjsQND1170TAGoOU-uBEnS0Buq0gI4gKEnZ5lKYxqqmzHr0B6Qqmy9F3b1j3ABTN76B0.4NWsFWovjFktwDXUtnEO3aMuNwzixmn3qgIW0z_TiGE&dib_tag=se&keywords=%E6%9C%80%E9%81%A9%E5%8C%96&qid=1770529204&sprefix=%E6%9C%80%E9%81%A9%E5%8C%96%2Caps%2C179&sr=8-5&linkCode=ll2&tag=yoshishinnze-22&linkId=f8047ce2ce29470aa4439de137be97d0&ref_=as_li_ss_tl" target="_blank" rel="noopener">Amazonで詳細を見る</a>
-        </div>
-    </div>
-</div>
             <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
-<script>
-const toc = document.getElementById('toc');
-// h2 と h3 の両方を取得
-const headings = document.querySelectorAll('h2, h3');
-
-headings.forEach((heading, i) => {
-    if (!heading.id) heading.id = `heading-${i}`;
-    
-    const li = document.createElement('li');
-    const link = document.createElement('a');
-    link.href = `#${heading.id}`;
-    link.textContent = heading.textContent;
-    
-    // h3 の場合はクラスを付与して字下げする
-    if (heading.tagName === 'H3') {
-        li.classList.add('toc-h3');
-    }
-    
-    li.appendChild(link);
-    toc.appendChild(li);
-});
-
-// スムーズスクロールを有効にする
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
-</script>
-
-
-
-
+            
         </body>
         </html>
