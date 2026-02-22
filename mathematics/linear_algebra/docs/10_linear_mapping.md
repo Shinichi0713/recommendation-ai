@@ -1,7 +1,7 @@
 
 行列とは線形写像のことです。
 ですが、これを聞いたとしてもスッと理解するのは、なかなか難しいと感じます。
-本章では、線形写像や線形空間といった線形代数を扱う上で重要な概念について説明していきます。
+本日は、線形写像という線形代数を扱う上で重要な概念について説明していきます。
 
 ## 線形写像
 
@@ -243,4 +243,173 @@ __結果__
 - 基底が変われば表現が変わる
 
 もし右側の歪んだ空間を「新しい基準」として採用すれば、その空間に住む人にとってはこの平行四辺形の格子こそが「真っ直ぐな1単位」になります。これが基底の取り替えという考え方の第一歩です。
+
+### 行列と線形代数が同じとは
+
+線形写像と行列がなぜ「同じもの」として扱えるのか。その数学的な裏付けは、　**「基底の行き先が分かれば、すべての点の行き先が決まる」**　という線形写像の性質（線形性）にあります。
+
+__1. ベクトルを「標準基底」で分解する__
+
+$n$ 次元の任意のベクトル $\mathbf{x}$ は、標準基底 $\mathbf{e}_1, \mathbf{e}_2, \dots, \mathbf{e}_n$ を使って次のように一意に書くことができます。
+
+$$\mathbf{x} = x_1 \mathbf{e}_1 + x_2 \mathbf{e}_2 + \dots + x_n \mathbf{e}_n$$
+
+ここで、$x_i$ はベクトルの各成分（数値）です。
+
+__2. 線形写像の性質を適用する__
+
+このベクトル $\mathbf{x}$ に線形写像 $f$ を作用させます。線形写像には **「足し算とスカラー倍を外に出せる」** という定義（線形性）がありました。
+
+$$f(\mathbf{x}) = f(x_1 \mathbf{e}_1 + x_2 \mathbf{e}_2 + \dots + x_n \mathbf{e}_n)$$
+
+線形性を使うと、以下のようにバラバラに分解できます。
+
+$$f(\mathbf{x}) = x_1 f(\mathbf{e}_1) + x_2 f(\mathbf{e}_2) + \dots + x_n f(\mathbf{e}_n)$$
+
+この式が意味するのは、 **「任意の点 $\mathbf{x}$ の行き先 $f(\mathbf{x})$ は、基底の行き先 $f(\mathbf{e}_i)$ を $x_i$ 倍して足し合わせたものになる」** ということです。
+
+__3. 「行列の形」に整理する__
+
+ここで、$f(\mathbf{e}_1), f(\mathbf{e}_2), \dots$ という「基底が移った後のベクトル」を列として横に並べたものを、行列 $A$ と定義します。
+
+$$A = \begin{pmatrix} f(\mathbf{e}_1) & f(\mathbf{e}_2) & \dots & f(\mathbf{e}_n) \end{pmatrix}$$
+
+すると、先ほどの式は「行列 $A$ とベクトル $\mathbf{x}$ の積」の定義そのものになります。
+
+$$f(\mathbf{x}) = \underbrace{\begin{pmatrix} f(\mathbf{e}_1) & \dots & f(\mathbf{e}_n) \end{pmatrix}}_{A} \begin{pmatrix} x_1 \\ \vdots \\ x_n \end{pmatrix} = A\mathbf{x}$$
+
+この論理構成により、以下のことが保証されます。
+
+- 唯一性: どんな線形写像も、ただ一つの行列に対応する。
+- 再現性: 基底の行き先さえ記録しておけば、どんな入力に対しても計算ができる。
+
+つまり、 **「抽象的な変換のルール（写像）」を、「具体的な数値のリスト（行列）」** としてコンピュータや紙の上で扱えるようになったのです。
+
+__例題:__ 線形写像がまっすぐな線であることについて
+
+線形写像が「まっすぐな変換」であるとは、幾何学的に言えば　**「変換前に行儀よく並んでいたグリッド（格子）が、変換後も平行な直線のまま、等間隔に並んでいる」**　ということです。
+
+この「直線性」を視覚化するために、以下の処理を行うPythonコードを作成しました。
+- 元の空間に、等間隔なグリッド線と、その上に乗るいくつかの直線（対角線など）を描画します。
+- 任意の行列（線形写像）を作用させ、変換後の空間を描画します。
+- 格子が「曲がっていないか」「原点がズレていないか」「平行が保たれているか」を比較できるようにします。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def visualize_linearity(A):
+    # --- 1. グリッドデータの作成 ---
+    # -2から2までの範囲に11本の線を引く
+    range_val = 2
+    ticks = np.linspace(-range_val, range_val, 11)
+    
+    # グリッドの各線上の点を生成する関数
+    def get_grid_lines():
+        lines = []
+        # 垂直線と水平線
+        for t in ticks:
+            lines.append(np.array([[t, t], [-range_val, range_val]])) # 垂直
+            lines.append(np.array([[-range_val, range_val], [t, t]])) # 水平
+        # 「まっすぐさ」を強調するための斜め線
+        lines.append(np.array([[-range_val, range_val], [-range_val, range_val]]))
+        return lines
+
+    original_lines = get_grid_lines()
+
+    # --- 2. 可視化の準備 ---
+    fig, ax = plt.subplots(1, 2, figsize=(14, 6))
+    titles = ['Original Space (Standard Grid)', 'Transformed Space (Linear Map)']
+    colors = ['#1f77b4', '#ff7f0e'] # 青とオレンジ
+
+    for i, title in enumerate(titles):
+        ax[i].set_title(title, fontsize=14)
+        ax[i].set_xlim(-5, 5)
+        ax[i].set_ylim(-5, 5)
+        ax[i].axhline(0, color='black', lw=1.5, alpha=0.5) # X軸
+        ax[i].axvline(0, color='black', lw=1.5, alpha=0.5) # Y軸
+        ax[i].set_aspect('equal')
+        ax[i].grid(True, linestyle=':', alpha=0.3)
+
+    # --- 3. 変換と描画 ---
+    for line in original_lines:
+        # 元の線を描画
+        ax[0].plot(line[0], line[1], color='gray', lw=1, alpha=0.6)
+        
+        # 行列 A による線形写像を適用
+        # lineは [[x1, x2], [y1, y2]] なので、各列ベクトルにAを掛ける
+        transformed_line = A @ line
+        
+        # 変換後の線を描画
+        # 線形写像なら、この transformed_line も「直線」になる
+        ax[1].plot(transformed_line[0], transformed_line[1], color='orange', lw=1.5)
+
+    # 原点の強調
+    ax[0].plot(0, 0, 'ko', markersize=8, label='Origin')
+    ax[1].plot(0, 0, 'ko', markersize=8, label='Origin')
+    
+    plt.tight_layout()
+    plt.show()
+
+# --- 4. 線形写像を定義して実行 ---
+# 例: 剪断(Shear)とスケーリングを組み合わせた行列
+# 1列目が基底e1の行き先、2列目が基底e2の行き先
+A = np.array([
+    [1.5, 1.0], 
+    [0.5, 1.2]
+])
+
+visualize_linearity(A)
+```
+
+__結果__
+
+実行した結果以下のようなグラフが描画されます。
+
+<img src="image/10_linear_mapping/1771735720993.png" width="700" style="display: block; margin: 0 auto;">
+
+ポイント
+
+- 平行性の維持:
+
+左側の図で平行だった青いラインは、右側でオレンジ色になっても互いに平行なままです。線形写像は空間を「ねじる」ことはありません。
+- 等間隔性の維持:
+
+グリッドの間隔がどこに行っても一定です。特定の場所だけ伸びたり縮んだりすることはありません（これは斉次性の現れです）。原点の固定:黒いドット（原点）はどちらの図でも $(0,0)$ から動いていません。線形写像 $f(\mathbf{x}) = A\mathbf{x}$ において $A\mathbf{0} = \mathbf{0}$ であることを示しています。
+- 直線の維持:
+
+もしこれが線形写像でない（例えば $x^2$ などを含む変換）場合、オレンジの線はぐにゃりと曲がってしまいます。すべての線が定規で引いたようにまっすぐなのは、行列による変換が「線形」である最大の証拠です。
+
+## 総括
+線形代数における線形写像とは、行列とイコールであす。
+
+線形写像により移されたデータは、空間をねじることはなく、直線的な変換をすることになります。
+性質は拡大や、回転はしますが、もともとの空間での関係は変化させません。
+
+例えば、もともとの空間で平行だったものを、線形写像により変換したとしても、平行は維持されます。
+
+というように線形写像=行列で、性質上はあくまで線形である、ということが本日のまとめです。
+
+## 参考
+
+線形代数関係の記事として以下も是非ご参考下さい。
+
+[今から勉強する方にお伝えする線形代数がなぜ大事か](https://yoshishinnze.hatenablog.com/entry/2026/02/21/000000)
+
+著者が線形代数を理解する上で使った教科書を参考に示します。
+
+線形代数の勉強をされる方、是非ご参考下さい。
+
+<div class="shop-card">
+    <div class="shop-card-image">
+        <img src="https://m.media-amazon.com/images/I/91JhO6WstuL._SL1500_.jpg" alt="商品画像">
+    </div>
+    <div class="shop-card-content">
+        <div class="shop-card-title">線形代数入門</div>
+        <div class="shop-card-description">線型代数の最も標準的なテキスト。平面および空間のベクトル、行列、行列式、線型空間、固有値と固有ベクトルなど7章のほか、附録をつけ線型代数の技術が習熟できる。各章末に演習問題があり、巻末に略解を付す。日本数学会出版賞受賞。</div>
+        <div class="shop-card-link">
+            <a href="https://www.amazon.co.jp/%E7%B7%9A%E5%9E%8B%E4%BB%A3%E6%95%B0%E5%85%A5%E9%96%80-%E5%9F%BA%E7%A4%8E%E6%95%B0%E5%AD%A61-%E9%BD%8B%E8%97%A4-%E6%AD%A3%E5%BD%A6/dp/4130620010?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&crid=FBZ8IT8N0HVP&dib=eyJ2IjoiMSJ9.raG17HmdJDqR1xw-s72NyCPuaEfm5KCpXi7pTNoq_QIjVKT3KU7pqn7RIa4jj90kXvUq5KAu9qe-044Ub4_c-7qZrFrxf4bhrqtdSUpbYUqyvho1nCVqaBFvzVFNVPNBGfwTOSo8W6CP0oKlG4BlojmK6B0wityoP6tFpx9chP4cOQXsJBRjjJo_XdIQZuUVqlMgcyLlVAYF03h2GY0kk7yIW1JAXYcLW9IfJbFvDhn7Q8o2xSgx44JjPY6IPku7tQXM8STJgSqeByDeiq-T8EyenilxGj4ZxzpGzGhSJtI.rFisem8ppj0ivBAAT51d-gxJVLuNv0Heeem8G0A6rMc&dib_tag=se&keywords=%E7%B7%9A%E5%BD%A2%E4%BB%A3%E6%95%B0&qid=1771066940&sprefix=%E7%B7%9A%E5%BD%A2%E4%BB%A3%E6%95%B0%2Caps%2C170&sr=8-2-spons&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1&linkCode=ll2&tag=yoshishinnze-22&linkId=c87f395611297c531a7104e682865a78&ref_=as_li_ss_tl" target="_blank" rel="noopener">Amazonで詳細を見る</a>
+        </div>
+    </div>
+</div>
 
