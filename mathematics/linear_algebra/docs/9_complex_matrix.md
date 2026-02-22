@@ -184,4 +184,151 @@ __結果__
 
 この楕円体の「軸の向き」が観測される状態（固有状態）であり、「軸の長さ（固有値）」が実際に測定される数値です。軸が実数で、かつ垂直に交わっているからこそ、私たちは異なる物理量を矛盾なく測定できるのです。
 
+### 5. ユニタリ行列
+
+**ユニタリ行列（Unitary Matrix）** とは、一言で言えば **「複素空間における『回転』や『鏡映』を担当する、長さを変えない行列」** のことです。
+
+実数行列における「直交行列」を複素数に拡張したもので、量子力学や信号処理において「情報の総量を保ったまま状態を変える」ために欠かせない存在です。
+
+__1. 数学的な定義__
+
+$n$ 次正方行列 $U$ が以下の条件を満たすとき、これをユニタリ行列と呼びます。
+
+$$U^* U = U U^* = I$$
+
+ここで $U^*$ は共役転置（エルミート共役）です。この式は、 **「逆行列が、自分自身の共役転置と等しい ($U^{-1} = U^*$)」** という非常に便利な性質を意味しています。
+
+__2. ユニタリ行列の「3つの決定的な性質」__
+
+__① ベクトルの長さを変えない（等長性）__
+
+ユニタリ行列 $U$ をベクトル $\mathbf{v}$ に掛けても、そのノルム（長さ）は変化しません。
+
+$$\|U\mathbf{v}\| = \|\mathbf{v}\|$$
+
+これは、空間を「引き延ばしたり縮めたり」せず、**純粋な回転や反転**だけを行っていることを示しています。
+
+__② 内積を保存する__
+
+2つのベクトル $\mathbf{v}$ と $\mathbf{w}$ の間の角度（複素内積）も、ユニタリ行列を通した前後で変わりません。
+つまり、**空間の「形（位置関係）」を保ったまま**、まるごと動かす操作だと言えます。
+
+__③ 固有値の絶対値が 1__
+
+ユニタリ行列の固有値 $\lambda$ は、複素平面上で必ず **「単位円（半径1の円）」** の上に乗ります。
+
+$$|\lambda| = 1$$
+
+これは「拡大も縮小もしない」という性質の、別の表現でもあります。
+
+__3. なぜユニタリ行列が重要なのか？__
+
+__A. 量子力学：確率の保存__
+
+量子力学において、粒子の状態（波面関数）の「長さの2乗」は「確率の合計（＝100%）」を表します。時間が経過しても確率の合計が変わってはいけないため、粒子の時間発展は必ず**ユニタリ行列**（またはユニタリ演算子）で記述されます。
+
+__B. 信号処理：エネルギーの保存__
+
+フーリエ変換（特に離散フーリエ変換：DFT）はユニタリ変換の一種です。時間領域の信号を周波数領域に変換しても、信号が持つ全体のエネルギーが変わらない（パーセバルの等式）のは、変換行列がユニタリだからです。
+
+__C. 計算の安定性__
+
+数値計算において、ユニタリ行列を掛ける操作は誤差を増幅させません。そのため、行列分解（QR分解など）のアルゴリズムでは、精度を保つためにユニタリな行列が多用されます。
+
+__例題:__ ユニタリ行列による軸のシフト
+
+ユニタリ行列の最大の特徴は、 **「空間の形状（ベクトルの長さと角度）を一切変えずに、回転または鏡映させる」** という点にあります。
+この性質を可視化してみます。
+
+3次元空間の **「単位球面」と「座標軸（基底ベクトル）」が、ユニタリ行列（実数の場合は直交行列）によってどのように変化するかをプロットします。エルミート行列のように球が「楕円に潰れる」のではなく、「球が球のまま回転する」** 様子に注目してください。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# 1. ユニタリ行列（回転行列）の生成
+# 任意の軸周りの回転は直交行列（実ユニタリ行列）になります
+def get_rotation_matrix(alpha, beta, gamma):
+    # X, Y, Z軸周りの回転行列を合成
+    Rx = np.array([[1, 0, 0],
+                   [0, np.cos(alpha), -np.sin(alpha)],
+                   [0, np.sin(alpha), np.cos(alpha)]])
+    Ry = np.array([[np.cos(beta), 0, np.sin(beta)],
+                   [0, 1, 0],
+                   [-np.sin(beta), 0, np.cos(beta)]])
+    Rz = np.array([[np.cos(gamma), -np.sin(gamma), 0],
+                   [np.sin(gamma), np.cos(gamma), 0],
+                   [0, 0, 1]])
+    return Rz @ Ry @ Rx
+
+# 適当な角度で回転行列を作成
+U = get_rotation_matrix(np.pi/4, np.pi/6, np.pi/3)
+
+# 2. 単位球面のデータ作成
+u_grid = np.linspace(0, 2 * np.pi, 30)
+v_grid = np.linspace(0, np.pi, 30)
+x = np.outer(np.cos(u_grid), np.sin(v_grid))
+y = np.outer(np.sin(u_grid), np.sin(v_grid))
+z = np.outer(np.ones(np.size(u_grid)), np.cos(v_grid))
+
+# 3. 球面上の点を変換
+points = np.stack([x.flatten(), y.flatten(), z.flatten()])
+transformed_points = U @ points
+tx = transformed_points[0].reshape(x.shape)
+ty = transformed_points[1].reshape(y.shape)
+tz = transformed_points[2].reshape(z.shape)
+
+# 4. 可視化
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# 変換後の球面（形が変わっていないことを示す）
+ax.plot_surface(tx, ty, tz, color='lightgreen', alpha=0.2, edgecolor='forestgreen', linewidth=0.3)
+
+# 元の座標軸 (X:Red, Y:Green, Z:Blue)
+# 変換後の座標軸 (Uの各列ベクトル)
+colors = ['r', 'g', 'b']
+labels = ['X', 'Y', 'Z']
+for i in range(3):
+    # 元の基底ベクトル（細い点線）
+    base = np.zeros(3)
+    vec_orig = np.zeros(3); vec_orig[i] = 1
+    ax.quiver(0, 0, 0, vec_orig[0], vec_orig[1], vec_orig[2], 
+              color=colors[i], linestyle='--', alpha=0.3, arrow_length_ratio=0.1)
+    
+    # 変換後の基底ベクトル（太い実線 = Uの列ベクトル）
+    vec_trans = U[:, i]
+    ax.quiver(0, 0, 0, vec_trans[0], vec_trans[1], vec_trans[2], 
+              color=colors[i], lw=3, label=f'Transformed {labels[i]} axis', arrow_length_ratio=0.1)
+
+# グラフの装飾
+ax.set_title("Unitary Transformation: Pure Rotation (Length & Angle Preserved)")
+ax.set_xlim([-1, 1]); ax.set_ylim([-1, 1]); ax.set_zlim([-1, 1])
+ax.set_xlabel('X'); ax.set_ylabel('Y'); ax.set_zlabel('Z')
+ax.legend()
+ax.view_init(elev=20, azim=45)
+
+plt.show()
+```
+
+__結果__
+
+実行した結果は以下のグラフです。
+
+
+<img src="image/9_complex_matrix/1771651114247.png" width="700" style="display: block; margin: 0 auto;">
+
+結果のポイントは以下の通りです。
+
+- 「球」が保たれている:
+
+エルミート行列の時は球が引き延ばされて「楕円体」になりましたが、ユニタリ行列ではどこから見ても完璧な球体のままです。これは「すべてのベクトルの長さが変わっていない（等長性）」ことを視覚的に証明しています。
+- 軸の「直交性」が保たれている:
+
+新しくプロットされた赤い矢印（新しいX軸）、緑（Y軸）、青（Z軸）に注目してください。空間全体が回転しても、これらの矢印同士の角度は常に90度のままです。これは「内積を保存する」という性質の結果です。
+
+- 逆行列の視覚化:
+
+この回転した軸を元の位置（点線の位置）に戻すには、逆方向に回転させるだけです。ユニタリ行列では $U^{-1} = U^*$（実数なら $U^T$）なので、 **「行と列を入れ替えるだけで、逆の回転（復元）ができる」** という驚異的な計算効率の良さを持っています。
 
