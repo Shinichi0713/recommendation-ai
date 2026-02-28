@@ -353,8 +353,75 @@ __まとめ__
 
 部分空間は、いわば**「複雑な世界に引かれた、数学的に正しい境界線」**のようなものです。
 
-次は、行列がこの部分空間を「どれだけ押しつぶしたか」という落差を説明する**「次元定理（Rank-Nullity Theorem）」**について解説しましょうか？ これを知ると、行列の「失われた情報」の正体がはっきりします。
 
+__例題:__ 部分空間のイメージ
+
+部分空間の概念を理解するのに最も適した例は、 **「3次元空間の中に浮かぶ2次元の平面」** をデータから見つけ出す、 **主成分分析（PCA）** の可視化です。
+
+多くのデータが3つの変数（$x, y, z$）を持っていても、実際にはある「平面（部分空間）」の上にほぼ乗っていることがあります。このコードでは、バラバラに見えるデータから、その背後にある **「2次元の部分空間」** を特定して描き出す例です。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from mpl_toolkits.mplot3d import Axes3D # 3Dプロットに必要
+
+# 1. データの生成
+np.random.seed(42)
+n_samples = 100
+base_data = np.random.randn(n_samples, 2)
+
+x = base_data[:, 0]
+y = base_data[:, 1]
+# z = 0.5x + 0.8y + ノイズ（これが「ほぼ平面」を作る）
+z = 0.5 * x + 0.8 * y + np.random.normal(0, 0.1, n_samples) 
+
+data_3d = np.vstack([x, y, z]).T
+
+# 2. PCAで「本質的な部分空間（2次元平面）」を見つける
+pca = PCA(n_components=2)
+pca.fit(data_3d)
+basis_vectors = pca.components_
+
+# 3. 可視化
+fig = plt.figure(figsize=(10, 8))
+# 修正箇所: add_subplot を使用
+ax = fig.add_subplot(111, projection='3d')
+
+# 元のデータ点をプロット
+ax.scatter(data_3d[:, 0], data_3d[:, 1], data_3d[:, 2], alpha=0.6, label='Original Data')
+
+# 見つけ出した「部分空間（平面）」を描画
+grid_x, grid_y = np.meshgrid(np.linspace(-3, 3, 10), np.linspace(-3, 3, 10))
+normal = np.cross(basis_vectors[0], basis_vectors[1])
+grid_z = -(normal[0] * grid_x + normal[1] * grid_y) / normal[2]
+ax.plot_surface(grid_x, grid_y, grid_z, alpha=0.2, color='orange')
+
+# 部分空間を支える「基底ベクトル」を矢印で表示
+for i, v in enumerate(basis_vectors):
+    ax.quiver(0, 0, 0, v[0]*2, v[1]*2, v[2]*2, color='red', lw=3, label=f'Basis Vector {i+1}')
+
+ax.set_title("Identifying a 2D Subspace in 3D Data")
+ax.set_xlabel("X-axis")
+ax.set_ylabel("Y-axis")
+ax.set_zlabel("Z-axis")
+ax.legend()
+plt.show()
+```
+
+__結果__
+
+可視化の結果は以下のように与えられる。
+
+この可視化が示している「部分空間」の役割
+
+- 次元圧縮の土俵: 青い点（データ）は3次元の座標を持っていますが、オレンジ色の「平面」にほぼ沿って動いています。この **平面こそが「部分空間」** です。
+
+- 基底（Basis）の特定: 赤い矢印は、その平面を表現するために必要な最小限のベクトルです。この2本の矢印の1次結合だけで、平面上のあらゆる点を表現できます。
+
+- ノイズの分離: 平面から少し浮いている分が「ノイズ」です。データをこの部分空間に **投影（Project）** することで、余計な情報を捨て、本質的な2次元データとして扱うことができます。
+
+<img src="image/14_vector_space/1772144501251.png" width="700" style="display: block; margin: 0 auto;">
 
 
 
