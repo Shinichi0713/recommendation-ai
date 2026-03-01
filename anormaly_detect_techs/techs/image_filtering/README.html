@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x753b;&#x50cf;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30ea;&#x30f3;&#x30b0;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+/* Amazonカード型のオシャレなデザイン */
+.shop-card {
+    display: flex;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* マウスホップした時の動き */
+.shop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.shop-card-image {
+    width: 150px;
+    min-width: 150px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-card-image img {
+    max-width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.shop-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shop-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shop-card-description {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* Amazonらしいオレンジボタン */
+.shop-card-link a {
+    display: inline-block;
+    background-color: #ff9900;
+    color: #fff !important;
+    text-decoration: none !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.shop-card-link a:hover {
+    background-color: #e68a00;
+}
+
+/* スマホ対応：縦並びにする */
+@media (max-width: 480px) {
+    .shop-card {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    .shop-card-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+            <p>画像を用いる異常検知や画像AIの手法において、より精度を求める場合に前処理は重要です。
+本日はそんな前処理の中で、フィルタリング手法について説明します。</p>
+<h2 id="画像フィルタリング">画像フィルタリング</h2>
+<p>画像処理におけるフィルタリング手法は、 <strong>「何を強調し、何を除去したいか」</strong> という目的によって大きく3つのカテゴリーに分類されます。</p>
+<h3 id="1-平滑化フィルタノイズ除去ぼかし">1. 平滑化フィルタ（ノイズ除去・ぼかし）</h3>
+<p>画像の高周波成分（急激な色の変化）を抑え、滑らかにする手法です。</p>
+<ul>
+<li>
+<p><strong>平均化フィルタ (Averaging Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 近傍画素の平均値を採用する最も単純な手法。</p>
+</li>
+<li>
+<p><strong>短所</strong>: ノイズだけでなく、物体の輪郭（エッジ）までぼやけてしまう。</p>
+</li>
+<li>
+<p><strong>ガウシアンフィルタ (Gaussian Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 中心に近い画素ほど重みを大きくする（ガウス分布）。平均化より自然なぼけが得られる。</p>
+</li>
+<li>
+<p><strong>用途</strong>: 前処理としてのノイズ抑制。</p>
+</li>
+<li>
+<p><strong>メディアンフィルタ (Median Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 近傍の画素値を並べ替え、中央値を採用する非線形フィルタ。</p>
+</li>
+<li>
+<p><strong>強み</strong>: **「ごま塩ノイズ（散発的な白い点など）」**の除去に極めて強く、エッジを比較的保持しやすい。</p>
+</li>
+<li>
+<p><strong>バイラテラルフィルタ (Bilateral Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 距離だけでなく「色の近さ」も考慮して重み付けを行う。</p>
+</li>
+<li>
+<p><strong>強み</strong>: **「エッジを保存したまま」**平滑化ができる。美肌補正などに多用される。</p>
+</li>
+</ul>
+<p><strong>用途</strong></p>
+<p>平滑化フィルタの主な用途は、画像に含まれる <strong>「不要な変動（ノイズ）」を抑え、解析に必要な「本質的な情報（構造や領域）」を扱いやすくすること</strong> にあります。</p>
+<p>具体的には、以下の4つの重要な役割があります。</p>
+<p><strong>1. 異常検知の前処理（背景統計の安定化）</strong></p>
+<p>RX DetectorやCRDなどの異常検知アルゴリズムを動かす際、背景に細かいザラつき（テクスチャ）があると、それが「微細な異常」として誤検知される原因になります。</p>
+<ul>
+<li><strong>役割</strong>: 背景をあえて「ぼかす」ことで、個々の画素のばらつきを抑え、背景統計（平均や共分散）を安定させます。これにより、真に異質な物体だけが浮き彫りになります。</li>
+</ul>
+<p><strong>2. ノイズ除去（信号対雑音比の向上）</strong></p>
+<p>センサー由来の電子ノイズや、通信過程で混入する「ごま塩ノイズ」などを取り除きます。</p>
+<ul>
+<li><strong>役割</strong>: 周辺画素の情報を利用して、突発的に値が跳ね上がっている画素を周囲に馴染ませます。</li>
+<li><strong>例</strong>: メディアンフィルタを使用すると、建物の形はそのままに、センサーの不具合による白い点々だけを消去できます。</li>
+</ul>
+<p><strong>3. 特徴抽出の準備（偽エッジの抑制）</strong></p>
+<p>エッジ抽出（Canny法など）を行う前に平滑化をかけないと、ノイズの激しい部分がすべて「境界線」として検出されてしまいます。</p>
+<ul>
+<li><strong>役割</strong>: 緩やかな色の変化を無視し、本当に意味のある大きな境界線だけを抽出できるようにします。</li>
+</ul>
+<h3 id="4-領域分割セグメンテーションの精度向上">4. 領域分割（セグメンテーション）の精度向上</h3>
+<p>先述の「セグメンテーション・ベース RX」において、背景を綺麗に色分けするために不可欠です。</p>
+<ul>
+<li><strong>役割</strong>: 小さな色の変化（草一本ごとの色の違いなど）を平滑化で潰すことで、草原を「一つの大きな緑の塊」としてAIに認識させやすくします。</li>
+</ul>
+<h3 id="2-鋭鋭化エッジ抽出フィルタ輪郭強調">2. 鋭鋭化・エッジ抽出フィルタ（輪郭強調）</h3>
+<p>画像の変化が激しい部分（輝度の勾配）を際立たせる手法です。</p>
+<ul>
+<li>
+<p><strong>ラプラシアンフィルタ (Laplacian Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 2次微分を用いて輝度の変化点を探す。</p>
+</li>
+<li>
+<p><strong>用途</strong>: 画像の鮮鋭化（シャープネス調整）。</p>
+</li>
+<li>
+<p><strong>ソーベルフィルタ (Sobel Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 水平・垂直方向の1次微分を行い、エッジの強度と方向を計算する。</p>
+</li>
+<li>
+<p><strong>用途</strong>: 物体の境界線検出。</p>
+</li>
+<li>
+<p><strong>Canny法 (Canny Edge Detector)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 複数のステップ（ガウシアンによる平滑化、勾配計算、ヒステリシス閾値処理）を組み合わせた高度な手法。</p>
+</li>
+<li>
+<p><strong>強み</strong>: ノイズに強く、最も正確に「線」としてのエッジを取り出せる。</p>
+</li>
+</ul>
+<p><strong>用途</strong></p>
+<p>鋭鋭化（シャープネス）やエッジ抽出フィルタの主な用途は、画像内の <strong>「情報の境界」を明確にすること</strong> です。平滑化フィルタが情報を「削ぎ落とす」のに対し、これらは情報を「際立たせる」役割を担います。</p>
+<p>具体的には、以下の4つの用途が重要です。</p>
+<p><strong>1. 構造・物体の形状把握</strong></p>
+<p>画像の中から「どこまでが道路で、どこからが建物か」といった、物体の輪郭（アウトライン）を特定するために使用されます。</p>
+<ul>
+<li><strong>役割</strong>: 輝度が急激に変化する場所を特定し、背景から物体を切り出します。</li>
+<li><strong>活用例</strong>: 自動運転における車線（白線）の検出や、衛星画像からの建物抽出など。</li>
+</ul>
+<p><strong>2. 微細な異常や欠陥の強調</strong></p>
+<p>異常検知の文脈では、背景に馴染んでしまっている「小さなキズ」や「異物」を浮き彫りにするために使われます。</p>
+<ul>
+<li><strong>役割</strong>: 背景のなだらかな変化（低周波）を無視し、局所的な急変（高周波）だけを増幅します。</li>
+<li><strong>活用例</strong>: コンクリート表面のひび割れ（クラック）検出や、金属表面の細かなスレ傷の視覚化。</li>
+</ul>
+<p><strong>3. 解像感の向上（鮮鋭化）</strong></p>
+<p>ピンボケした画像や、大気の揺らぎでぼやけた衛星画像の「キレ」を取り戻すために使用されます。</p>
+<ul>
+<li><strong>役割</strong>: 輪郭付近のコントラストを人工的に強めることで、人間の目に「ピントが合っている」と錯覚させます。</li>
+<li><strong>手法</strong>: 元の画像に「ラプラシアンフィルタで抽出したエッジ成分」を足し戻すことで、シャープな画像を作ります（アンシャープマスキング）。</li>
+</ul>
+<p><strong>4. 特徴量としての利用（機械学習の前処理）</strong></p>
+<p>AIやパターン認識において、色そのものよりも「形（勾配）」の方が重要な情報である場合に、入力データとして使用されます。</p>
+<ul>
+<li><strong>役割</strong>: 画像を「色の塊」から「勾配の方向と強さ」という情報に変換します。</li>
+<li><strong>活用例</strong>: 顔認識や文字認識（OCR）において、照明の変化に左右されにくい「形」の情報を取り出す際の前処理。</li>
+</ul>
+<h3 id="3-周波数ドメインフィルタスペクトル操作">3. 周波数ドメイン・フィルタ（スペクトル操作）</h3>
+<p>画像をフーリエ変換し、周波数成分として処理する手法です。</p>
+<ul>
+<li>
+<p><strong>ローパスフィルタ (Low-pass Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 低い周波数（なだらかな変化）のみを通し、高い周波数（細かいノイズやエッジ）をカットする。平滑化と同義。</p>
+</li>
+<li>
+<p><strong>ハイパスフィルタ (High-pass Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 高い周波数のみを通し、低い周波数（全体の色調など）をカットする。エッジのみが抽出される。</p>
+</li>
+<li>
+<p><strong>バンドパスフィルタ (Band-pass Filter)</strong></p>
+</li>
+<li>
+<p><strong>特徴</strong>: 特定の周波数帯域のみを抽出する。特定の大きさの模様やテクスチャを探すのに適している。</p>
+</li>
+</ul>
+<p><strong>用途</strong></p>
+<p>周波数ドメイン・フィルタの最大の特徴は、画像を「色の集まり」としてではなく、 <strong>「波の重なり（振動）」</strong> として捉える点にあります。</p>
+<p>空間ドメイン（通常の画像）では除去しにくい特定のパターンやノイズを、 <strong>「特定の周波数成分」</strong> として狙い撃ちできるのが最大の強みです。主な用途は以下の3つです。</p>
+<p><strong>1. 周期的なパターンの除去（ノイズ抑制）</strong></p>
+<p>センサーの不具合や、通信時の干渉によって発生する「縞模様（ストライプノイズ）」や「網目状のノイズ」を取り除く際に、圧倒的な威力を発揮します。</p>
+<ul>
+<li><strong>役割</strong>: 空間ドメインのフィルタ（ガウシアン等）では、縞模様を消そうとすると画像全体がボケてしまいます。しかし周波数ドメインでは、縞模様に対応する「特定の点（周波数成分）」だけをピンポイントで消去（ノッチフィルタ）できるため、<strong>元の鮮明さを保ったままノイズだけを消せます</strong>。</li>
+</ul>
+<p><strong>2. 背景の緩やかな変化（照明ムラ）の補正</strong></p>
+<p>画像全体にわたる「右側が明るくて左側が暗い」といった緩やかな輝度変化を取り除きます。</p>
+<ul>
+<li><strong>役割</strong>: <strong>ハイパスフィルタ</strong>を使用します。画像全体の明るさの偏りは「超低周波成分」として中心付近に集まるため、ここをカットすることで、照明の影響を排除し、被写体のディテール（高周波成分）だけを均一に抽出できます。</li>
+<li><strong>異常検知での活用</strong>: 広域の衛星画像で、雲の影や太陽光の角度による「背景のムラ」を消し、小さな異常物体だけを際立たせる前処理として使われます。</li>
+</ul>
+<p><strong>3. テクスチャ解析と物体抽出</strong></p>
+<p>砂地、森、波、あるいは布の質感など、特定の「粗さ」を持つ領域を特定・分離します。</p>
+<ul>
+<li><strong>役割</strong>: <strong>バンドパスフィルタ</strong>を使用します。特定の周波数帯域（波の細かさ）だけを抽出することで、特定のサイズや密度を持つテクスチャだけを浮き彫りにします。</li>
+<li><strong>活用例</strong>: 衛星画像から「一定の密度で並んでいる果樹園」や「住宅街」などの特定の構造を持つエリアを自動でマスキングする際の前処理に適しています。</li>
+</ul>
+<h3 id="手法選択のクイックガイド">手法選択のクイックガイド</h3>
+<table>
+<thead>
+<tr>
+<th>実現したいこと</th>
+<th>推奨手法</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>突発的なノイズを消したい</strong></td>
+<td><strong>メディアンフィルタ</strong></td>
+<td>外れ値除去に最適。</td>
+</tr>
+<tr>
+<td><strong>背景をぼかしてエッジは残したい</strong></td>
+<td><strong>バイラテラルフィルタ</strong></td>
+<td>輝度の差を見て重みを変えるため。</td>
+</tr>
+<tr>
+<td><strong>物体の形を線として抜き出したい</strong></td>
+<td><strong>Canny法</strong></td>
+<td>連続した細い線を抽出するアルゴリズムだから。</td>
+</tr>
+<tr>
+<td><strong>画像全体のピントを合わせたい</strong></td>
+<td><strong>ラプラシアンフィルタ</strong></td>
+<td>輝度の変化（エッジ）を増幅できるため。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="実験">実験</h2>
+<p>実際にハイパースペクトルの公開データセットを用いてフィルタリングの効果を確認してみます。</p>
+<p>フィルタ自体はcv2で実装することが可能です。
+実装コードは以下に保管しています。</p>
+<p><a href="https://github.com/Shinichi0713/recommendation-ai/tree/main/anormaly_detect_techs/techs/image_filtering">著者のレポジトリ</a></p>
+<p>処理前のオリジナル画像は以下のものを用います。</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\image_filtering\image\README\1772361241441.png" alt="1772361241441"></p>
+<p><strong>平準化フィルタ</strong></p>
+<p>まずは平準化フィルタです。</p>
+<ul>
+<li><strong>平均化フィルタ (Averaging Filter)</strong></li>
+<li><strong>ガウシアンフィルタ (Gaussian Filter)</strong></li>
+<li><strong>メディアンフィルタ (Median Filter)</strong></li>
+<li><strong>バイラテラルフィルタ (Bilateral Filter)</strong></li>
+</ul>
+<p>この並びの上にいくほど、平準化はしつつ輪郭もぼかすことになります。
+下に並んでいるフィルタ手法ほど輪郭は保持しつつ、データのギザギザを除去することが出来ます。</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\image_filtering\image\README\1772361052346.png" alt="1772361052346"></p>
+<p><strong>鋭鋭化・エッジ抽出フィルタ</strong></p>
+<p>次は輪郭強調フィルタです。
+画像の中の勾配が大きい＝輪郭となる箇所を検出する手法です。</p>
+<ul>
+<li><strong>ラプラシアンフィルタ (Laplacian Filter)</strong></li>
+<li><strong>ソーベルフィルタ (Sobel Filter)</strong></li>
+<li><strong>Canny法 (Canny Edge Detector)</strong></li>
+</ul>
+<ul>
+<li>Sobel/Laplacian: 画像の輝度勾配を計算します。</li>
+<li>Canny: 内部でガウシアンフィルタによる平滑化を行ってからエッジを探すため、Sobelよりもノイズに強く、細い線としてエッジを返します。</li>
+</ul>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\image_filtering\image\README\1772361595897.png" alt="1772361595897"></p>
+<p><strong>周波数ドメイン・フィルタ</strong></p>
+<p>最期に画像の周波数に応じてフィルタリングを行う手法です。
+画像を「色（輝度）」ではなく「波の速さ（周波数）」で分解します。</p>
+<ul>
+<li>Low-pass: 中心（低周波）の情報を残し、外側（高周波）をカットします。Gaussianフィルタと似た効果ですが、より厳密な帯域制限が可能です。</li>
+<li>High-pass: 中心をカットします。画像全体の「明るさ」が消え、急激に変化する「輪郭」や「微細な点」だけが浮き上がります。</li>
+</ul>
+<p>今回画像は比較的に単調な画像だったため低周波側がほぼオリジナルの画像通り。
+高周波側は一部の建物の輪郭のみが見えています。</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\anormaly_detect_techs\techs\image_filtering\image\README\1772361730349.png" alt="1772361730349"></p>
+<h2 id="総括">総括</h2>
+<p>画像処理は用途が広いですが、取得した画像を出来る限り理想的な状態に持っていくことで良い結果が得られます。
+そのための前処理の手段としてフィルタリングが存在します。</p>
+<p>良い精度を求められる場合、利用を検討ください。</p>
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+ 
+            
+        </body>
+        </html>
