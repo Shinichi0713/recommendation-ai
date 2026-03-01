@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>What Are the Primal and Dual Problems&quest;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+/* Amazonカード型のオシャレなデザイン */
+.shop-card {
+    display: flex;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* マウスホップした時の動き */
+.shop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.shop-card-image {
+    width: 150px;
+    min-width: 150px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-card-image img {
+    max-width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.shop-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shop-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shop-card-description {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* Amazonらしいオレンジボタン */
+.shop-card-link a {
+    display: inline-block;
+    background-color: #ff9900;
+    color: #fff !important;
+    text-decoration: none !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.shop-card-link a:hover {
+    background-color: #e68a00;
+}
+
+/* スマホ対応：縦並びにする */
+@media (max-width: 480px) {
+    .shop-card {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    .shop-card-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>Menu</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+
+            <p>In optimization theory, the problem originally posed is called the <strong>primal problem</strong>.
+From the constraints of the primal, we can derive a corresponding <strong>dual problem</strong>, in which those constraints effectively become part of a new objective structure.</p>
+<p>Today, we will explore this concept of the dual problem in depth.</p>
+<hr>
+<h1 id="what-are-the-primal-and-dual-problems">What Are the Primal and Dual Problems?</h1>
+<p>In optimization, <strong>duality</strong> refers to viewing a problem from an alternative but mathematically equivalent perspective.</p>
+<ul>
+<li>The original formulation is called the <strong>Primal Problem</strong>.</li>
+<li>The structurally linked counterpart is called the <strong>Dual Problem</strong>.</li>
+</ul>
+<p>They describe the same underlying economic or physical reality—but from different angles.</p>
+<hr>
+<h2 id="1-difference-in-perspective-producer-vs-resource-valuator">1. Difference in Perspective: Producer vs. Resource Valuator</h2>
+<p>Using the earlier juice factory example makes the idea intuitive.</p>
+<h3 id="the-juice-factory-example">The Juice Factory Example</h3>
+<p>Suppose you are the manager of a juice factory.
+Using apples and oranges, you produce two types of juice:</p>
+<ul>
+<li>Special Mix</li>
+<li>Rich Blend</li>
+</ul>
+<p>Your goal is to allocate limited fruit inventory to <strong>maximize revenue</strong>.</p>
+<hr>
+<p>The primal and dual problems reinterpret this same situation from “offense” and “defense” perspectives.</p>
+<table>
+<thead>
+<tr>
+<th>Perspective</th>
+<th>Primal Problem</th>
+<th>Dual Problem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main actor</td>
+<td>Factory manager (producer)</td>
+<td>Resource evaluator (strategic decision-maker)</td>
+</tr>
+<tr>
+<td>Objective</td>
+<td>Maximize revenue</td>
+<td>Minimize total resource value (cost)</td>
+</tr>
+<tr>
+<td>Variables</td>
+<td>Production quantities ((x, y))</td>
+<td>Value per gram of resources ((u, v))</td>
+</tr>
+<tr>
+<td>Constraints</td>
+<td>Inventory limits</td>
+<td>Production cost must cover profit</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-the-dual-problem-in-the-juice-factory">2. The Dual Problem in the Juice Factory</h2>
+<p>The primal problem asks:</p>
+<blockquote>
+<p>“How much profit can we earn using available materials?”</p>
+</blockquote>
+<p>The dual problem asks:</p>
+<blockquote>
+<p>“How should we evaluate the intrinsic value of apples and oranges?”</p>
+</blockquote>
+<hr>
+<h3 id="intuition-behind-the-dual">Intuition Behind the Dual</h3>
+<p>Suppose another company offers to buy all your apples and oranges.
+At what price per gram should you sell them?</p>
+<p>Define:</p>
+<ul>
+<li>( u ): value (shadow price) of 1g of apples</li>
+<li>( v ): value (shadow price) of 1g of oranges</li>
+</ul>
+<hr>
+<h3 id="dual-constraints-justifying-the-value">Dual Constraints (Justifying the Value)</h3>
+<p>The offered valuation must not undervalue what you could earn by making juice.</p>
+<ul>
+<li>
+<p><strong>Special Mix constraint</strong>:
+[
+100u + 200v \ge 500
+]</p>
+</li>
+<li>
+<p><strong>Rich Blend constraint</strong>:
+[
+200u + 100v \ge 400
+]</p>
+</li>
+</ul>
+<p>These inequalities ensure that selling the raw materials does not yield less than producing juice.</p>
+<hr>
+<h3 id="dual-objective">Dual Objective</h3>
+<p>The buyer wants to minimize the total purchase cost:</p>
+<p>[
+\text{Minimize } 2000u + 2000v
+]</p>
+<hr>
+<h1 id="why-do-we-need-the-primaldual-framework">Why Do We Need the Primal–Dual Framework?</h1>
+<p>Considering both primal and dual problems is not merely a mathematical curiosity. It has three major practical benefits:</p>
+<ol>
+<li><strong>Managerial insight</strong></li>
+<li><strong>Computational efficiency</strong></li>
+<li><strong>Verification of optimality</strong></li>
+</ol>
+<hr>
+<h2 id="1-shadow-prices-provide-strategic-insight">1. Shadow Prices Provide Strategic Insight</h2>
+<p>Solving only the primal tells us:</p>
+<blockquote>
+<p>“How much profit can we earn with current inventory?”</p>
+</blockquote>
+<p>Solving the dual tells us:</p>
+<blockquote>
+<p>“How much additional profit would one more unit of resource generate?”</p>
+</blockquote>
+<p>Example:</p>
+<ul>
+<li>Suppose the shadow price of apples is 2 yen per gram.</li>
+<li>If the market price is 1.5 yen per gram, you should buy more apples.</li>
+<li>You are mathematically guaranteed that spending 1.5 yen yields 2 yen in marginal value.</li>
+</ul>
+<p>Conversely, if a resource has a shadow price of 0, it means the resource is abundant and acquiring more adds no value.</p>
+<hr>
+<h2 id="2-computation-can-become-dramatically-faster">2. Computation Can Become Dramatically Faster</h2>
+<p>Optimization problems consist of:</p>
+<ul>
+<li>Number of variables</li>
+<li>Number of constraints</li>
+</ul>
+<p>Consider:</p>
+<ul>
+<li><strong>Primal</strong>: 1,000,000 variables, 10 constraints</li>
+<li><strong>Dual</strong>: 10 variables, 1,000,000 constraints</li>
+</ul>
+<p>In many cases, problems with fewer variables are easier to solve—even if they have many constraints.</p>
+<p>By “flipping” the problem into its dual, an otherwise intractable computation may become feasible without supercomputing resources.</p>
+<hr>
+<h2 id="3-a-certificate-of-optimality">3. A Certificate of Optimality</h2>
+<p>For complex problems, we may not be certain whether the computed solution is truly globally optimal.</p>
+<p>Duality provides theoretical guarantees:</p>
+<ul>
+<li><strong>Weak duality</strong>:
+The primal maximum is always ≤ the dual minimum.</li>
+<li><strong>Duality gap</strong>:
+If the primal and dual objective values are equal, then the solution is provably optimal.</li>
+</ul>
+<p>When the duality gap is zero, we have mathematical proof of optimality.
+This is often used as a stopping criterion in algorithms.</p>
+<hr>
+<h2 id="4-essential-in-machine-learning">4. Essential in Machine Learning</h2>
+<p>Modern AI models such as the
+Support Vector Machine (SVM)
+benefit greatly from dual formulations.</p>
+<p>In SVM:</p>
+<ul>
+<li>Solving the primal directly can be computationally expensive in high dimensions.</li>
+<li>Solving the dual enables the <strong>kernel method</strong>, allowing implicit computations in extremely high—even infinite—dimensional spaces.</li>
+</ul>
+<p>Without duality, many modern image recognition techniques might not exist.</p>
+<hr>
+<h1 id="when-is-the-dual-especially-useful">When Is the Dual Especially Useful?</h1>
+<p>Dualization is particularly powerful when:</p>
+<blockquote>
+<p>The number of variables is enormous, but the number of constraints is small.</p>
+</blockquote>
+<p>Examples include:</p>
+<hr>
+<h2 id="1-svm-and-the-kernel-trick">1. SVM and the Kernel Trick</h2>
+<p>In high-dimensional classification problems:</p>
+<ul>
+<li>The primal depends on feature dimensionality.</li>
+<li>The dual depends on the number of data samples instead.</li>
+</ul>
+<p>This allows computation in effectively infinite-dimensional spaces using only pairwise kernel evaluations.</p>
+<hr>
+<h2 id="2-column-generation-large-scale-scheduling">2. Column Generation (Large-Scale Scheduling)</h2>
+<p>In airline crew scheduling or vehicle routing, possible combinations may exceed hundreds of millions.</p>
+<ul>
+<li><strong>Primal issue</strong>: Too many variables to store in memory.</li>
+<li><strong>Dual-based approach (Column Generation)</strong>:
+Use shadow prices to generate only promising candidate routes dynamically.</li>
+</ul>
+<p>Instead of handling millions of variables, only dozens or hundreds are considered.</p>
+<hr>
+<h2 id="3-maximum-flow-and-minimum-cut">3. Maximum Flow and Minimum Cut</h2>
+<p>In networks (internet, transportation), we may ask:</p>
+<blockquote>
+<p>What is the maximum flow from point A to B?</p>
+</blockquote>
+<ul>
+<li><strong>Primal (Maximum Flow)</strong>: Decide flow amounts on all edges.</li>
+<li><strong>Dual (Minimum Cut)</strong>: Find the minimal-cost separation that disconnects A and B.</li>
+</ul>
+<p>The dual viewpoint simplifies structure and enables efficient algorithms such as the
+Ford–Fulkerson algorithm.</p>
+<hr>
+<h1 id="numerical-experiment-juice-factory">Numerical Experiment: Juice Factory</h1>
+<p>Let us solve both the primal and dual problems computationally.</p>
+<hr>
+<h2 id="problem-setup">Problem Setup</h2>
+<h3 id="decision-variables">Decision Variables</h3>
+<ul>
+<li>( x ): Special Mix production</li>
+<li>( y ): Rich Blend production</li>
+</ul>
+<h3 id="constraints">Constraints</h3>
+<ul>
+<li>Apples:
+[
+100x + 200y \le 2000
+]</li>
+<li>Oranges:
+[
+200x + 100y \le 2000
+]</li>
+<li>Non-negativity:
+[
+x \ge 0, \quad y \ge 0
+]</li>
+</ul>
+<h3 id="objective">Objective</h3>
+<p>[
+\text{Maximize } z = 500x + 400y
+]</p>
+<hr>
+<h2 id="dual-formulation">Dual Formulation</h2>
+<p>[
+\text{Minimize } w = 2000u + 2000v
+]</p>
+<p>Subject to:</p>
+<p>[
+100u + 200v \ge 500
+]
+[
+200u + 100v \ge 400
+]</p>
+<hr>
+<h2 id="python-implementation">Python Implementation</h2>
+<p>Using the SciPy optimization library (<code>scipy.optimize.linprog</code>),
+note that it performs minimization by default, so we negate the primal objective.</p>
+<p>Results:</p>
+<pre><code>=== Primal Result ===
+Optimal production: 6.67 cups (Special), 6.67 cups (Rich)
+Maximum revenue: 6000 yen
+
+=== Dual Result ===
+Apple value (u): 1.00 yen/g
+Orange value (v): 2.00 yen/g
+Minimum resource value: 6000 yen
+</code></pre>
+<hr>
+<h2 id="interpretation-of-results">Interpretation of Results</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Primal (Producer)</th>
+<th>Dual (Resource)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Derived values</td>
+<td>6.67, 6.67</td>
+<td>1.00, 2.00</td>
+</tr>
+<tr>
+<td>Objective value</td>
+<td><strong>6,000 yen</strong></td>
+<td><strong>6,000 yen</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="key-observations">Key Observations</h3>
+<ol>
+<li>
+<p><strong>Strong Duality</strong>
+Maximum revenue equals minimum resource value (6,000 yen).
+This proves optimality.</p>
+</li>
+<li>
+<p><strong>Shadow Prices</strong>
+Apples: 1 yen/g
+Oranges: 2 yen/g</p>
+</li>
+<li>
+<p><strong>Managerial Insight</strong>
+Oranges are twice as valuable as apples.
+If purchasing additional materials, oranges should be prioritized.</p>
+</li>
+</ol>
+<hr>
+<h1 id="conclusion">Conclusion</h1>
+<p>We examined:</p>
+<ul>
+<li>The conceptual meaning of primal and dual problems</li>
+<li>Their economic interpretation</li>
+<li>Practical advantages such as shadow pricing and computational gains</li>
+<li>Concrete numerical validation through a linear programming example</li>
+</ul>
+<p>When a primal problem suffers from an explosion in explanatory variables, consider deriving and solving its dual.
+Duality is not merely theoretical elegance—it is a powerful practical instrument in optimization and modern AI.</p>
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+            
+        </body>
+        </html>

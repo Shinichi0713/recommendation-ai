@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>What Is a Tensor&quest;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+/* Amazonカード型のオシャレなデザイン */
+.shop-card {
+    display: flex;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* マウスホップした時の動き */
+.shop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.shop-card-image {
+    width: 150px;
+    min-width: 150px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-card-image img {
+    max-width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.shop-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shop-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shop-card-description {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* Amazonらしいオレンジボタン */
+.shop-card-link a {
+    display: inline-block;
+    background-color: #ff9900;
+    color: #fff !important;
+    text-decoration: none !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.shop-card-link a:hover {
+    background-color: #e68a00;
+}
+
+/* スマホ対応：縦並びにする */
+@media (max-width: 480px) {
+    .shop-card {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    .shop-card-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>Menu</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+            <p>Below is a complete English translation of your text, preserving all information and structure.</p>
+<hr>
+<p>When AI is used, tensors are always involved in the computation.
+Tensor computation is often explained with the nuance that it is essentially performing matrix addition and multiplication.</p>
+<p>So then—what exactly <em>is</em> a “tensor”?</p>
+<p>Today, I would like to explain this to readers who have had that very question.</p>
+<hr>
+<h2 id="what-is-a-tensor">What Is a Tensor?</h2>
+<p>In one sentence, a tensor is <strong>a general term for multidimensional arrays that encompass scalars, vectors, and matrices.</strong></p>
+<p>It is easiest to understand tensors as a hierarchical structure whose name changes depending on how many “axes (dimensions)” the data has.</p>
+<p>The number of axes along which values are arranged is called the <strong>order (or rank)</strong> of the tensor.</p>
+<ul>
+<li><strong>0th-order tensor: Scalar</strong></li>
+</ul>
+<p>A value with no direction—just a number.</p>
+<p>Examples: temperature, mass.</p>
+<ul>
+<li><strong>1st-order tensor: Vector</strong></li>
+</ul>
+<p>A sequence of numbers arranged along one direction.</p>
+<p>Examples: wind velocity (magnitude and direction), coordinates.</p>
+<ul>
+<li><strong>2nd-order tensor: Matrix</strong></li>
+</ul>
+<p>A table of numbers with two axes: vertical and horizontal.</p>
+<p>Examples: linear transformations, pixel intensities of a grayscale image.</p>
+<ul>
+<li><strong>3rd-order or higher tensor: Tensor</strong></li>
+</ul>
+<p>A block of numbers with three or more axes, such as depth or time.</p>
+<p>Examples: color images (height × width × RGB), videos (height × width × color × time).</p>
+<hr>
+<h3 id="why-not-just-stop-at-matrix-why-call-it-a-tensor">Why Not Just Stop at “Matrix”? Why Call It a “Tensor”?</h3>
+<p>Beyond being a mere container of numbers, tensors in mathematics and physics follow important rules.</p>
+<ul>
+<li><strong>Handling multi-directional changes simultaneously</strong></li>
+</ul>
+<p>For example, when you squeeze a sponge, not only compressive forces but also twisting forces arise internally.
+To describe this properly, a single direction (vector) is insufficient—you need a tensor that captures the state in all directions simultaneously.</p>
+<ul>
+<li><strong>Coordinate-independent properties</strong></li>
+</ul>
+<p>Tensors are defined so that their physical essence (such as spacetime curvature or stress) remains correctly described regardless of the angle or coordinate system from which they are observed.</p>
+<hr>
+<h2 id="the-relationship-between-tensors-and-matrices">The Relationship Between Tensors and Matrices</h2>
+<p>In short, <strong>a tensor is a generalization of a matrix to higher dimensions.</strong></p>
+<p>A matrix has two axes (rows and columns), whereas a tensor can have three, four, or more axes.</p>
+<hr>
+<h3 id="1-hierarchical-structure-by-order">1. Hierarchical Structure by Order</h3>
+<p>The terminology changes according to the number of axes (dimensions).
+In mathematics and data science, this number is called the  <strong>order (or rank)</strong> .</p>
+<ul>
+<li><strong>0th-order tensor: Scalar</strong>
+A single value (e.g., <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span>). No direction.</li>
+<li><strong>1st-order tensor: Vector</strong>
+A one-dimensional sequence (e.g., <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1, 2, 3]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">]</span></span></span></span>). One axis.</li>
+<li><strong>2nd-order tensor: Matrix</strong>
+A two-dimensional array with row and column axes.</li>
+<li><strong>3rd-order or higher tensor: Multidimensional array</strong></li>
+</ul>
+<hr>
+<h3 id="2-the-crucial-differences-between-matrices-and-tensors">2. The Crucial Differences Between Matrices and Tensors</h3>
+<p>Two key points are important for understanding their relationship:</p>
+<h4 id="-structural-difference-as-data">① Structural Difference as Data</h4>
+<p>A matrix is planar data, while a 3rd-order or higher tensor resembles a “stack of matrices.”</p>
+<p>Example: <strong>Color image data</strong></p>
+<p>An image has vertical pixels, horizontal pixels, and color channels (RGB).
+This is treated as a <strong>3rd-order tensor</strong> of shape (height × width × 3).</p>
+<hr>
+<h4 id="-difference-in-coordinate-transformation-rules-mathematicalphysical-definition">② Difference in Coordinate Transformation Rules (Mathematical/Physical Definition)</h4>
+<p>A tensor in strict mathematics and physics is not merely a box of numbers.
+It has the defining property that <strong>its components transform according to specific rules when the coordinate system changes.</strong></p>
+<ul>
+<li>A matrix strongly represents a <strong>linear transformation</strong> (a tool that maps vectors to other vectors).</li>
+<li>A tensor more generally describes phenomena such as spatial distortion (stress tensors) or distributed physical quantities in a coordinate-independent way.</li>
+</ul>
+<hr>
+<h3 id="3-why-do-we-often-hear-the-word-tensor">3. Why Do We Often Hear the Word “Tensor”?</h3>
+<p>In recent years, the term “tensor” has become common in AI and deep learning, largely due to libraries such as  <strong>TensorFlow</strong> , developed by  <strong>Google</strong> .</p>
+<ul>
+<li><strong>Processing multidimensional data</strong>
+AI processes large amounts of images, videos, and text. These are most efficiently handled as multidimensional arrays (tensors), such as (number of samples × height × width × color).</li>
+<li><strong>Extension of matrix operations</strong>
+Tensor operations extend matrix algebra into higher dimensions and form the mathematical foundation of modern AI.</li>
+</ul>
+<hr>
+<h2 id="rules-of-computation">Rules of Computation</h2>
+<p>Are matrix and tensor computations the same?</p>
+<p>The conclusion is:</p>
+<p><strong>Matrix computation is a special case of tensor computation, but tensor computation is not equivalent to matrix computation.</strong></p>
+<p>Since a matrix is merely a 2nd-order tensor, higher-order tensors introduce new rules and complexities.</p>
+<p>Three main differences:</p>
+<hr>
+<h3 id="1-explosion-of-multiplication-patterns">1. Explosion of Multiplication Patterns</h3>
+<p>Matrix multiplication essentially follows one pattern: row × column.</p>
+<p>For tensors, you must decide <strong>which axes to multiply together.</strong></p>
+<ul>
+<li><strong>Matrix (2nd-order):</strong> Only two axes (row and column), so multiplication direction is fixed.</li>
+<li><strong>3rd-order tensor:</strong> Three axes (height, width, depth). You may contract A’s depth with B’s height, or A’s width with B’s depth, etc.
+This is mathematically called  <strong>contraction</strong> .</li>
+</ul>
+<hr>
+<h3 id="2-tensor-product-extension-of-matrix-multiplication">2. Tensor Product (Extension of Matrix Multiplication)</h3>
+<p>Beyond matrix multiplication, tensors also allow the <strong>tensor product</strong> (a generalization of the outer product).</p>
+<ul>
+<li><strong>Dimensions increase:</strong>
+Vector (1st-order) × Vector (1st-order) → Matrix (2nd-order).
+Matrix × Vector via tensor product → 3rd-order tensor.</li>
+</ul>
+<p>Unlike matrix multiplication, the order increases as you compute.</p>
+<hr>
+<h3 id="3-difficulty-of-decomposition-lack-of-inverse-and-eigenvalues">3. Difficulty of Decomposition (Lack of Inverse and Eigenvalues)</h3>
+<p>Tools common in matrix algebra do not generalize easily.</p>
+<ul>
+<li><strong>No simple inverse tensor:</strong>
+An “inverse tensor” cannot be defined as straightforwardly as a matrix inverse.</li>
+<li><strong>Eigenvalue problem:</strong>
+Matrix eigenvalues have elegant properties.
+Tensor eigenvalues have multiple definitions and are computationally very difficult (known to be NP-hard).</li>
+</ul>
+<hr>
+<h3 id="4-why-are-tensor-calculations-often-treated-as-matrix-calculations">4. Why Are Tensor Calculations Often Treated as Matrix Calculations?</h3>
+<p>In programming (NumPy, PyTorch), tensors are often <strong>flattened/unfolded</strong> into large matrices.</p>
+<p>A 3rd-order block is rearranged into a giant matrix so that existing optimized matrix algorithms can be reused.</p>
+<hr>
+<h2 id="example-tensor-computation">Example: Tensor Computation</h2>
+<p>As an example from AI (deep learning), consider  <strong>convolution</strong> , one of the most fundamental operations.</p>
+<p>We simulate applying a filter (weight tensor) to a color image tensor (height × width × RGB) to produce one feature map.</p>
+<p>(The Python code remains exactly as written above.)</p>
+<hr>
+<h3 id="result">Result</h3>
+<p>When executing the code, we observe:</p>
+<p>The crucial point of tensor computation is that the three dimensions (height, width, channels) are processed simultaneously as a single block.</p>
+<p>Matrix computation typically involves two axes (rows and columns).
+In the AI example, three axes interact simultaneously:</p>
+<ul>
+<li>Axis 1: Image height (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span>)</li>
+<li>Axis 2: Image width (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>)</li>
+<li>Axis 3: Color channel (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>)</li>
+</ul>
+<hr>
+<h3 id="decisive-difference-from-matrix-computation">Decisive Difference from Matrix Computation</h3>
+<p>If treated purely as matrix operations:</p>
+<ul>
+<li>Compute R matrix</li>
+<li>Compute G matrix</li>
+<li>Compute B matrix</li>
+<li>Sum them afterward</li>
+</ul>
+<p>In tensor computation, the RGB information at each location is processed together in one multidimensional array.</p>
+<hr>
+<h3 id="tensor-specific-points-in-this-computation">Tensor-Specific Points in This Computation</h3>
+<ul>
+<li><strong>3rd-order tensor × 3rd-order tensor</strong></li>
+</ul>
+<p>Input data (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>×</mo><mn>10</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">10 × 10 × 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>) interacts with a filter (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mn>3</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">3 × 3 × 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>).
+Color and spatial structure are processed simultaneously.</p>
+<ul>
+<li><strong>Tensor contraction</strong></li>
+</ul>
+<p><code>np.sum(region * kernel)</code> multiplies corresponding elements and sums them, extracting a scalar from high-order data.</p>
+<ul>
+<li><strong>Nonlinear transformation</strong></li>
+</ul>
+<p>Applying <code>maximum(0, output_map)</code> (ReLU) introduces nonlinearity—something pure linear algebra cannot achieve alone.</p>
+<hr>
+<h2 id="overall-summary">Overall Summary</h2>
+<p>We have examined tensors from conceptual foundations to practical AI usage.</p>
+<h3 id="why-tensors-instead-of-matrices">Why Tensors Instead of Matrices?</h3>
+<ul>
+<li><strong>Preserving multifaceted information:</strong>
+Images (height, width, RGB) and videos (height, width, color, time) must be processed as unified blocks.</li>
+<li><strong>Interactions across dimensions:</strong>
+Features such as “red edges” or motion over time span multiple axes.</li>
+<li><strong>Coordinate invariance:</strong>
+In physics, tensors serve as a universal language ensuring laws remain consistent across coordinate systems.</li>
+</ul>
+<hr>
+<h3 id="reality-in-ai-computation">Reality in AI Computation</h3>
+<p>AI (deep learning) is fundamentally about <strong>transforming and compressing high-order tensors.</strong></p>
+<ul>
+<li><strong>Convolution:</strong> Extracting important features via interaction between input and weight tensors.</li>
+<li><strong>Tensor contraction:</strong> Reducing order along specific axes.</li>
+<li><strong>Batch processing:</strong> Real systems use 4th-order tensors (e.g., batch × height × width × channel) for efficiency.</li>
+</ul>
+<hr>
+<h3 id="relationship-with-matrix-computation">Relationship with Matrix Computation</h3>
+<ul>
+<li><strong>Containment:</strong> Matrix computation is a special 2D case of tensor computation.</li>
+<li><strong>Implementation trick:</strong> Internally, tensors are often flattened into large matrices to leverage optimized linear algebra routines.</li>
+</ul>
+<hr>
+<p>Finally, I would like to introduce a book for learning the computation and principles of neural networks.
+It explains from the basics the logic of processing blocks of data using tensors.
+Please consider it as a reference.</p>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+
+        </body>
+        </html>

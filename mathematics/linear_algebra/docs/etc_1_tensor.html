@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x30c6;&#x30f3;&#x30bd;&#x30eb;&#x3063;&#x3066;&#x4f55;&#x3084;&#x306d;&#x3093;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+/* Amazonカード型のオシャレなデザイン */
+.shop-card {
+    display: flex;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* マウスホップした時の動き */
+.shop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.shop-card-image {
+    width: 150px;
+    min-width: 150px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-card-image img {
+    max-width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.shop-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shop-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shop-card-description {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* Amazonらしいオレンジボタン */
+.shop-card-link a {
+    display: inline-block;
+    background-color: #ff9900;
+    color: #fff !important;
+    text-decoration: none !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.shop-card-link a:hover {
+    background-color: #e68a00;
+}
+
+/* スマホ対応：縦並びにする */
+@media (max-width: 480px) {
+    .shop-card {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    .shop-card-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+
+            <p>AIを使う場合、計算には必ずテンソルが使われています。
+テンソルの計算は行列の和積を行っている、というニュアンスの説明されていることが多いと思います。</p>
+<p>では、&quot;テンソル&quot;ってなんやねん？。
+本日はそう思う読者に説明したい内容です。</p>
+<h2 id="テンソルって何やねん">テンソルって何やねん</h2>
+<p>テンソルとは、一言で言えば <strong>「スカラー、ベクトル、行列をすべて飲み込んだ、多次元配列の総称」</strong> です。</p>
+<p>データの「軸（次元）」がいくつあるかによって、呼び方が変わる階層構造だと考えると分かりやすいです。</p>
+<p>テンソルは、その数値が並んでいる「方向（軸）の数」を階数と呼びます。</p>
+<ul>
+<li>0階テンソル：スカラー (Scalar)</li>
+</ul>
+<p>方向を持たない、ただの「数値」。</p>
+<p>例：温度、質量。</p>
+<ul>
+<li>1階テンソル：ベクトル (Vector)</li>
+</ul>
+<p>1つの方向に並んだ「数値の列」。</p>
+<p>例：風速（向きと強さ）、座標。</p>
+<ul>
+<li>2階テンソル：行列 (Matrix)</li>
+</ul>
+<p>縦と横の2つの軸を持つ「数値の表」。</p>
+<p>例：線形写像、2次元画像の輝度値。</p>
+<ul>
+<li>3階以上のテンソル：(Tensor)</li>
+</ul>
+<p>奥行きや時間など、3つ以上の軸を持つ「数値の塊」。</p>
+<p>例：カラー画像（縦×横×RGB）、動画（縦×横×色×時間）。</p>
+<p><strong>なんぜ「行列」で止めずに「テンソル」と呼んでんねん</strong></p>
+<p>単なる数字の箱としての側面に加え、数学や物理学では重要なルールがあります。</p>
+<ul>
+<li>多方向への変化を一度に扱う:</li>
+</ul>
+<p>例えば、スポンジをギュッと握ったとき、内部には「押す力」だけでなく「ねじれる力」が複雑に発生します。これを記述するには、1つの方向（ベクトル）では足りず、全方向の状態をセットにした「テンソル」が必要になります。</p>
+<ul>
+<li>座標系に依存しない性質:</li>
+</ul>
+<p>どの角度から眺めても、その物理的な本質（時空の歪みや応力など）が正しく伝わるように記述するルールが備わっています。</p>
+<h2 id="テンソルと行列の関係">テンソルと行列の関係</h2>
+<p>テンソルと行列の関係をひとことで言えば、 <strong>「テンソルは、行列をさらに多次元へと拡張した概念」</strong> です。</p>
+<p>行列は「行と列」という2つの方向（軸）を持つ数値の広がりですが、テンソルは3つ、4つ、あるいはそれ以上の軸を持つことができます。</p>
+<h3 id="1-階数による階層構造">1. 階数による階層構造</h3>
+<p>テンソルは、その「軸（次元）の数」に応じて呼び方が変わります。数学やデータサイエンスでは、この軸の数を <strong>「階数（Order / Rank）」</strong> と呼びます。</p>
+<ul>
+<li>
+<p><strong>0階テンソル：スカラー（Scalar）</strong></p>
+</li>
+<li>
+<p>単一の数値（例：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span>）。方向を持ちません。</p>
+</li>
+<li>
+<p><strong>1階テンソル：ベクトル（Vector）</strong></p>
+</li>
+<li>
+<p>数値の1次元的な並び（例：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[1, 2, 3]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">]</span></span></span></span>）。1つの方向に軸を持ちます。</p>
+</li>
+<li>
+<p><strong>2階テンソル：行列（Matrix）</strong></p>
+</li>
+<li>
+<p>数値の2次元的な広がり。縦（行）と横（列）の2つの軸を持ちます。</p>
+</li>
+<li>
+<p><strong>3階以上のテンソル：多次元配列（Tensor）</strong></p>
+</li>
+<li>
+<p>行・列に加えて「奥行き」などが加わったもの。</p>
+</li>
+</ul>
+<h3 id="2-行列とテンソルの決定的な違い">2. 行列とテンソルの決定的な違い</h3>
+<p>行列とテンソルの関係を理解する上で重要なポイントは以下の2点です。</p>
+<p><strong>① データの構造としての違い</strong></p>
+<p>行列は平面的なデータ表ですが、3階以上のテンソルは「行列を積み重ねたブロック」のような構造になります。</p>
+<ul>
+<li><strong>例：カラー画像データ</strong></li>
+<li>画像は「縦のピクセル」「横のピクセル」に加えて、色情報として「RGB（赤・緑・青）」の3つのチャンネルを持ちます。これは <strong>(縦 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 横 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 3)</strong> という<strong>3階テンソル</strong>として扱われます。</li>
+</ul>
+<p><strong>② 座標変換のルールとしての違い（物理・数学的定義）</strong></p>
+<p>単なる「数字の箱」ではなく、厳密な数学・物理学におけるテンソルには <strong>「座標系を変えたときに、一定の規則に従って成分が変換される」</strong> という性質が含まれます。</p>
+<ul>
+<li>行列は「線形写像（ベクトルを別のベクトルへ飛ばす道具）」としての側面が強いです。</li>
+<li>テンソルは、より一般的に「空間の歪み（歪力テンソル）」や「物理量の広がり」を、どの視点から見ても一貫して記述するための道具です。</li>
+</ul>
+<h3 id="3-なぜテンソルという言葉をよく聞くのか">3. なぜ「テンソル」という言葉をよく聞くのか？</h3>
+<p>最近、AIやディープラーニングの文脈で「テンソル」という言葉が多用されるのは、Googleが開発したAIライブラリ <strong>TensorFlow</strong> などの影響が大きいです。</p>
+<ul>
+<li><strong>多次元データの処理:</strong> AIは、大量の画像や動画、テキストデータを一括で処理します。これらは「(データの個数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 縦 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 横 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 色)」といった多次元配列（テンソル）として扱うのが最も効率的なのです。</li>
+<li><strong>行列演算の拡張:</strong> テンソル演算は、行列計算（線形代数）を多次元に拡張したものであり、現在のAI技術の数学的基盤となっています。</li>
+</ul>
+<h3 id="4-まとめ">4. まとめ</h3>
+<ul>
+<li><strong>行列</strong> ＝ 2つの軸を持つ特別なテンソル。</li>
+<li><strong>テンソル</strong> ＝ スカラー、ベクトル、行列をすべて包含する、多次元の数値データ構造の総称。</li>
+</ul>
+<h2 id="計算のルール">計算のルール</h2>
+<p>行列とテンソルの計算は一緒なのか。</p>
+<p>結論から言うと、 <strong>「行列の計算はテンソル計算の一部（特殊なケース）」</strong> ですが、 <strong>「テンソル計算＝行列計算」ではありません。</strong></p>
+<p>行列は「2階のテンソル」に過ぎないため、3階以上のテンソルになると、行列計算にはなかった新しいルールや複雑さが加わります。</p>
+<p>主な違いを3つのポイントで整理します。</p>
+<h3 id="1-掛け算のパターンの激増">1. 掛け算のパターンの激増</h3>
+<p>行列の掛け算は「行×列」の1パターンが基本ですが、テンソルの場合、 <strong>「どの軸（次元）同士を掛け合わせるか」</strong> を選択する必要があります。</p>
+<ul>
+<li><strong>行列（2階）:</strong> 軸が2つ（行と列）しかないので、掛ける方向はほぼ決まっています。</li>
+<li><strong>3階テンソル:</strong> 軸が3つ（縦・横・奥行き）あります。「Aの奥行き」と「Bの縦」を掛けるのか、「Aの横」と「Bの奥行き」を掛けるのかなど、組み合わせが自由になります。これを数学的には <strong>「縮約（Contraction）」</strong> と呼びます。</li>
+</ul>
+<h3 id="2-行列の積を拡張したテンソル積">2. 「行列の積」を拡張した「テンソル積」</h3>
+<p>行列同士の掛け算は、結果としてまた「行列」になりますが、テンソルの世界には <strong>テンソル積（外積の拡張）</strong> という計算があります。</p>
+<ul>
+<li><strong>次元が増える:</strong> ベクトル（1階）とベクトル（1階）をテンソル積で計算すると、行列（2階）が生まれます。行列とベクトルを掛け合わせると3階テンソルになります。</li>
+<li>計算するほどに「データの次元（階数）」が積み上がっていくのが、行列計算にはない特徴です。</li>
+</ul>
+<h3 id="3-分解の難しさ逆行列や固有値の不在">3. 分解の難しさ（逆行列や固有値の不在）</h3>
+<p>行列計算で当たり前に使っていた道具が、3階以上のテンソルではそのまま使えません。</p>
+<ul>
+<li><strong>逆行列がない:</strong> 「逆テンソル」という概念は、行列のように単純には定義できません。</li>
+<li><strong>固有値問題:</strong> 行列の固有値は一意に決まるなど美しい性質がありますが、テンソルの「固有値」は定義の仕方が複数あり、計算も非常に困難（NP困難）になることが知られています。</li>
+</ul>
+<h3 id="4-なぜ行列計算として扱われることが多いのか">4. なぜ「行列計算」として扱われることが多いのか？</h3>
+<p>プログラミング（PythonのNumPyやPyTorchなど）の世界では、テンソルを計算する際に <strong>「行列に無理やり平坦化（Unfolding / Flattening）」</strong> して処理することがよくあります。</p>
+<ul>
+<li>3階のブロック状のデータを、薄くスライスして並べ直し、巨大な「行列」として扱うことで、既存の高速な行列計算アルゴリズムを使い回しているのです。</li>
+</ul>
+<p><strong>例題:</strong> テンソル計算</p>
+<p>ここまで説明してきたところで、テンソル計算を見てみます。</p>
+<p>例題として、AIの計算（ディープラーニング）における最も基本的な演算である、 <strong>「畳み込み（Convolution）」</strong> を扱います。</p>
+<p>今回は、カラー画像（3階テンソル：縦 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 横 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> RGB）に対して、AIが「特徴」を抽出する際の畳み込み演算を模したコードを作成します。</p>
+<p>このコードでは、3チャンネル（RGB）の入力テンソルに対して、フィルター（重みテンソル）を適用し、1枚の特徴マップを出力する様子をシミュレーションします。</p>
+<pre><code class="language-python">
+<span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np
+<span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">simulate_ai_convolution</span>():
+    <span class="hljs-comment"># 1. 入力テンソルの作成 (縦10x横10x3チャンネル)</span>
+    <span class="hljs-comment"># 簡易的に、RGBそれぞれの色を持つ画像を作成</span>
+    np.random.seed(<span class="hljs-number">42</span>)
+    input_tensor = np.zeros((<span class="hljs-number">10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">3</span>))
+    input_tensor[<span class="hljs-number">2</span>:<span class="hljs-number">8</span>, <span class="hljs-number">2</span>:<span class="hljs-number">8</span>, <span class="hljs-number">0</span>] = <span class="hljs-number">1.0</span>  <span class="hljs-comment"># 赤い四角</span>
+    input_tensor[<span class="hljs-number">4</span>:<span class="hljs-number">9</span>, <span class="hljs-number">4</span>:<span class="hljs-number">9</span>, <span class="hljs-number">1</span>] = <span class="hljs-number">0.8</span>  <span class="hljs-comment"># 緑の四角</span>
+    input_tensor += np.random.normal(<span class="hljs-number">0</span>, <span class="hljs-number">0.1</span>, input_tensor.shape) <span class="hljs-comment"># ノイズ</span>
+    input_tensor = np.clip(input_tensor, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+
+    <span class="hljs-comment"># 2. フィルター（重みテンソル）の作成 (3x3x3)</span>
+    <span class="hljs-comment"># 「縦のエッジ（境界線）」に反応するフィルターを想定</span>
+    kernel = np.array([
+        [[-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [-<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>], [-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]], <span class="hljs-comment"># R用</span>
+        [[-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [-<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>], [-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]], <span class="hljs-comment"># G用</span>
+        [[-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>], [-<span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>], [-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>]]  <span class="hljs-comment"># B用</span>
+    ]).transpose(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>)
+
+    <span class="hljs-comment"># 3. 畳み込み演算（テンソルの内積をスライドさせながら計算）</span>
+    h, w, c = input_tensor.shape
+    output_map = np.zeros((h-<span class="hljs-number">2</span>, w-<span class="hljs-number">2</span>))
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(h-<span class="hljs-number">2</span>):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(w-<span class="hljs-number">2</span>):
+            <span class="hljs-comment"># 3x3x3の局所領域を切り出し</span>
+            region = input_tensor[i:i+<span class="hljs-number">3</span>, j:j+<span class="hljs-number">3</span>, :]
+            <span class="hljs-comment"># 要素ごとの積の総和（テンソル収縮の一種）</span>
+            output_map[i, j] = np.<span class="hljs-built_in">sum</span>(region * kernel)
+
+    <span class="hljs-comment"># 4. 活性化関数（ReLU: 負の値を0にする）</span>
+    output_map = np.maximum(<span class="hljs-number">0</span>, output_map)
+
+    <span class="hljs-comment"># --- 可視化 ---</span>
+    fig, axes = plt.subplots(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, figsize=(<span class="hljs-number">15</span>, <span class="hljs-number">5</span>))
+
+    <span class="hljs-comment"># 入力テンソル (3階テンソルを画像として表示)</span>
+    axes[<span class="hljs-number">0</span>].imshow(input_tensor)
+    axes[<span class="hljs-number">0</span>].set_title(<span class="hljs-string">&quot;Input Tensor\n(10x10x3 RGB)&quot;</span>)
+
+    <span class="hljs-comment"># フィルター (各チャンネルの重み)</span>
+    axes[<span class="hljs-number">1</span>].imshow(kernel[:,:,<span class="hljs-number">0</span>], cmap=<span class="hljs-string">&#x27;RdGy&#x27;</span>)
+    axes[<span class="hljs-number">1</span>].set_title(<span class="hljs-string">&quot;Filter (Weight Tensor)\n(3x3x3 Edge Detector)&quot;</span>)
+
+    <span class="hljs-comment"># 出力 (演算結果)</span>
+    axes[<span class="hljs-number">2</span>].imshow(output_map, cmap=<span class="hljs-string">&#x27;viridis&#x27;</span>)
+    axes[<span class="hljs-number">2</span>].set_title(<span class="hljs-string">&quot;Feature Map\n(Result of Tensor Op)&quot;</span>)
+
+    <span class="hljs-keyword">for</span> ax <span class="hljs-keyword">in</span> axes: ax.axis(<span class="hljs-string">&#x27;off&#x27;</span>)
+    plt.tight_layout()
+    plt.show()
+
+simulate_ai_convolution()
+</code></pre>
+<p><strong>結果</strong></p>
+<p>コードを実行すると以下が得られます。</p>
+<p><strong>「3つの次元（縦・横・チャンネル）をバラバラにせず、一つの『塊（ブロック）』として同時に畳み込んでいる点」</strong> がテンソル計算の肝です。</p>
+<p>行列計算は通常、2つの軸（行と列）で行われます。しかし、先ほどのAIの計算では以下の3つの軸が同時に絡み合っています。</p>
+<ul>
+<li>軸1： 画像の縦方向 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span></span></span>)</li>
+<li>軸2： 画像の横方向 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span>)</li>
+<li>軸3： 色のチャンネル方向 (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span>)</li>
+</ul>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\mathematics\linear_algebra\docs\image\etc_1_tensor\1772267902878.png" alt="1772267902878"></p>
+<p><strong>行列計算」との決定的な違い</strong></p>
+<p>もしこれが行列計算（2次元）であれば、以下のような手順になります。</p>
+<ul>
+<li>R（赤）の行列を計算する</li>
+<li>G（緑）の行列を計算する</li>
+<li>B（青）の行列を計算する</li>
+<li>最後にそれらを足す</li>
+</ul>
+<p>しかし、テンソル計算（AIの内部処理）では、「赤の左上、緑の左上、青の左上……」という情報を一つの多次元配列として保持し、一気に計算します。</p>
+<p><strong>この計算の「テンソル的」なポイント</strong></p>
+<ul>
+<li>3階テンソル <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord">×</span></span></span></span> 3階テンソル:</li>
+</ul>
+<p>入力データ（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>×</mo><mn>10</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">10 \times 10 \times 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>）に対して、フィルター（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mn>3</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">3 \times 3 \times 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span>）をぶつけています。これは、各色の情報をバラバラに計算するのではなく、「色と空間の広がり」を同時に1つの塊（テンソル）として処理しているのがAIの特徴です。</p>
+<ul>
+<li>テンソル収縮 (Contraction):</li>
+</ul>
+<p>コード内の np.sum(region * kernel) は、対応する要素同士を掛けてすべて足し合わせる操作です。これにより、高次元（3階）のデータから、その場所の特徴を表す低次元（スカラー）が抽出されます。</p>
+<ul>
+<li>非線形変換:</li>
+</ul>
+<p>最後に maximum(0, output_map) （ReLU関数）を適用しています。これは、ただの行列計算（線形代数）では不可能な「複雑な判断」をAIにさせるための重要なステップです。</p>
+<h2 id="総括">総括</h2>
+<p>ここまでテンソルについて説明してきました。
+これまでの「テンソルの概念」から「AIでの実用」までの話を、体系的に整理してまとめます。</p>
+<p><strong>なぜ「行列」ではなく「テンソル」が必要なのか</strong></p>
+<p>行列（2階）は平面的なデータの処理には適していますが、現実世界やAIのデータはより複雑です。</p>
+<ul>
+<li><strong>多面的な情報の保持:</strong> カラー画像（縦・横・RGB）や動画（縦・横・色・時間）のように、複数の属性を<strong>一つの塊</strong>として保持したまま計算するため。</li>
+<li><strong>次元間の相互作用:</strong> 「赤色のエッジ」や「時間の経過に伴う動き」など、異なる軸（次元）にまたがる特徴を同時に抽出するため。</li>
+<li><strong>座標変換の普遍性:</strong> 物理学においては、観測者の視点（座標系）が変わっても、物理法則が変わらないように記述する「共通の言語」として機能します。</li>
+</ul>
+<p><strong>AI計算における実態</strong></p>
+<p>AI（ディープラーニング）における計算は、本質的に <strong>「高階テンソルの変形と圧縮」</strong> です。</p>
+<ul>
+<li><strong>畳み込み（Convolution）:</strong> 入力テンソルにフィルター（重みテンソル）をぶつけ、多次元の情報を凝縮して重要な特徴を取り出す。</li>
+<li><strong>テンソル収縮:</strong> 特定の軸に沿って積和をとることで、膨大なデータから意味のある数値へと階数を落としていく。</li>
+<li><strong>バッチ処理:</strong> 実際のAIは「画像の枚数」という軸も加えた<strong>4階テンソル</strong>などでデータを一括処理し、計算効率を極限まで高めています。</li>
+</ul>
+<p><strong>行列計算との関係性</strong></p>
+<ul>
+<li><strong>包含関係:</strong> 行列計算は、テンソル計算における「2次元限定の特殊ケース」です。</li>
+<li><strong>実装上の工夫:</strong> コンピュータ内部では、複雑なテンソルをあえて巨大な行列に並べ替えて（展開/Flattening）、既存の高速な行列計算アルゴリズムを利用して処理することが一般的です。</li>
+</ul>
+<p>最期にニューラルネットワークの計算や原理を学習するための書籍について紹介させて下さい。
+テンソルを用いてデータの塊を処理するロジックについて基礎から説明しています。
+ご参考下さい。</p>
+<div class="shop-card">
+    <div class="shop-card-image">
+        <img src="https://m.media-amazon.com/images/I/61Lo3Yiv2HL._SL1423_.jpg" alt="商品画像">
+    </div>
+    <div class="shop-card-content">
+        <div class="shop-card-title">テンソルネットワーク入門</div>
+        <div class="shop-card-description">画像認識などの情報処理、数値解析、ニューラルネットワーク、量子コンピューター、半導体といった様々な分野に跨って活躍しているテンソルネットワークを基礎からていねいに解説する。身近な問題から始めて、テンソルの計算手法の基礎を解説し、画像認識や量子物理の例を用いて、少しずつ理解を深めていく。物理系・情報系の入門者に最適の一冊。</div>
+        <div class="shop-card-link">
+            <a href="https://www.amazon.co.jp/%E3%83%86%E3%83%B3%E3%82%BD%E3%83%AB%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%E5%85%A5%E9%96%80-KS%E6%83%85%E5%A0%B1%E7%A7%91%E5%AD%A6%E5%B0%82%E9%96%80%E6%9B%B8-%E8%A5%BF%E9%87%8E-%E5%8F%8B%E5%B9%B4/dp/4065316537?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&crid=ZLVVO7R1M2V5&dib=eyJ2IjoiMSJ9.qoUTkdh1JKnxLiLnc8mUlKcyQNLNa1CYKbLA77c--nx6mo34tXpg2hIL-6VLPgTsm2CeGp6Xifw-g9M5zypwsOdv2DummV2DsNRhXgc0St0.1V86iEGX1556rV6IQGFe6QDijAR_EK_jt8TxbEj4rMs&dib_tag=se&keywords=%E3%83%86%E3%83%B3%E3%82%BD%E3%83%AB+%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%A9%E3%83%AB%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF&qid=1772268292&sprefix=%E3%83%86%E3%83%B3%E3%82%BD%E3%83%AB+%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%A9%E3%83%AB%E3%83%8D%E3%83%83%E3%83%88%E3%83%AF%E3%83%BC%E3%82%AF%2Caps%2C171&sr=8-1&linkCode=ll2&tag=yoshishinnze-22&linkId=dd7d2d77c5f30fbf68c3ba9b17fd2914&ref_=as_li_ss_tl" target="_blank" rel="noopener">Amazonで詳細を見る</a>
+        </div>
+    </div>
+</div>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+        </body>
+        </html>
