@@ -4,11 +4,6 @@ import matplotlib.pyplot as plt
 import cv2
 from enum import Enum, auto
 
-import scipy.io
-import numpy as np
-import matplotlib.pyplot as plt
-import cv2
-from enum import Enum
 
 class FilterType(Enum):
     # 1. 平滑化
@@ -24,6 +19,10 @@ class FilterType(Enum):
     # 3. 周波数ドメイン
     LOW_PASS = 8
     HIGH_PASS = 9
+    # --- 4. 高度なフィルタ・その他 ---
+    GUIDED = 10
+    NLM = 11        # Non-Local Means
+    MORPH_OPEN = 12 # Morphology Opening (ノイズ除去)
 
 class FilterProcessor:
     def __init__(self):
@@ -114,6 +113,20 @@ class FilterProcessor:
         elif filter_type in [FilterType.LOW_PASS, FilterType.HIGH_PASS]:
             return self._apply_frequency_filter(img, filter_type)
         
+        if filter_type == FilterType.GUIDED:
+            # 自己ガイド形式。radius, eps(平滑化の強さ)を調整
+            return cv2.ximgproc.guidedFilter(guide=img, src=img, radius=8, eps=0.01)
+        if filter_type == FilterType.NLM:
+            img_u8 = (img * 255).astype(np.uint8)
+            # h: フィルタの強さ
+            dst = cv2.fastNlMeansDenoisingColored(img_u8, None, h=10, hColor=10, templateWindowSize=7, searchWindowSize=21)
+            return dst.astype(np.float32) / 255.0
+        # モルフォロジー (Opening)
+        if filter_type == FilterType.MORPH_OPEN:
+            kernel = np.ones((kernel_size, kernel_size), np.uint8)
+            img_u8 = (img * 255).astype(np.uint8)
+            res = cv2.morphologyEx(img_u8, cv2.MORPH_OPEN, kernel)
+            return res.astype(np.float32) / 255.0
         return img
 
     def show_filtered_results(self, hsi_cube, filter_list=None):
