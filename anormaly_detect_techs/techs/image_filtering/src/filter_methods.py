@@ -2,8 +2,7 @@ import scipy.io
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-from enum import Enum, auto
-
+from enum import Enum
 
 class FilterType(Enum):
     # 1. 平滑化
@@ -19,64 +18,49 @@ class FilterType(Enum):
     # 3. 周波数ドメイン
     LOW_PASS = 8
     HIGH_PASS = 9
-    # --- 4. 高度なフィルタ・その他 ---
+    # 4. 高度なフィルタ
     GUIDED = 10
     NLM = 11        # Non-Local Means
-    MORPH_OPEN = 12 # Morphology Opening (ノイズ除去)
+    MORPH_OPEN = 12 # Morphology Opening
 
 class FilterProcessor:
     def __init__(self):
-        """
-        Args:
-            hsi_cube (np.ndarray): (H, W, Bands) の画像データ
-        """
         pass
 
     def get_pseudo_rgb(self, hsi_cube, rgb_bands=[40, 20, 10]):
         rgb_img = hsi_cube[:, :, rgb_bands].astype(np.float32)
         img_min, img_max = rgb_img.min(), rgb_img.max()
-        return (rgb_img - img_min) / (img_max - img_min)
+        return (rgb_img - img_min) / (img_max - img_min) if (img_max - img_min) != 0 else rgb_img
 
-    def _apply_frequency_filter(self, img, filter_type, radius=30):
-        """周波数ドメインでのフィルタリング内部処理"""
-        # 各チャンネル（R,G,B）ごとに処理
-        filtered_channels = []
-        for i in range(3):
-            channel = img[:, :, i]
-            # 1. FFT
-            dft = np.fft.fft2(channel)
-            dft_shift = np.fft.fftshift(dft)
+    def _apply_frequency_filter_2d(self, channel, filter_type, radius=30):
+        """単一チャンネル（空間方向）に対する周波数フィルタリング"""
+        dft = np.fft.fft2(channel)
+        dft_shift = np.fft.fftshift(dft)
+        rows, cols = channel.shape
+        crow, ccol = rows // 2, cols // 2
+        
+        y, x = np.ogrid[:rows, :cols]
+        mask_area = (x - ccol)**2 + (y - crow)**2 <= radius**2
+        
+        mask = np.zeros((rows, cols), np.uint8)
+        if filter_type == FilterType.LOW_PASS:
+            mask[mask_area] = 1
+        else: # HIGH_PASS
+            mask.fill(1)
+            mask[mask_area] = 0
             
-            # 2. マスク作成
-            rows, cols = channel.shape
-            crow, ccol = rows // 2, cols // 2
-            mask = np.zeros((rows, cols), np.uint8)
-            
-            # 中心からの距離に基づいて円形マスクを作成
-            y, x = np.ogrid[:rows, :cols]
-            mask_area = (x - ccol)**2 + (y - crow)**2 <= radius**2
-            
-            if filter_type == FilterType.LOW_PASS:
-                mask[mask_area] = 1
-            else: # HIGH_PASS
-                mask.fill(1)
-                mask[mask_area] = 0
-            
-            # 3. マスク適用と逆FFT
-            fshift = dft_shift * mask
-            f_ishift = np.fft.ifftshift(fshift)
-            img_back = np.fft.ifft2(f_ishift)
-            img_back = np.abs(img_back)
-            filtered_channels.append(img_back)
-            
-        return np.stack(filtered_channels, axis=2)
+        fshift = dft_shift * mask
+        f_ishift = np.fft.ifftshift(fshift)
+        img_back = np.abs(np.fft.ifft2(f_ishift))
+        return img_back
 
     def apply_single_filter(self, img, filter_type, kernel_size=5):
+        """2D画像（単一バンドまたはRGB）に対してフィルタを適用"""
         if isinstance(filter_type, int):
             filter_type = FilterType(filter_type)
-
-        # OpenCVフィルタは通常 [0, 255] の uint8 を好むため変換が必要な場合があるが
-        # ここでは float32 [0, 1] のまま処理（多くのOpenCV関数が対応）
+        
+        # チャンネル数の確認
+        is_single_channel = len(img.shape) == 2 or img.shape[2] == 1
         
         # --- 1. 平滑化 ---
         if filter_type == FilterType.ORIGINAL:
@@ -88,64 +72,88 @@ class FilterProcessor:
         elif filter_type == FilterType.MEDIAN:
             return cv2.medianBlur(img, kernel_size)
         elif filter_type == FilterType.BILATERAL:
+            # 1枚ずつのバンドの場合はcvtColorが必要な場合があるため簡易化
             return cv2.bilateralFilter(img, d=9, sigmaColor=0.1, sigmaSpace=75)
         
         # --- 2. エッジ抽出 ---
         elif filter_type == FilterType.LAPLACIAN:
-            # 2次微分
-            lap = cv2.Laplacian(img, cv2.CV_32F)
-            return np.clip(lap, 0, 1)
+            return np.clip(cv2.Laplacian(img, cv2.CV_32F), 0, 1)
         elif filter_type == FilterType.SOBEL:
-            # 水平・垂直の絶対値を合算
-            sobelx = cv2.Sobel(img, cv2.CV_32F, 1, 0, ksize=kernel_size)
-            sobely = cv2.Sobel(img, cv2.CV_32F, 0, 1, ksize=kernel_size)
-            sobel = np.sqrt(sobelx**2 + sobely**2)
-            return np.clip(sobel, 0, 1)
+            sx = cv2.Sobel(img, cv2.CV_32F, 1, 0, ksize=kernel_size)
+            sy = cv2.Sobel(img, cv2.CV_32F, 0, 1, ksize=kernel_size)
+            return np.clip(np.sqrt(sx**2 + sy**2), 0, 1)
         elif filter_type == FilterType.CANNY:
-            # Cannyはuint8 [0, 255] への変換が必須
-            img_uint8 = (img * 255).astype(np.uint8)
-            edges = []
-            for i in range(3):
-                edges.append(cv2.Canny(img_uint8[:,:,i], 100, 200))
-            return np.stack(edges, axis=2).astype(np.float32) / 255.0
+            img_u8 = (img * 255).astype(np.uint8)
+            if is_single_channel:
+                return cv2.Canny(img_u8, 100, 200).astype(np.float32) / 255.0
+            else:
+                edges = [cv2.Canny(img_u8[:,:,i], 100, 200) for i in range(img.shape[2])]
+                return np.stack(edges, axis=2).astype(np.float32) / 255.0
 
         # --- 3. 周波数ドメイン ---
         elif filter_type in [FilterType.LOW_PASS, FilterType.HIGH_PASS]:
-            return self._apply_frequency_filter(img, filter_type)
+            if is_single_channel:
+                return self._apply_frequency_filter_2d(img, filter_type)
+            else:
+                res = [self._apply_frequency_filter_2d(img[:,:,i], filter_type) for i in range(img.shape[2])]
+                return np.stack(res, axis=2)
         
+        # --- 4. 高度なフィルタ ---
         if filter_type == FilterType.GUIDED:
-            # 自己ガイド形式。radius, eps(平滑化の強さ)を調整
             return cv2.ximgproc.guidedFilter(guide=img, src=img, radius=8, eps=0.01)
-        if filter_type == FilterType.NLM:
+        elif filter_type == FilterType.NLM:
             img_u8 = (img * 255).astype(np.uint8)
-            # h: フィルタの強さ
-            dst = cv2.fastNlMeansDenoisingColored(img_u8, None, h=10, hColor=10, templateWindowSize=7, searchWindowSize=21)
+            if is_single_channel:
+                dst = cv2.fastNlMeansDenoising(img_u8, None, h=10, templateWindowSize=7, searchWindowSize=21)
+            else:
+                dst = cv2.fastNlMeansDenoisingColored(img_u8, None, h=10, hColor=10, templateWindowSize=7, searchWindowSize=21)
             return dst.astype(np.float32) / 255.0
-        # モルフォロジー (Opening)
-        if filter_type == FilterType.MORPH_OPEN:
+        elif filter_type == FilterType.MORPH_OPEN:
             kernel = np.ones((kernel_size, kernel_size), np.uint8)
             img_u8 = (img * 255).astype(np.uint8)
             res = cv2.morphologyEx(img_u8, cv2.MORPH_OPEN, kernel)
             return res.astype(np.float32) / 255.0
+            
         return img
 
-    def show_filtered_results(self, hsi_cube, filter_list=None):
-        if filter_list is None:
-            filter_list = [f for f in FilterType]
-
-        base_img = self.get_pseudo_rgb(hsi_cube)
-        n = len(filter_list)
-        cols = 3 # 1行に3枚表示
-        rows = (n + cols - 1) // cols
+    def apply_hsi_filter(self, hsi_cube, filter_type, kernel_size=5):
+        """
+        HSIデータキューブの全バンドに対して空間方向にフィルタを一括適用
+        Args:
+            hsi_cube (np.ndarray): (H, W, Bands)
+        Returns:
+            filtered_hsi (np.ndarray): フィルタ適用後の (H, W, Bands)
+        """
+        h, w, bands = hsi_cube.shape
+        filtered_hsi = np.zeros_like(hsi_cube, dtype=np.float32)
         
-        plt.figure(figsize=(15, 5 * rows))
-        for i, f_type in enumerate(filter_list):
-            filtered_img = self.apply_single_filter(base_img, f_type)
-            title = FilterType(f_type).name if isinstance(f_type, int) else f_type.name
+        # 処理を安定させるために [0, 1] に正規化（後で元に戻すか、正規化後のままにするか選択）
+        hsi_min, hsi_max = hsi_cube.min(), hsi_cube.max()
+        normalized_hsi = (hsi_cube - hsi_min) / (hsi_max - hsi_min) if hsi_max != hsi_min else hsi_cube
+        
+        print(f"Filtering {bands} bands using {FilterType(filter_type).name}...")
+        for b in range(bands):
+            band_img = normalized_hsi[:, :, b]
+            # 空間方向にフィルタ適用
+            filtered_hsi[:, :, b] = self.apply_single_filter(band_img, filter_type, kernel_size)
             
-            plt.subplot(rows, cols, i + 1)
-            plt.imshow(filtered_img, cmap='gray' if f_type == FilterType.CANNY else None)
-            plt.title(title)
+        return filtered_hsi
+
+    def show_hsi_filter_comparison(self, hsi_cube, filter_list=[0, 2, 4, 10], rgb_bands=[40, 20, 10]):
+        """空間フィルタ適用後のHSIを擬似RGBで比較表示"""
+        n = len(filter_list)
+        plt.figure(figsize=(5 * n, 5))
+        
+        for i, f_type in enumerate(filter_list):
+            # HSI全体にフィルタ適用
+            filtered_hsi = self.apply_hsi_filter(hsi_cube, f_type)
+            # フィルタ後のHSIから擬似RGBを作成
+            rgb_res = self.get_pseudo_rgb(filtered_hsi, rgb_bands)
+            
+            plt.subplot(1, n, i + 1)
+            plt.imshow(rgb_res)
+            title = FilterType(f_type).name if isinstance(f_type, int) else f_type.name
+            plt.title(f"HSI + {title}")
             plt.axis('off')
         
         plt.tight_layout()
