@@ -170,7 +170,7 @@ $$\text{rank} A = \dim S[\mathbf{a}_1', \dots, \mathbf{a}_n']$$
 
 __直感的な理解：なぜこれが大事なのか？__
 
-この証明は、**「数字の表（行列）」としてのランク**と、**「図形的な広がり（空間）」としての次元**が、実は同じコインの裏表であることを示しています。
+この証明は、 **「数字の表（行列）」としてのランク** と、 **「図形的な広がり（空間）」としての次元** が、実は同じコインの裏表であることを示しています。
 
 * **行列 $A$:** 入力ベクトルを加工する「工場」。
 * **$\text{rank} A$:** その工場の「実力（何種類の独立した製品を作れるか）」。
@@ -178,8 +178,99 @@ __直感的な理解：なぜこれが大事なのか？__
 
 どれだけたくさんの列ベクトル（材料）を詰め込んでも、それらが互いに依存（1次従属）していれば、ショールームの次元（ランク）は上がりません。
 
-
 ---
 
+__例題:__ ランクのイメージ
 
+行列のランク（Rank）を直感的に理解するには、 **「3次元のデータが、行列によって何次元の形に押しつぶされるか」** を可視化するのが一番です。
+
+以下のコードでは、3次元空間にある立方体の点群に対して、ランク3（潰さない）、ランク2（平面にする）、ランク1（線にする）の行列をそれぞれ作用させ、その結果を比較します。
+
+### Pythonコード：行列のランクによる空間の虚脱（Collapse）の可視化
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+def visualize_matrix_rank():
+    # 1. 3次元の立方体状の点群データを作成
+    n = 10
+    x, y, z = np.meshgrid(np.linspace(-1, 1, n),
+                         np.linspace(-1, 1, n),
+                         np.linspace(-1, 1, n))
+    points = np.vstack([x.flatten(), y.flatten(), z.flatten()])
+
+    # 2. 異なるランクを持つ3つの行列を定義
+    # ランク3: 全ての成分が独立（フルランク）
+    A_rank3 = np.array([[1, 0, 0],
+                        [0, 1, 0],
+                        [0, 0, 1]])
+
+    # ランク2: z成分を消去（x, yのみの平面にする）
+    A_rank2 = np.array([[1, 0, 0],
+                        [0, 1, 0],
+                        [1, 1, 0]]) # 3行目が1,2行目の和
+
+    # ランク1: 全ての成分を1つの直線上に投影
+    A_rank1 = np.array([[1, 1, 1],
+                        [1, 1, 1],
+                        [1, 1, 1]]) # 全ての行が同一
+
+    matrices = [A_rank3, A_rank2, A_rank1]
+    titles = ["Rank 3 (3D Volume)", "Rank 2 (2D Plane)", "Rank 1 (1D Line)"]
+    colors = ['royalblue', 'forestgreen', 'crimson']
+
+    fig = plt.figure(figsize=(18, 5))
+
+    for i, (A, title, color) in enumerate(zip(matrices, titles, colors)):
+        # 行列を点群に作用させる (Y = A * X)
+        transformed_points = A @ points
+        
+        ax = fig.add_subplot(1, 3, i+1, projection='3d')
+        ax.scatter(transformed_points[0], transformed_points[1], transformed_points[2], 
+                   c=color, alpha=0.3, s=10)
+        
+        # グラフの見た目調整
+        ax.set_title(title, fontsize=15)
+        ax.set_xlim([-2, 2]); ax.set_ylim([-2, 2]); ax.set_zlim([-2, 2])
+        ax.set_xlabel('X'); ax.set_ylabel('Y'); ax.set_zlabel('Z')
+        
+        # ランクの根拠を表示
+        rank = np.linalg.matrix_rank(A)
+        ax.text2D(0.05, 0.95, f"Actual Rank: {rank}", transform=ax.transAxes, color='black', weight='bold')
+
+    plt.tight_layout()
+    plt.show()
+
+visualize_matrix_rank()
+
+```
+
+__結果__
+
+実行すると、定義した点群(コード中のpoints)に対して、各ランク違いの行列を作用させた場合のポイントを可視化しています。
+
+
+<img src="image/16_rank/1772850402929.png" width="700" style="display: block; margin: 0 auto;">
+
+### この可視化が示している「ランク」の正体
+
+* **Rank 3（フルランク）:**
+元の立方体の「体積」が維持されています。どの方向の情報も失われていないため、この行列には**逆行列が存在し、元の形に戻すことができます。**
+* **Rank 2（平面への虚脱）:**
+3列目のベクトルが他の列の組み合わせ（線形従属）になっているため、奥行きの情報が失われ、データが「紙のような平面」に潰れてしまいました。**一度平面に潰れると、元の立体に戻すことは不可能です。**
+* **Rank 1（線への虚脱）:**
+全ての列ベクトルが同じ方向を向いているため、データは「一本の線」の上に整列してしまいました。情報のほとんどが失われ、場所を特定する自由度は1次元分しか残っていません。
+
+
+
+### まとめ
+
+行列のランクとは、その行列が持つ**「空間を維持する能力」**の数値化です。
+
+* **Rank = 次元数** であれば、情報は100%保持される。
+* **Rank < 次元数** であれば、どこかの方向が「ペシャンコ」に潰れている。
+
+この「潰れてしまった次元」の数が、先ほど学んだ **$\dim(\text{Ker} f)$（核の次元）** に相当します。
 
