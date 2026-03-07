@@ -28,7 +28,7 @@ class RPCADetector:
     def decompose(self, lamda=None, max_iter=50, tol=1e-7):
         n1, n2 = self.D.shape
         if lamda is None:
-            lamda = 1 / np.sqrt(max(n1, n2))
+            lamda = 1 / np.sqrt(max(n1, n2)) * 100
             
         L = np.zeros_like(self.D)
         S = np.zeros_like(self.D)
