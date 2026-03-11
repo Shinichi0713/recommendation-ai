@@ -302,11 +302,95 @@ $$A = \begin{pmatrix} 2 & 1 \\ 0 & 2 \end{pmatrix}$$
 この変形は「横方向は2倍に伸ばす」一方で、「縦方向を斜めにずらす」動きをします。計算上は2次元分のポテンシャルがあるのに、向きが変わらない「本物の軸」は1本しか残っていません。この**「1の差」が、対角化できない（情報の完全な独立化ができない）原因**となります。
 
 
+__例題:__
+
+行列 $A = \begin{pmatrix} 1 & 2 \\ 2 & 1 \end{pmatrix}$ の固有値、固有ベクトルを求めてください。
+
+
 __例題:__ 固有値と固有ベクトルの普遍性
 
 固有値と固有ベクトルの「行列を掛けても向きが変わらない」という性質と、固有値による「伸び縮み」の様子を直感的に理解できる可視化コードを作成しました。このコードでは、以下の2つを表示します。
 
 - 入力空間（円）: 単位円上のベクトル群。
 - 出力空間（楕円）: 行列 $A$ を掛けた後のベクトル群。ここで、固有ベクトルの方向だけは、変形前後で「ライン」が重なる様子を確認できます。
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def visualize_eigenvalues():
+    # 1. 可視化する行列 A の定義
+    # ここでは固有値が 3 と 1、固有ベクトルが [1, 1] と [1, -1] 方向になる行列を使用
+    A = np.array([[2, 1],
+                  [1, 2]])
+
+    # 固有値と固有ベクトルを計算
+    eigenvalues, eigenvectors = np.linalg.eig(A)
+
+    # 2. 単位円上の点を生成（入力ベクトル群）
+    theta = np.linspace(0, 2*np.pi, 100)
+    circle_points = np.array([np.cos(theta), np.sin(theta)])
+
+    # 3. 行列 A による変形後の点を計算
+    transformed_points = A @ circle_points
+
+    # 描画設定
+    fig, ax = plt.subplots(1, 1, figsize=(8, 8))
+    
+    # 元の円と変形後の楕円を描画
+    ax.plot(circle_points[0], circle_points[1], color='gray', linestyle='--', label='Original (Unit Circle)')
+    ax.plot(transformed_points[0], transformed_points[1], color='blue', label='Transformed (by A)', linewidth=2)
+
+    # 固有ベクトルの描画
+    colors = ['red', 'green']
+    for i in range(len(eigenvalues)):
+        val = eigenvalues[i]
+        vec = eigenvectors[:, i]
+        
+        # 固有ベクトル方向の線（無限に続く軸）
+        ax.axline((0, 0), (vec[0], vec[1]), color=colors[i], alpha=0.3, linestyle=':')
+        
+        # 実際の固有ベクトル（元の長さ）
+        ax.quiver(0, 0, vec[0], vec[1], color=colors[i], angles='xy', scale_units='xy', scale=1, 
+                  label=f'Eigenvector {i+1} (λ={val:.1f})')
+        
+        # 変形後の固有ベクトル（固有値倍された長さ）
+        transformed_vec = val * vec
+        ax.quiver(0, 0, transformed_vec[0], transformed_vec[1], color=colors[i], 
+                  angles='xy', scale_units='xy', scale=1, alpha=0.5)
+
+    # グラフのレイアウト調整
+    ax.set_aspect('equal')
+    ax.set_xlim(-4, 4); ax.set_ylim(-4, 4)
+    ax.axhline(0, color='black', lw=1); ax.axvline(0, color='black', lw=1)
+    ax.set_title(f'Linear Transformation: Eigenvalue Visualization\nMatrix A = {A.tolist()}', fontsize=14)
+    ax.legend()
+    ax.grid(True, linestyle=':', alpha=0.6)
+
+    plt.show()
+
+if __name__ == "__main__":
+    visualize_eigenvalues()
+```
+
+__結果__
+
+
+<img src="image/17_eigen_value/1773176361220.png" width="700" style="display: block; margin: 0 auto;">
+
+- 「軸」としての固有ベクトル:
+
+    赤と緑の点線は、固有ベクトルが通る「軸」です。円が楕円に引き伸ばされても、この軸の上にある点だけは軸から外れず、ただ軸に沿って移動しているのが分かります。
+
+- 固有値の意味:
+
+    赤い矢印（固有値3.0）の方向は、元の長さより3倍に大きく伸びています。
+
+    緑の矢印（固有値1.0）の方向は、長さが変わっていません。
+
+- 楕円の形:
+
+    実は、行列によって変形された楕円の **「長軸」と「短軸」** は、行列が対称行列であれば、それぞれの固有ベクトルの方向と一致します。
 
 
