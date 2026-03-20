@@ -1486,8 +1486,7 @@ __固有値・固有ベクトルの便利ポイント:__
 
 普通に計算すると「行列を何百回も掛ける」必要がありますが、固有値を使えば **「無限回繰り返した後の最終的な人口比率（安定状態）」が、計算なしで一瞬でわかります。**
 
-![1774012974117](image/17_eigen_value/1774012974117.png)
-
+<img src="image/17_eigen_value/1774012974117.png" width="700" style="display: block; margin: 0 auto;">
 
 ```python
 import numpy as np
