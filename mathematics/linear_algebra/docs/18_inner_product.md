@@ -122,6 +122,70 @@ __役割とイメージ__
 - **直交判定**: 内積が $0$ ならば、2つのベクトルは垂直（$90^\circ$）です。
 - **エネルギーや仕事**: 物理では「力 $\times$ 移動距離 $\times \cos\theta$」で仕事量を求める際に使われます。
 
+__定理:__
+
+2つのベクトル $\mathbf{a}$ を $\mathbf{b}$ の成分表示を $\mathbf{a} = (a_1, a_2, a_3)$ を $\mathbf{b} = (b_1, b_2, b_3)$ とするとき、
+
+$$
+(\mathbf{a}, \mathbf{b}) = a_1 b_1 + a_2 b_2 + a_3 b_3
+$$
+
+が成立する。
+
+---
+
+成分表示を用いた内積の公式の証明には、**「正規直交基底」** という概念と、**「内積の基本性質（線形性）」** を用います。
+
+この証明を理解すると、なぜ「各成分を掛けて足すだけ」というシンプルな計算で内積（$|\mathbf{a}||\mathbf{b}|\cos\theta$）が求まるのか、その仕組みがスッキリと分かります。
+
+__1. 準備：基本単位ベクトル（正規直交基底）__
+
+3次元空間の座標軸方向を向いた、長さ $1$ のベクトルを $\mathbf{e}_1, \mathbf{e}_2, \mathbf{e}_3$ とします。
+$$\mathbf{e}_1 = (1, 0, 0), \quad \mathbf{e}_2 = (0, 1, 0), \quad \mathbf{e}_3 = (0, 0, 1)$$
+
+これらは互いに直交し、長さが $1$ であるため、内積には以下の性質があります。
+- **自分自身との内積**: $(\mathbf{e}_i, \mathbf{e}_i) = |\mathbf{e}_i|^2 = 1$
+- **異なるもの同士の内積**: $(\mathbf{e}_i, \mathbf{e}_j) = 0 \quad (i \neq j)$
+
+
+
+__2. ベクトルの成分表示__
+
+ベクトル $\mathbf{a}$ と $\mathbf{b}$ は、これらの基本単位ベクトルを使って次のように書き表せます。
+$$\mathbf{a} = a_1 \mathbf{e}_1 + a_2 \mathbf{e}_2 + a_3 \mathbf{e}_3 = \sum_{i=1}^3 a_i \mathbf{e}_i$$
+$$\mathbf{b} = b_1 \mathbf{e}_1 + b_2 \mathbf{e}_2 + b_3 \mathbf{e}_3 = \sum_{j=1}^3 b_j \mathbf{e}_j$$
+
+<img src="image/18_inner_product/1774052676304.png" width="550" style="display: block; margin: 0 auto;">
+
+__3. 証明：内積の展開__
+
+内積の性質（線形性：分配法則ができること）を用いて、$ (\mathbf{a}, \mathbf{b}) $ を展開します。
+
+$$
+\begin{aligned}
+(\mathbf{a}, \mathbf{b}) &= (a_1 \mathbf{e}_1 + a_2 \mathbf{e}_2 + a_3 \mathbf{e}_3, \ b_1 \mathbf{e}_1 + b_2 \mathbf{e}_2 + b_3 \mathbf{e}_3) \\
+&= \sum_{i=1}^3 \sum_{j=1}^3 a_i b_j (\mathbf{e}_i, \mathbf{e}_j)
+\end{aligned}
+$$
+
+この和を書き出すと 9 つの項が出てきますが、前述の「正規直交基底の性質」により、ほとんどが $0$ になります。
+
+- **$i \neq j$ の項**: $(\mathbf{e}_i, \mathbf{e}_j) = 0$ なので、すべて消えます。
+  - 例: $a_1 b_2 (\mathbf{e}_1, \mathbf{e}_2) = 0$
+- **$i = j$ の項**: $(\mathbf{e}_i, \mathbf{e}_i) = 1$ なので、係数だけが残ります。
+  - $a_1 b_1 (\mathbf{e}_1, \mathbf{e}_1) = a_1 b_1$
+  - $a_2 b_2 (\mathbf{e}_2, \mathbf{e}_2) = a_2 b_2$
+  - $a_3 b_3 (\mathbf{e}_3, \mathbf{e}_3) = a_3 b_3$
+
+これらをすべて足し合わせると、次のようになります。
+
+$$(\mathbf{a}, \mathbf{b}) = a_1 b_1 + a_2 b_2 + a_3 b_3$$
+
+**（証明終）**
+
+
+---
+
 
 __例題:__ ベクトルの射影（影）の可視化目的
 
