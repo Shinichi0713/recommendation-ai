@@ -272,16 +272,145 @@ __役割とイメージ__
 - **面積計算**: 3Dグラフィックスなどでポリゴンの面積を求める際に必須です。
 
 
+3次元ベクトル空間における外積（ベクトル積）を、標準基底 $\mathbf{e}_1, \mathbf{e}_2, \mathbf{e}_3$ を用いて表現すると、その構造が非常にはっきりと見えてきます。
 
-### 3. 内積と外積の比較
+内積が「同じ基底同士」で生き残ったのに対し、外積は **「異なる基底同士」の組み合わせ** によって新しいベクトルを生み出します。
 
-| 特徴 | 内積 ($\cdot$) | 外積 ($\times$) |
-| :--- | :--- | :--- |
-| **結果の型** | スカラー（数値） | ベクトル（矢印） |
-| **計算の核心** | $\cos \theta$（並行に近いほど大） | $\sin \theta$（垂直に近いほど大） |
-| **次元** | 何次元でも定義可能 | 基本的に3次元（または7次元） |
-| **交換法則** | 成り立つ ($\mathbf{a}\cdot\mathbf{b} = \mathbf{b}\cdot\mathbf{a}$) | **成り立たない** ($\mathbf{a}\times\mathbf{b} = -\mathbf{b}\times\mathbf{a}$) |
-| **図形的意味** | 影の長さ（射影） | 平行四辺形の面積・回転軸 |
+__1. 標準基底の外積ルール__
+
+標準基底 $\mathbf{e}_1 = (1, 0, 0), \mathbf{e}_2 = (0, 1, 0), \mathbf{e}_3 = (0, 0, 1)$ の間には、以下の「ジャンケンのような」循環ルールがあります。
+
+* **自分自身との外積**: $\mathbf{e}_i \times \mathbf{e}_i = \mathbf{0}$ （平行なもの同士の外積は $0$）
+* **異なる基底との外積（正の順）**:
+    * $\mathbf{e}_1 \times \mathbf{e}_2 = \mathbf{e}_3$
+    * $\mathbf{e}_2 \times \mathbf{e}_3 = \mathbf{e}_1$
+    * $\mathbf{e}_3 \times \mathbf{e}_1 = \mathbf{e}_2$
+* **逆順の外積**: 順序を入れ替えると符号が反転します（反交換性）。
+    * $\mathbf{e}_2 \times \mathbf{e}_1 = -\mathbf{e}_3$
+
+
+
+__2. 成分表示による展開__
+
+2つのベクトル $\mathbf{a} = a_1 \mathbf{e}_1 + a_2 \mathbf{e}_2 + a_3 \mathbf{e}_3$ と $\mathbf{b} = b_1 \mathbf{e}_1 + b_2 \mathbf{e}_2 + b_3 \mathbf{e}_3$ の外積 $\mathbf{a} \times \mathbf{b}$ を展開します。
+
+$$
+\begin{aligned}
+\mathbf{a} \times \mathbf{b} &= (a_1 \mathbf{e}_1 + a_2 \mathbf{e}_2 + a_3 \mathbf{e}_3) \times (b_1 \mathbf{e}_1 + b_2 \mathbf{e}_2 + b_3 \mathbf{e}_3) \\
+&= a_1 b_2 (\mathbf{e}_1 \times \mathbf{e}_2) + a_1 b_3 (\mathbf{e}_1 \times \mathbf{e}_3) + a_2 b_1 (\mathbf{e}_2 \times \mathbf{e}_1) + \dots
+\end{aligned}
+$$
+
+自分自身との外積（$a_1 b_1 (\mathbf{e}_1 \times \mathbf{e}_1)$ など）はすべて消えるため、生き残る項を整理すると以下のようになります。
+
+$$
+\mathbf{a} \times \mathbf{b} = (a_2 b_3 - a_3 b_2) \mathbf{e}_1 + (a_3 b_1 - a_1 b_3) \mathbf{e}_2 + (a_1 b_2 - a_2 b_1) \mathbf{e}_3
+$$
+
+これが、私たちがよく知る**「外積の成分表示」**の正体です。
+
+__3. 行列式（デタミナント）による表現__
+
+標準基底を使うと、この複雑な式を**行列式の形式**で非常に美しく書き直すことができます。
+
+$$
+\mathbf{a} \times \mathbf{b} = \det \begin{pmatrix} \mathbf{e}_1 & \mathbf{e}_2 & \mathbf{e}_3 \\ a_1 & a_2 & a_3 \\ b_1 & b_2 & b_3 \end{pmatrix}
+$$
+
+この形式で 1 行目について展開（余因子展開）すると、各基底にかかる係数が自動的に求まります。
+
+<img src="image/18_inner_product/1774059763768.png" width="600" style="display: block; margin: 0 auto;">
+
+
+__定理:__
+
+外積について成り立つ法則は以下の通りである。
+
+(1) 反交換法則 
+
+$$\mathbf{a} \times \mathbf{b} = - (\mathbf{b} \times \mathbf{a})$$
+
+(2) 双線形性
+
+- 分配法則: $\mathbf{a} \times (\mathbf{b} + \mathbf{c}) = \mathbf{a} \times \mathbf{b} + \mathbf{a} \times \mathbf{c}$
+
+- 定数倍: $(k\mathbf{a}) \times \mathbf{b} = \mathbf{a} \times (k\mathbf{b}) = k(\mathbf{a} \times \mathbf{b})$
+
+(3) 自己外積と平行なベクトルの外積
+
+$$\mathbf{a} \times \mathbf{a} = \mathbf{0}$$
+
+$$\mathbf{a} // \mathbf{b} \implies \mathbf{a} \times \mathbf{b} = \mathbf{0}$$
+
+(4) ヤコビの恒等式
+
+$$\mathbf{a} \times (\mathbf{b} \times \mathbf{c}) + \mathbf{b} \times (\mathbf{c} \times \mathbf{a}) + \mathbf{c} \times (\mathbf{a} \times \mathbf{b}) = \mathbf{0}$$
+
+---
+
+外積の諸法則の証明には、**成分表示**を用いる方法と、**エディントンのレヴィ=チヴィタ記号（$\epsilon_{ijk}$）**を用いる方法がありますが、ここでは直感的に理解しやすい成分表示と外積の定義（幾何学的意味）を組み合わせて証明します。
+
+__(1) 反交換法則の証明__
+
+$$\mathbf{a} \times \mathbf{b} = - (\mathbf{b} \times \mathbf{a})$$
+
+**証明：**
+外積の成分表示の定義 $\mathbf{a} \times \mathbf{b} = (a_2 b_3 - a_3 b_2, a_3 b_1 - a_1 b_3, a_1 b_2 - a_2 b_1)$ を用います。
+$\mathbf{b} \times \mathbf{a}$ を計算すると：
+$$\mathbf{b} \times \mathbf{a} = (b_2 a_3 - b_3 a_2, b_3 a_1 - b_1 a_3, b_1 a_2 - b_2 a_1)$$
+各成分を $\mathbf{a} \times \mathbf{b}$ と比較すると、すべての項で符号が反転していることがわかります。
+例：第1成分 $b_2 a_3 - b_3 a_2 = -(a_2 b_3 - a_3 b_2)$
+したがって、 $\mathbf{a} \times \mathbf{b} = - (\mathbf{b} \times \mathbf{a})$ が成り立ちます。
+
+
+
+__(2) 双線形性の証明__
+
+分配法則：$\mathbf{a} \times (\mathbf{b} + \mathbf{c}) = \mathbf{a} \times \mathbf{b} + \mathbf{a} \times \mathbf{c}$
+
+**証明：**
+第1成分に注目します。$(\mathbf{b} + \mathbf{c})$ の第 $i$ 成分は $(b_i + c_i)$ なので、
+左辺の第1成分 $= a_2(b_3 + c_3) - a_3(b_2 + c_2)$
+$= (a_2 b_3 - a_3 b_2) + (a_2 c_3 - a_3 c_2)$
+これは $(\mathbf{a} \times \mathbf{b})$ の第1成分と $(\mathbf{a} \times \mathbf{c})$ の第1成分の和に等しいです。他の成分も同様です。
+
+#### 定数倍：$(k\mathbf{a}) \times \mathbf{b} = k(\mathbf{a} \times \mathbf{b})$
+
+**証明：**
+第1成分は $(k a_2)b_3 - (k a_3)b_2 = k(a_2 b_3 - a_3 b_2)$ となり、明らかに成立します。
+
+__(3) 自己外積と平行なベクトルの外積の証明__
+
+$$\mathbf{a} \times \mathbf{a} = \mathbf{0}$$
+
+**証明：**
+外積の大きさの定義 $|\mathbf{a} \times \mathbf{b}| = |\mathbf{a}||\mathbf{b}|\sin\theta$ を用います。
+自分自身とのなす角 $\theta$ は $0^\circ$ です。 $\sin 0^\circ = 0$ なので、大きさは $0$、すなわち零ベクトル $\mathbf{0}$ となります。
+（成分表示でも $a_i a_j - a_j a_i = 0$ となり、簡単に示せます）
+
+平行な場合も $\theta = 0^\circ$ または $180^\circ$ であり、 $\sin\theta = 0$ となるため同様に $\mathbf{0}$ です。
+
+
+
+__(4) ヤコビの恒等式の証明__
+
+$$\mathbf{a} \times (\mathbf{b} \times \mathbf{c}) + \mathbf{b} \times (\mathbf{c} \times \mathbf{a}) + \mathbf{c} \times (\mathbf{a} \times \mathbf{b}) = \mathbf{0}$$
+
+**証明：**
+この証明には、非常に便利な**ベクトル三重積の公式（bac-cab公式）**を用います。
+$$\mathbf{a} \times (\mathbf{b} \times \mathbf{c}) = \mathbf{b}(\mathbf{a} \cdot \mathbf{c}) - \mathbf{c}(\mathbf{a} \cdot \mathbf{b})$$
+
+これを使って、左辺の各項を展開します。
+1. $\mathbf{a} \times (\mathbf{b} \times \mathbf{c}) = \mathbf{b}(\mathbf{a} \cdot \mathbf{c}) - \mathbf{c}(\mathbf{a} \cdot \mathbf{b})$
+2. $\mathbf{b} \times (\mathbf{c} \times \mathbf{a}) = \mathbf{c}(\mathbf{b} \cdot \mathbf{a}) - \mathbf{a}(\mathbf{b} \cdot \mathbf{c})$
+3. $\mathbf{c} \times (\mathbf{a} \times \mathbf{b}) = \mathbf{a}(\mathbf{c} \cdot \mathbf{b}) - \mathbf{b}(\mathbf{c} \cdot \mathbf{a})$
+
+これらをすべて足すと：
+$(\mathbf{b} \cdot \mathbf{a})$ と $(\mathbf{a} \cdot \mathbf{b})$ は内積の交換法則により等しいので、 $\mathbf{c}(\mathbf{b} \cdot \mathbf{a}) - \mathbf{c}(\mathbf{a} \cdot \mathbf{b}) = 0$ となります。
+同様に $\mathbf{a}$ の項、 $\mathbf{b}$ の項もすべて打ち消し合い、結果は $\mathbf{0}$ となります。
+
+
+---
 
 
 
