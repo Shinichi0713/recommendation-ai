@@ -99,4 +99,126 @@ __② 一般相対性理論__
 「計量が変化する = 長さの測り方が変わる」ことで、光が曲がったり時間が遅れたりする **「空間の歪み」** を数学的に記述します。
 
 
+## 空間の内積と外積
+
+空間における「内積」と「外積」は、どちらも2つのベクトルから新しい値を導き出す計算ですが、その**性質と役割は全く対照的**です。
+
+一言でいうと、内積は **「重なり（スカラー）」** を求め、外積は **「回転と面積（ベクトル）」** を求めます。
+
+### 1. 内積（Inner Product / Dot Product）
+
+内積は、2つのベクトルを掛け合わせて**「一つの数値（スカラー）」**を取り出す計算です。
+
+__数学的な定義__
+
+2つのベクトル $\mathbf{a}, \mathbf{b}$ のなす角を $\theta$ とすると：
+$$\mathbf{a} \cdot \mathbf{b} = |\mathbf{a}| |\mathbf{b}| \cos \theta$$
+成分表示（$n$ 次元）では、対応する成分同士を掛けて足します。
+$$\mathbf{a} \cdot \mathbf{b} = a_1 b_1 + a_2 b_2 + \dots + a_n b_n$$
+
+__役割とイメージ__
+
+- **影の長さ（射影）**: ベクトル $\mathbf{a}$ を $\mathbf{b}$ の方向に投影したときの「重なり具合」を表します。
+- **直交判定**: 内積が $0$ ならば、2つのベクトルは垂直（$90^\circ$）です。
+- **エネルギーや仕事**: 物理では「力 $\times$ 移動距離 $\times \cos\theta$」で仕事量を求める際に使われます。
+
+
+__例題:__ ベクトルの射影（影）の可視化目的
+
+ベクトル $\mathbf{a}$ を $\mathbf{b}$ 方向に投影した「影」を描画する。
+なす角 $\theta$ が鋭角・直角・鈍角のときに、内積の正負がどう変わるかを確認する。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def visualize_dot_product(a, b):
+    # 内積の計算
+    dot_val = np.dot(a, b)
+    
+    # ベクトル b 方向への射影ベクトル (shadow) を計算
+    # formula: (a・b / |b|^2) * b
+    b_norm_sq = np.dot(b, b)
+    proj_a_on_b = (dot_val / b_norm_sq) * b
+
+    # 可視化の設定
+    plt.figure(figsize=(8, 8))
+    plt.axhline(0, color='black', lw=1)
+    plt.axvline(0, color='black', lw=1)
+    
+    # 元のベクトル a, b の描画
+    plt.quiver(0, 0, a[0], a[1], angles='xy', scale_units='xy', scale=1, color='blue', label=f'Vector a {a}')
+    plt.quiver(0, 0, b[0], b[1], angles='xy', scale_units='xy', scale=1, color='red', label=f'Vector b {b}')
+    
+    # 影（射影ベクトル）の描画
+    plt.quiver(0, 0, proj_a_on_b[0], proj_a_on_b[1], angles='xy', scale_units='xy', scale=1, 
+               color='gray', alpha=0.5, label='Projection (Shadow)')
+    
+    # aの先端からbのラインへ下ろす垂線
+    plt.plot([a[0], proj_a_on_b[0]], [a[1], proj_a_on_b[1]], 'k--', lw=1)
+
+    # グラフの調整
+    limit = max(np.linalg.norm(a), np.linalg.norm(b)) + 1
+    plt.xlim(-limit, limit)
+    plt.ylim(-limit, limit)
+    plt.grid(True, linestyle=':')
+    plt.legend()
+    plt.title(f"Dot Product: {dot_val:.2f}\nShadow length: {np.linalg.norm(proj_a_on_b):.2f}")
+    plt.gca().set_aspect('equal')
+    plt.show()
+
+# --- テストケース ---
+# 1. 鋭角 (内積 > 0)
+visualize_dot_product(np.array([3, 4]), np.array([5, 0]))
+
+# 2. 直角 (内積 = 0)
+# visualize_dot_product(np.array([0, 4]), np.array([5, 0]))
+
+# 3. 鈍角 (内積 < 0)
+# visualize_dot_product(np.array([-2, 3]), np.array([5, 0]))
+```
+
+__結果__
+
+- 影の長さと内積:内積 $a \cdot b$ は、「$b$ の長さ $\times$ $a$ が $b$ の上に落とす影の長さ」に対応しています。もし $b$ が単位ベクトル（長さ 1）なら、内積そのものが影の長さになります。
+- 正・負・ゼロの意味:
+  - 正の値: 2つのベクトルが「同じ方向」を向いている（鋭角）。
+  - ゼロ: 2つのベクトルが「完全に独立（直交）」している。影が一点（原点）に潰れてしまいます。
+  - 負の値: 2つのベクトルが「逆方向」を向いている（鈍角）。影が $b$ と反対方向に伸びます。
+
+<img src="image/18_inner_product/1774014843359.png" width="550" style="display: block; margin: 0 auto;">
+
+
+### 2. 外積（Vector Product / Cross Product）
+
+外積は、2つのベクトルから **「新しいベクトル」** を作り出す計算です。
+※主に **3次元空間** で定義されます。
+
+__数学的な定義__
+
+結果として得られるベクトル $\mathbf{a} \times \mathbf{b}$ は、以下の性質を持ちます。
+1.  **方向**: $\mathbf{a}$ と $\mathbf{b}$ の**両方に垂直**な方向（右ねじの法則）。
+2.  **大きさ**: $\mathbf{a}$ と $\mathbf{b}$ が作る**平行四辺形の面積**に等しい。
+$$|\mathbf{a} \times \mathbf{b}| = |\mathbf{a}| |\mathbf{b}| \sin \theta$$
+
+__役割とイメージ__
+
+- **回転の軸**: トルク（力回し）や角運動量など、回転運動を記述する際に、回転の「軸」として外積が使われます。
+- **法線ベクトル**: 平面の「向き」を定義するために、平面上の2ベクトルから垂直なベクトルを作ります。
+- **面積計算**: 3Dグラフィックスなどでポリゴンの面積を求める際に必須です。
+
+
+
+### 3. 内積と外積の比較
+
+| 特徴 | 内積 ($\cdot$) | 外積 ($\times$) |
+| :--- | :--- | :--- |
+| **結果の型** | スカラー（数値） | ベクトル（矢印） |
+| **計算の核心** | $\cos \theta$（並行に近いほど大） | $\sin \theta$（垂直に近いほど大） |
+| **次元** | 何次元でも定義可能 | 基本的に3次元（または7次元） |
+| **交換法則** | 成り立つ ($\mathbf{a}\cdot\mathbf{b} = \mathbf{b}\cdot\mathbf{a}$) | **成り立たない** ($\mathbf{a}\times\mathbf{b} = -\mathbf{b}\times\mathbf{a}$) |
+| **図形的意味** | 影の長さ（射影） | 平行四辺形の面積・回転軸 |
+
+
+
 
