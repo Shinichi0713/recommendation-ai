@@ -1214,3 +1214,161 @@ __③ 検証用行列 (np.dot(ortho_basis, ortho_basis.T))__
 生成された基底 $Q$ に対して $Q Q^T$ を計算すると、対角成分には「自分自身との内積（＝長さの2乗＝1）」が並び、それ以外には「異なる基底との内積（＝0）」が並びます。つまり、単位行列になれば大成功です。
 
 
+__例題:__ 
+
+シュミットの正規化直交法を用いて、 $R^3$ の次の基底を正規直交化せよ。
+
+
+$$
+\begin{pmatrix}
+1 \\
+0 \\
+1
+\end{pmatrix}
+,
+\begin{pmatrix}
+-1 \\
+1 \\
+3
+\end{pmatrix}
+,
+\begin{pmatrix}
+1 \\
+-1 \\
+2
+\end{pmatrix}
+$$
+
+
+
+---
+
+解法
+
+与えられた3つのベクトルを $\mathbf{v}_1, \mathbf{v}_2, \mathbf{v}_3$ とし、グラム・シュミットの正規直交化法を用いて正規直交基底 $\mathbf{e}_1, \mathbf{e}_2, \mathbf{e}_3$ を求めます。
+
+
+__ステップ1： $\mathbf{v}_1$ の正規化__
+
+まず、最初の軸 $\mathbf{e}_1$ を決めます。
+
+$$\mathbf{e}_1 = \frac{\mathbf{v}_1}{\|\mathbf{v}_1\|}$$
+
+$\|\mathbf{v}_1\| = \sqrt{1^2 + 0^2 + 1^2} = \sqrt{2}$ なので、
+
+$$\mathbf{e}_1 = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$$
+
+
+__ステップ2： $\mathbf{v}_2$ の直交化と正規化__
+
+次に、$\mathbf{v}_2$ から $\mathbf{e}_1$ 方向の成分（影）を引いて、垂直なベクトル $\mathbf{u}_2$ を作ります。
+
+$$\mathbf{u}_2 = \mathbf{v}_2 - (\mathbf{v}_2, \mathbf{e}_1) \mathbf{e}_1$$
+
+内積 $(\mathbf{v}_2, \mathbf{e}_1)$ を計算すると：
+$$(\mathbf{v}_2, \mathbf{e}_1) = \left( \begin{pmatrix} -1 \\ 1 \\ 3 \end{pmatrix}, \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} \right) = \frac{-1 + 0 + 3}{\sqrt{2}} = \frac{2}{\sqrt{2}} = \sqrt{2}$$
+
+よって、
+$$\mathbf{u}_2 = \begin{pmatrix} -1 \\ 1 \\ 3 \end{pmatrix} - \sqrt{2} \cdot \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} -1 \\ 1 \\ 3 \end{pmatrix} - \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} = \begin{pmatrix} -2 \\ 1 \\ 2 \end{pmatrix}$$
+
+これを正規化します。 $\|\mathbf{u}_2\| = \sqrt{(-2)^2 + 1^2 + 2^2} = \sqrt{9} = 3$ なので、
+
+$$\mathbf{e}_2 = \frac{1}{3} \begin{pmatrix} -2 \\ 1 \\ 2 \end{pmatrix}$$
+
+
+__ステップ3： $\mathbf{v}_3$ の直交化と正規化__
+
+最後に、$\mathbf{v}_3$ から $\mathbf{e}_1$ と $\mathbf{e}_2$ 両方の成分を引いて、垂直なベクトル $\mathbf{u}_3$ を作ります。
+
+$$\mathbf{u}_3 = \mathbf{v}_3 - (\mathbf{v}_3, \mathbf{e}_1) \mathbf{e}_1 - (\mathbf{v}_3, \mathbf{e}_2) \mathbf{e}_2$$
+
+各内積を計算します：
+- $(\mathbf{v}_3, \mathbf{e}_1) = \left( \begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix}, \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} \right) = \frac{1 + 0 + 2}{\sqrt{2}} = \frac{3}{\sqrt{2}}$
+- $(\mathbf{v}_3, \mathbf{e}_2) = \left( \begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix}, \frac{1}{3} \begin{pmatrix} -2 \\ 1 \\ 2 \end{pmatrix} \right) = \frac{-2 - 1 + 4}{3} = \frac{1}{3}$
+
+これらを代入して $\mathbf{u}_3$ を求めます：
+$$
+\begin{aligned}
+\mathbf{u}_3 &= \begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix} - \frac{3}{\sqrt{2}} \cdot \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} - \frac{1}{3} \cdot \frac{1}{3} \begin{pmatrix} -2 \\ 1 \\ 2 \end{pmatrix} \\
+&= \begin{pmatrix} 1 \\ -1 \\ 2 \end{pmatrix} - \frac{3}{2} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix} - \frac{1}{9} \begin{pmatrix} -2 \\ 1 \\ 2 \end{pmatrix} \\
+&= \begin{pmatrix} 1 - 3/2 + 2/9 \\ -1 - 0 - 1/9 \\ 2 - 3/2 - 2/9 \end{pmatrix} = \begin{pmatrix} -5/18 \\ -10/18 \\ 5/18 \end{pmatrix} = \frac{5}{18} \begin{pmatrix} -1 \\ -2 \\ 1 \end{pmatrix}
+\end{aligned}
+$$
+
+これを正規化します。方向ベクトル $(-1, -2, 1)^T$ の長さは $\sqrt{1+4+1} = \sqrt{6}$ なので、
+
+$$\mathbf{e}_3 = \frac{1}{\sqrt{6}} \begin{pmatrix} -1 \\ -2 \\ 1 \end{pmatrix}$$
+
+
+__最終的な正規直交基底__
+
+求める正規直交基底は以下の通りです。
+
+- $\mathbf{e}_1 = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}$
+- $\mathbf{e}_2 = \frac{1}{3} \begin{pmatrix} -2 \\ 1 \\ 2 \end{pmatrix}$
+- $\mathbf{e}_3 = \frac{1}{\sqrt{6}} \begin{pmatrix} -1 \\ -2 \\ 1 \end{pmatrix}$
+
+
+---
+
+## 直交補空間、直和分解
+
+計量ベクトル空間において、**直交補空間**と**直和分解**は、空間全体を「ある部分空間」とその「残り（垂直な成分）」にきれいに切り分けるための概念です。
+
+これらは、複雑なデータから特定の成分だけを取り出したり、ノイズを除去したりする際の数学的な裏付けとなります。
+
+
+### 1. 直交補空間 (Orthogonal Complement)
+
+計量ベクトル空間 $V$ の部分空間を $W$ とします。このとき、$W$ に含まれる**すべてのベクトルと直交する**ベクトルの集まりを、 $W$ の**直交補空間**と呼び、$W^\perp$（ダブリュー・パープ）と表記します。
+
+__定義__
+
+$$W^\perp = \{ \mathbf{v} \in V \mid (\mathbf{v}, \mathbf{w}) = 0 \quad \text{for all } \mathbf{w} \in W \}$$
+
+__直感的なイメージ__
+
+- **3次元空間において $W$ が「床（平面）」なら**: 
+  $W^\perp$ はその床に対して垂直に立つ「柱（直線）」です。
+- **3次元空間において $W$ が「直線」なら**: 
+  $W^\perp$ はその直線に垂直な「平面」全体になります。
+
+
+
+__2. 直和分解 (Direct Sum Decomposition)__
+
+「空間 $V$ は、部分空間 $W$ とその直交補空間 $W^\perp$ の組み合わせで過不足なく構成されている」という定理です。
+
+__定義__
+
+有限次元の計量ベクトル空間 $V$ において、任意のベクトル $\mathbf{v} \in V$ は次のように**一意に**分解できます。
+$$\mathbf{v} = \mathbf{w} + \mathbf{w}^\perp \quad (\mathbf{w} \in W, \mathbf{w}^\perp \in W^\perp)$$
+
+このとき、$V$ は $W$ と $W^\perp$ の**直和**であるといい、$V = W \oplus W^\perp$ と書きます。
+
+
+
+__3. なぜ「直和」が嬉しいのか？__
+
+直和分解ができるということは、以下の3つの重要な性質が保証されることを意味します。
+
+1.  **一意性**: 分解の仕方は1通りしかありません（迷いがない）。
+2.  **射影**: ベクトル $\mathbf{v}$ を $W$ 上のベクトル $\mathbf{w}$ に変換することを「$W$ への**直交射影**」と呼びます。
+3.  **最短距離**: $W$ の中のベクトルの中で、最も元の $\mathbf{v}$ に近いのは、この射影された $\mathbf{w}$ です。
+
+__4. エンジニアリングでの応用例__
+
+__① 信号処理・ノイズ除去__
+
+「意味のある信号」が成す部分空間を $W$ とすると、観測データ $\mathbf{v}$ を $W \oplus W^\perp$ に分解することで、信号成分（$W$）とノイズ成分（$W^\perp$）を分離できます。
+
+__② 最小二乗法__
+
+データに最もフィットする直線を求める問題は、データのベクトルを「モデルが表現可能な部分空間 $W$」に直交射影して、誤差（$W^\perp$ の長さ）を最小化する作業そのものです。
+
+__③ 画像圧縮__
+
+画像を基底ベクトルに分解し、寄与度の低い部分空間（$W^\perp$ に近い成分）を切り捨てることで、データ量を削減します。
+
+
+
