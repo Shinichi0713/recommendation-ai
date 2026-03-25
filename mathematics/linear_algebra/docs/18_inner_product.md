@@ -1333,11 +1333,17 @@ __直感的なイメージ__
 - **3次元空間において $W$ が「直線」なら**: 
   $W^\perp$ はその直線に垂直な「平面」全体になります。
 
+直交補空間のイメージは以下のようになります。
+青い直線 ($W$)は、1次元の部分空間です。この直線上のすべての点は $W$ に属します。
+オレンジの平面 ($W^\perp$)は、直線 $W$ に対して垂直な「すべての方向」を含んでいます。これが直交補空間です。
 
+<img src="image/18_inner_product/1774474227492.png" width="500" style="display: block; margin: 0 auto;">
 
-__2. 直和分解 (Direct Sum Decomposition)__
+### 2. 直和分解 (Direct Sum Decomposition)
 
 「空間 $V$ は、部分空間 $W$ とその直交補空間 $W^\perp$ の組み合わせで過不足なく構成されている」という定理です。
+
+
 
 __定義__
 
@@ -1348,7 +1354,7 @@ $$\mathbf{v} = \mathbf{w} + \mathbf{w}^\perp \quad (\mathbf{w} \in W, \mathbf{w}
 
 
 
-__3. なぜ「直和」が嬉しいのか？__
+### 3. なぜ「直和」が嬉しいのか？
 
 直和分解ができるということは、以下の3つの重要な性質が保証されることを意味します。
 
@@ -1356,7 +1362,7 @@ __3. なぜ「直和」が嬉しいのか？__
 2.  **射影**: ベクトル $\mathbf{v}$ を $W$ 上のベクトル $\mathbf{w}$ に変換することを「$W$ への**直交射影**」と呼びます。
 3.  **最短距離**: $W$ の中のベクトルの中で、最も元の $\mathbf{v}$ に近いのは、この射影された $\mathbf{w}$ です。
 
-__4. エンジニアリングでの応用例__
+### 4. エンジニアリングでの応用例
 
 __① 信号処理・ノイズ除去__
 
@@ -1369,6 +1375,84 @@ __② 最小二乗法__
 __③ 画像圧縮__
 
 画像を基底ベクトルに分解し、寄与度の低い部分空間（$W^\perp$ に近い成分）を切り捨てることで、データ量を削減します。
+
+
+__定理:__
+
+(1)
+
+$$V = W \oplus W^\perp$$
+
+特に
+
+$$
+dimW + dim W^\prep = n
+$$
+
+(2)
+
+$$
+(W^\prep)^\prep = W
+$$
+
+---
+
+証明
+
+計量ベクトル空間 $V$（次元を $n$ とする）とその部分空間 $W$ に関するこれらの性質は、直交射影の存在と一意性に基づいています。
+
+以下にそれぞれの証明を記述します。
+
+__(1) $V = W \oplus W^\perp$ および次元の関係の証明__
+
+この証明は、「一意な分解の存在」と「次元の和」の2段階で行います。
+
+__① 直和分解 $V = W \oplus W^\perp$ の証明__
+
+任意のベクトル $\mathbf{v} \in V$ が $\mathbf{v} = \mathbf{w} + \mathbf{w}^\perp$ （ただし $\mathbf{w} \in W, \mathbf{w}^\perp \in W^\perp$）と一意に表せることを示します。
+
+1.  **存在**: 
+    $W$ の正規直交基底を $\{\mathbf{e}_1, \dots, \mathbf{e}_k\}$ とします。$\mathbf{v}$ の $W$ への直交射影を次のように定義します。
+    $$\mathbf{w} = \sum_{i=1}^{k} (\mathbf{v}, \mathbf{e}_i)\mathbf{e}_i$$
+    ここで $\mathbf{w} \in W$ です。次に $\mathbf{w}^\perp = \mathbf{v} - \mathbf{w}$ とおくと、任意の $\mathbf{e}_j$ に対して、
+    $$(\mathbf{w}^\perp, \mathbf{e}_j) = (\mathbf{v} - \mathbf{w}, \mathbf{e}_j) = (\mathbf{v}, \mathbf{e}_j) - (\mathbf{v}, \mathbf{e}_j) = 0$$
+    となり、$\mathbf{w}^\perp$ は $W$ のすべての基底と直交するため $\mathbf{w}^\perp \in W^\perp$ です。よって $V = W + W^\perp$ です。
+2.  **一意性（直和の条件）**: 
+    $W \cap W^\perp = \{\mathbf{0}\}$ であることを示せば十分です。
+    $\mathbf{x} \in W \cap W^\perp$ とすると、$\mathbf{x} \in W$ かつ $\mathbf{x} \in W^\perp$ なので、内積の定義より $(\mathbf{x}, \mathbf{x}) = 0$ となります。内積の正定値性から $\mathbf{x} = \mathbf{0}$ です。
+
+したがって、$V = W \oplus W^\perp$ が成立します。
+
+__② 次元の関係 $\dim W + \dim W^\perp = n$__
+
+直和の性質より、空間 $V$ の次元は、直和を構成する部分空間の次元の和に等しくなります。
+$$\dim V = \dim(W \oplus W^\perp) = \dim W + \dim W^\perp$$
+$V$ の次元は $n$ なので、$n = \dim W + \dim W^\perp$ が導かれます。
+
+
+
+__(2) $(W^\perp)^\perp = W$ の証明__
+
+集合の相等を示すため、包含関係が両方向に成り立つことを示します。
+
+__① $W \subset (W^\perp)^\perp$ の証明__
+
+定義により、$(W^\perp)^\perp$ は「$W^\perp$ に属するすべてのベクトルと直交するベクトルの集合」です。
+任意の $\mathbf{w} \in W$ をとると、直交補空間 $W^\perp$ の定義から、すべての $\mathbf{z} \in W^\perp$ に対して $(\mathbf{w}, \mathbf{z}) = 0$ です。
+これは $\mathbf{w}$ が $W^\perp$ のすべての要素と直交することを意味するため、$\mathbf{w} \in (W^\perp)^\perp$ です。
+
+__② $(W^\perp)^\perp \subset W$ の証明（次元による証明）__
+
+(1) で証明した次元の公式を $(W^\perp)^\perp$ に適用します。
+$$\dim(W^\perp)^\perp = n - \dim W^\perp$$
+また、(1) より $\dim W^\perp = n - \dim W$ なので、これを代入すると：
+$$\dim(W^\perp)^\perp = n - (n - \dim W) = \dim W$$
+①より $W$ は $(W^\perp)^\perp$ の部分空間であり、かつ次元が等しいため、両者は一致します。
+
+したがって、$(W^\perp)^\perp = W$ が成立します。
+
+
+---
 
 
 
