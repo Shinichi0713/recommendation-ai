@@ -1929,5 +1929,87 @@ $A^H = A$ を満たす行列です。
 - **主成分分析への応用**: 複素数を含むデータの共分散行列などはエルミット行列になり、その固有値分解によって、実数のときと同様に主成分を抽出できます。
 
 
+__例題:__
+
+エルミット行列 $A$ ($A^H = A$) の最も重要な特性は、**「複素数を含んでいるにもかかわらず、その固有値はすべて実数になり、固有ベクトルは互いに直交する」** という点です。
+
+これを体感するために、2次元の複素ベクトル空間におけるエルミット行列の作用を可視化するコードを作成します。複素数 z=x+iy を 2D 平面上の点 (x,y) としてプロットし、行列を掛けた前後でベクトルがどう変化するかをシミュレーションします。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def visualize_hermitian_action():
+    # 1. エルミット行列 A を作成 (A = A^H)
+    # 対角要素は実数、非対角要素は互いに複素共役
+    A = np.array([[3 + 0j, 1 + 2j],
+                  [1 - 2j, 5 + 0j]])
+
+    # 2. 固有値分解
+    eigenvalues, eigenvectors = np.linalg.eigh(A)
+    
+    print(f"エルミット行列 A:\n{A}")
+    print(f"\n固有値 (すべて実数のはず): {eigenvalues}")
+
+    # 3. 可視化用のベクトル（円状に配置された多数の複素ベクトル）
+    theta = np.linspace(0, 2*np.pi, 30)
+    # 各要素が複素数のベクトル [z1, z2]^T を作る
+    z1 = np.cos(theta) + 1j * 0
+    z2 = np.sin(theta) + 1j * 0
+    vectors = np.vstack([z1, z2]) # (2, 30)
+
+    # 行列 A を作用させる
+    transformed_vectors = A @ vectors
+
+    # 4. プロット (第1コンポーネントの複素平面を表示)
+    plt.figure(figsize=(12, 5))
+
+    # --- 元のベクトル (第1次元) ---
+    plt.subplot(1, 2, 1)
+    plt.scatter(vectors[0].real, vectors[0].imag, c='blue', label='Original (z1)')
+    plt.axhline(0, color='black', lw=1); plt.axvline(0, color='black', lw=1)
+    plt.title("Original Vectors (Component 1)")
+    plt.axis('equal')
+
+    # --- 変形後のベクトル (第1次元) ---
+    plt.subplot(1, 2, 2)
+    plt.scatter(transformed_vectors[0].real, transformed_vectors[0].imag, c='red', label='Transformed (Az1)')
+    
+    # 固有ベクトルの方向を強調
+    # 固有値が実数なので、固有ベクトル方向への写像は「回転」を含まない
+    v1_direction = eigenvectors[0, 0]
+    plt.quiver(0, 0, v1_direction.real, v1_direction.imag, scale=5, color='green', label='Eigenvector Direction')
+    
+    plt.axhline(0, color='black', lw=1); plt.axvline(0, color='black', lw=1)
+    plt.title("Transformed Vectors (Component 1)")
+    plt.axis('equal')
+    plt.legend()
+    
+    plt.tight_layout()
+    plt.show()
+
+    # 5. エルミット内積の直交性確認
+    inner_product = np.vdot(eigenvectors[:, 0], eigenvectors[:, 1])
+    print(f"\n固有ベクトル同士のエルミット内積: {inner_product:.6e}")
+
+visualize_hermitian_action()
+```
+
+__結果__
+
+<img src="image/18_inner_product/1774678504837.png" width="700" style="display: block; margin: 0 auto;">
+
+
+__① `np.linalg.eigh` の魔法__
+
+複素数行列を扱う際、通常の `eig` ではなく `eigh` を使うことで、行列がエルミット（または実対称）であることを前提に計算します。結果として得られる固有値が**「虚数部が完全にゼロの実数」**であることをコンソールで確認してください。これが「エネルギー」や「物理量」が実数として観測される量子力学の基礎です。
+
+__② 複素平面上の「伸び」__
+
+プロットを見ると、青い円が赤い楕円形に変形しているのがわかります。もし行列がユニタリ（直交）であれば円のまま回転しますが、エルミット行列の場合は**特定の軸方向に引き伸ばす（あるいは縮める）** 作用を持ちます。
+
+__③ `np.vdot` による直交性__
+
+複素ベクトルの内積計算には `np.vdot` を使います。これは自動的に第1引数の複素共役を取って計算してくれます。計算結果がほぼ $0$ になることで、**「複素空間における垂直」** を体感できます。
 
 
