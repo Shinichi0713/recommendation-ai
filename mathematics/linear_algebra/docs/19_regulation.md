@@ -194,7 +194,7 @@ $$
 
 __定理:__
 
-歪エルミット行列の固有値はすべて純虚数であることを示せ
+歪エルミット行列の固有値はすべて純虚数であることを示せ。
 
 
 ---
@@ -259,6 +259,491 @@ __定理:__
 6. **結論**  
    任意の固有値 $\lambda$ について $\overline{\lambda} = -\overline{\lambda}$ が成り立つので、$\lambda$ の実部は 0 です。  
    よって $A$ の固有値はすべて純虚数（または 0）です。
+
+---
+
+__定理:__
+
+エルミット行列、特に実対称行列の相異なる固有値に属する固有ベクトルは互いに直交する。
+
+
+---
+
+__証明すべき命題__
+
+$H \in \mathbb{C}^{n \times n}$ をエルミート行列とする、すなわち
+$$
+H^\dagger = H
+$$
+が成り立つとする。  
+$\lambda, \mu$ を $H$ の相異なる固有値（$\lambda \neq \mu$）とし、$\mathbf{v}, \mathbf{w}$ をそれぞれ対応する固有ベクトルとする：
+$$
+H\mathbf{v} = \lambda \mathbf{v}, \quad H\mathbf{w} = \mu \mathbf{w}, \quad \mathbf{v}, \mathbf{w} \neq \mathbf{0}.
+$$
+このとき、$\mathbf{v}$ と $\mathbf{w}$ は**直交**する：
+$$
+\langle \mathbf{v}, \mathbf{w} \rangle = 0.
+$$
+
+__証明__
+
+1. **内積の定義と仮定**  
+   複素標準内積を $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{y}^\dagger \mathbf{x}$ と定義する。  
+   固有ベクトルの条件は
+   $$
+   H\mathbf{v} = \lambda \mathbf{v}, \quad H\mathbf{w} = \mu \mathbf{w}.
+   $$
+
+2. **$\langle H\mathbf{v}, \mathbf{w} \rangle$ を2通りに計算する**
+
+   - 一つ目の計算：
+     $$
+     \langle H\mathbf{v}, \mathbf{w} \rangle = \langle \lambda \mathbf{v}, \mathbf{w} \rangle = \lambda \langle \mathbf{v}, \mathbf{w} \rangle.
+     $$
+
+   - 二つ目の計算：  
+     エルミート性 $H^\dagger = H$ より、
+     $$
+     \langle H\mathbf{v}, \mathbf{w} \rangle = \mathbf{w}^\dagger H\mathbf{v} = \mathbf{w}^\dagger H^\dagger \mathbf{v} = (H\mathbf{w})^\dagger \mathbf{v} = \langle \mathbf{v}, H\mathbf{w} \rangle.
+     $$
+     ここで $H\mathbf{w} = \mu \mathbf{w}$ だから、
+     $$
+     \langle \mathbf{v}, H\mathbf{w} \rangle = \langle \mathbf{v}, \mu \mathbf{w} \rangle = \mu \langle \mathbf{v}, \mathbf{w} \rangle.
+     $$
+
+3. **2つの式を比較する**  
+   以上より、
+   $$
+   \lambda \langle \mathbf{v}, \mathbf{w} \rangle = \mu \langle \mathbf{v}, \mathbf{w} \rangle.
+   $$
+   移項して
+   $$
+   (\lambda - \mu) \langle \mathbf{v}, \mathbf{w} \rangle = 0.
+   $$
+
+4. **結論**  
+   $\lambda \neq \mu$ より $\lambda - \mu \neq 0$ なので、両辺を $\lambda - \mu$ で割って
+   $$
+   \langle \mathbf{v}, \mathbf{w} \rangle = 0.
+   $$
+   すなわち、$\mathbf{v}$ と $\mathbf{w}$ は直交します。
+
+__実対称行列の場合__
+
+実対称行列 $A \in \mathbb{R}^{n \times n}$ は
+$$
+A^\mathsf{T} = A
+$$
+を満たします。実数行列では随伴行列は単なる転置なので、これは
+$$
+A^\dagger = A
+$$
+と同値です。したがって実対称行列はエルミート行列の特別な場合であり、上記の証明から、相異なる固有値に対応する固有ベクトルは直交します。
+
+---
+
+__定理:__
+
+$n$次実正方行列 $A$ について、次の２つの条件は同値である。
+
+(1) $A$は対称行列である。
+
+(2) $A$は適当な直交用列 $P$ によって対角化できる。すなわち
+
+$$
+P^{-1}AP = \begin{pmatrix} \lambda_1 & 0 & 0 \\ 0 & \lambda_2 & 0 \\ 0 & 0 & \ddots \end{pmatrix}
+$$
+
+
+
+
+---
+
+__(1) ⇒ (2) の証明（実対称行列は直交行列で対角化可能）__
+
+**主張**：$A^\mathsf{T} = A$ ならば、ある直交行列 $P$（$P^\mathsf{T}P = I$）が存在して
+$$
+P^{-1}AP = P^\mathsf{T}AP = \mathrm{diag}(\lambda_1, \dots, \lambda_n)
+$$
+と対角化できる。
+
+**証明の流れ**（概略）：
+
+1. **固有値はすべて実数**  
+   実対称行列の固有値はすべて実数であることは、エルミート行列の固有値が実数であることの証明と同様に、内積を用いて示せます。  
+   すなわち、固有値 $\lambda$ と固有ベクトル $\mathbf{v}$ に対して
+   $$
+   \lambda \|\mathbf{v}\|^2 = \mathbf{v}^\mathsf{T} A \mathbf{v} = (A\mathbf{v})^\mathsf{T} \mathbf{v} = \lambda \|\mathbf{v}\|^2
+   $$
+   から $\lambda = \overline{\lambda}$ が従い、$\lambda$ は実数です。
+
+2. **相異なる固有値に対応する固有ベクトルは直交**  
+   相異なる固有値 $\lambda \neq \mu$ に対応する固有ベクトル $\mathbf{v}, \mathbf{w}$ について、
+   $$
+   \lambda \langle \mathbf{v}, \mathbf{w} \rangle = \langle A\mathbf{v}, \mathbf{w} \rangle = \langle \mathbf{v}, A\mathbf{w} \rangle = \mu \langle \mathbf{v}, \mathbf{w} \rangle
+   $$
+   より $(\lambda - \mu)\langle \mathbf{v}, \mathbf{w} \rangle = 0$ となり、$\lambda \neq \mu$ だから $\langle \mathbf{v}, \mathbf{w} \rangle = 0$ です。
+
+3. **各固有空間で正規直交基底を取る**  
+   同じ固有値に属する固有ベクトルたちは、一般には直交しませんが、グラム・シュミットの直交化によって正規直交基底を構成できます。
+
+4. **全体として正規直交固有ベクトル基底が取れる**  
+   実対称行列は正規行列でもあるため、すべての固有ベクトルを集めて正規直交基底 $\{\mathbf{p}_1, \dots, \mathbf{p}_n\}$ を構成できます。
+
+5. **直交行列 $P$ による対角化**  
+   $P = [\mathbf{p}_1 \cdots \mathbf{p}_n]$ とおくと、$P$ は直交行列（$P^\mathsf{T}P = I$）であり、
+   $$
+   AP = P \mathrm{diag}(\lambda_1, \dots, \lambda_n)
+   $$
+   が成り立ちます。したがって
+   $$
+   P^{-1}AP = P^\mathsf{T}AP = \mathrm{diag}(\lambda_1, \dots, \lambda_n)
+   $$
+   となり、$A$ は直交行列で対角化可能です。
+
+__(2) ⇒ (1) の証明（直交行列で対角化できるなら対称）__
+
+**主張**：ある直交行列 $P$（$P^\mathsf{T}P = I$）と実対角行列 $\Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$ が存在して
+$$
+P^{-1}AP = P^\mathsf{T}AP = \Lambda
+$$
+ならば、$A$ は対称行列（$A^\mathsf{T} = A$）である。
+
+**証明**：
+
+仮定より
+$$
+P^\mathsf{T}AP = \Lambda.
+$$
+$\Lambda$ は対角行列なので $\Lambda^\mathsf{T} = \Lambda$ です。  
+また $P$ は直交行列なので $P^{-1} = P^\mathsf{T}$ です。
+
+1. 上式の両辺の転置を取ると、
+   $$
+   (P^\mathsf{T}AP)^\mathsf{T} = P^\mathsf{T} A^\mathsf{T} (P^\mathsf{T})^\mathsf{T} = P^\mathsf{T} A^\mathsf{T} P = \Lambda^\mathsf{T} = \Lambda.
+   $$
+
+2. したがって
+   $$
+   P^\mathsf{T} A^\mathsf{T} P = P^\mathsf{T} A P.
+   $$
+
+3. 両辺の左から $P$、右から $P^\mathsf{T}$ をかけると、
+   $$
+   P(P^\mathsf{T} A^\mathsf{T} P)P^\mathsf{T} = P(P^\mathsf{T} A P)P^\mathsf{T}.
+   $$
+   すなわち
+   $$
+   A^\mathsf{T} = A.
+   $$
+   よって $A$ は対称行列です。
+
+以上より、
+
+- (1) $A$ が対称行列ならば、直交行列で対角化可能。
+- (2) 直交行列で対角化可能ならば、$A$ は対称行列。
+
+が示されたので、2つの条件は同値です。
+
+---
+
+__例題:__
+
+次の実対称行列を直交行列によって対角化せよ。
+
+$$
+A = \begin{pmatrix} 0 & 0 & 1 \\ 0 & -1 & 0 \\ 1 & 0 & 0 \end{pmatrix}
+$$
+
+
+
+---
+
+__1. 固有値の計算__
+
+固有方程式は
+$$
+\det(A - \lambda I) = 0
+$$
+です。
+
+$$
+A - \lambda I = \begin{pmatrix}
+-\lambda & 0 & 1 \\
+0 & -1-\lambda & 0 \\
+1 & 0 & -\lambda
+\end{pmatrix}
+$$
+
+行列式を計算します（第2行で展開すると楽です）：
+
+- 第2行は $(0, -1-\lambda, 0)$ なので、$(2,2)$ 成分の余因子を考えると
+  $$
+  \det(A - \lambda I) = (-1-\lambda) \cdot \det\begin{pmatrix} -\lambda & 1 \\ 1 & -\lambda \end{pmatrix}.
+  $$
+
+- 2×2 行列の行列式は
+  $$
+  \det\begin{pmatrix} -\lambda & 1 \\ 1 & -\lambda \end{pmatrix} = (-\lambda)(-\lambda) - 1\cdot 1 = \lambda^2 - 1.
+  $$
+
+したがって
+$$
+\det(A - \lambda I) = (-1-\lambda)(\lambda^2 - 1) = -(1+\lambda)(\lambda - 1)(\lambda + 1) = -(\lambda+1)^2(\lambda-1).
+$$
+
+よって固有値は
+$$
+\lambda = -1 \quad (\text{重複度 2}),\quad \lambda = 1 \quad (\text{重複度 1}).
+$$
+
+__2. 固有ベクトルの計算__
+
+__(a) 固有値 $\lambda = 1$ の場合__
+
+$(A - I)\mathbf{v} = \mathbf{0}$ を解きます。
+
+$$
+A - I = \begin{pmatrix}
+-1 & 0 & 1 \\
+0 & -2 & 0 \\
+1 & 0 & -1
+\end{pmatrix}
+$$
+
+行基本変形すると（第1行＋第3行、第2行を -2 で割るなど）、
+$$
+\begin{pmatrix}
+-1 & 0 & 1 \\
+0 & 1 & 0 \\
+0 & 0 & 0
+\end{pmatrix}
+\quad\Rightarrow\quad
+\begin{cases}
+-x_1 + x_3 = 0 \\
+x_2 = 0
+\end{cases}
+$$
+
+したがって $x_1 = x_3$, $x_2 = 0$ です。  
+固有ベクトルとして
+$$
+\mathbf{v}_1 = \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}
+$$
+が取れます（長さは $\sqrt{2}$）。
+
+__(b) 固有値 $\lambda = -1$ の場合__
+
+$(A + I)\mathbf{v} = \mathbf{0}$ を解きます。
+
+$$
+A + I = \begin{pmatrix}
+1 & 0 & 1 \\
+0 & 0 & 0 \\
+1 & 0 & 1
+\end{pmatrix}
+$$
+
+行基本変形すると、
+$$
+\begin{pmatrix}
+1 & 0 & 1 \\
+0 & 0 & 0 \\
+0 & 0 & 0
+\end{pmatrix}
+\quad\Rightarrow\quad x_1 + x_3 = 0.
+$$
+
+したがって $x_3 = -x_1$ で、$x_2$ は自由です。  
+基底として例えば
+$$
+\mathbf{v}_2 = \begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix},\quad
+\mathbf{v}_3 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}
+$$
+が取れます。
+
+これらは互いに直交します：
+- $\mathbf{v}_2 \cdot \mathbf{v}_3 = 0$
+- $\mathbf{v}_1 \cdot \mathbf{v}_2 = 1\cdot 1 + 0\cdot 0 + 1\cdot(-1) = 0$
+- $\mathbf{v}_1 \cdot \mathbf{v}_3 = 0$
+
+__3. 正規直交基底の構成__
+
+各ベクトルを正規化します。
+
+- $\mathbf{v}_1$：長さ $\sqrt{1^2 + 0^2 + 1^2} = \sqrt{2}$  
+  $$
+  \mathbf{p}_1 = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ 1 \end{pmatrix}
+  $$
+
+- $\mathbf{v}_2$：長さ $\sqrt{1^2 + 0^2 + (-1)^2} = \sqrt{2}$  
+  $$
+  \mathbf{p}_2 = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 0 \\ -1 \end{pmatrix}
+  $$
+
+- $\mathbf{v}_3$：長さ $\sqrt{0^2 + 1^2 + 0^2} = 1$  
+  $$
+  \mathbf{p}_3 = \begin{pmatrix} 0 \\ 1 \\ 0 \end{pmatrix}
+  $$
+
+これらは正規直交系です。
+
+__4. 直交行列 $P$ と対角化__
+
+$$
+P = [\mathbf{p}_1 \ \mathbf{p}_2 \ \mathbf{p}_3] = \begin{pmatrix}
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\
+0 & 0 & 1 \\
+\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} & 0
+\end{pmatrix}
+$$
+
+$P$ は直交行列なので $P^{-1} = P^\mathsf{T}$ です。  
+固有値の順序に合わせて
+$$
+\Lambda = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & -1 & 0 \\
+0 & 0 & -1
+\end{pmatrix}
+$$
+とおくと、
+$$
+P^\mathsf{T} A P = \Lambda
+$$
+が成り立ちます（検算可能です）。
+
+__5. 結論__
+
+実対称行列
+$$
+A = \begin{pmatrix} 0 & 0 & 1 \\ 0 & -1 & 0 \\ 1 & 0 & 0 \end{pmatrix}
+$$
+は、直交行列
+$$
+P = \begin{pmatrix}
+\frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & 0 \\
+0 & 0 & 1 \\
+\frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} & 0
+\end{pmatrix}
+$$
+によって
+$$
+P^{-1}AP = P^\mathsf{T}AP = \begin{pmatrix}
+1 & 0 & 0 \\
+0 & -1 & 0 \\
+0 & 0 & -1
+\end{pmatrix}
+$$
+と対角化されます。
+
+---
+
+
+__定理:__
+
+$n$次複素正方行列 $A$ について、次の2つの条件は同値である。
+
+(1) $A$はエルミット行列である。
+
+(2) $A$は適当なユニタリ行列 $U$ によって、対角成分が実数からなる行列に対角化できる。すなわち
+
+$$
+U^(-1)AU = \begin{pmatrix} \lambda_1 & 0 & 0 \\ 0 & \lambda_2 & 0 \\ 0 & 0 & \ddots \end{pmatrix}
+$$
+
+($\lambda_1$, $\lambda_2, ...$, $\lambda_n$は実数)
+
+
+
+---
+
+__(1) ⇒ (2) の証明（エルミート行列はユニタリ行列で実対角化可能）__
+
+**主張**：$A^\dagger = A$ ならば、あるユニタリ行列 $U$（$U^\dagger U = I$）と実対角行列 $\Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$ が存在して
+$$
+U^{-1}AU = U^\dagger A U = \Lambda
+$$
+と書ける。
+
+**証明の流れ**（概略）：
+
+1. **固有値はすべて実数**  
+   エルミート行列の固有値はすべて実数であることは、内積を用いて示せます。  
+   固有値 $\lambda$ と固有ベクトル $\mathbf{v} \neq \mathbf{0}$ に対して
+   $$
+   \lambda \|\mathbf{v}\|^2 = \langle A\mathbf{v}, \mathbf{v} \rangle = \langle \mathbf{v}, A\mathbf{v} \rangle = \overline{\lambda} \|\mathbf{v}\|^2
+   $$
+   より $\lambda = \overline{\lambda}$ となり、$\lambda$ は実数です。
+
+2. **相異なる固有値に対応する固有ベクトルは直交**  
+   相異なる固有値 $\lambda \neq \mu$ に対応する固有ベクトル $\mathbf{v}, \mathbf{w}$ について、
+   $$
+   \lambda \langle \mathbf{v}, \mathbf{w} \rangle = \langle A\mathbf{v}, \mathbf{w} \rangle = \langle \mathbf{v}, A\mathbf{w} \rangle = \mu \langle \mathbf{v}, \mathbf{w} \rangle
+   $$
+   より $(\lambda - \mu)\langle \mathbf{v}, \mathbf{w} \rangle = 0$ となり、$\lambda \neq \mu$ だから $\langle \mathbf{v}, \mathbf{w} \rangle = 0$ です。
+
+3. **各固有空間で正規直交基底を取る**  
+   同じ固有値に属する固有ベクトルたちは、一般には直交しませんが、グラム・シュミットの直交化によって正規直交基底を構成できます。
+
+4. **全体として正規直交固有ベクトル基底が取れる**  
+   エルミート行列は正規行列でもあるため、すべての固有ベクトルを集めて正規直交基底 $\{\mathbf{u}_1, \dots, \mathbf{u}_n\}$ を構成できます。
+
+5. **ユニタリ行列 $U$ による対角化**  
+   $U = [\mathbf{u}_1 \cdots \mathbf{u}_n]$ とおくと、$U$ はユニタリ行列（$U^\dagger U = I$）であり、
+   $$
+   AU = U \mathrm{diag}(\lambda_1, \dots, \lambda_n)
+   $$
+   が成り立ちます。したがって
+   $$
+   U^{-1}AU = U^\dagger A U = \mathrm{diag}(\lambda_1, \dots, \lambda_n)
+   $$
+   となり、$A$ はユニタリ行列で実対角行列に対角化可能です。
+
+__(2) ⇒ (1) の証明（ユニタリ行列で実対角化できるならエルミート）__
+
+**主張**：あるユニタリ行列 $U$（$U^\dagger U = I$）と実対角行列 $\Lambda = \mathrm{diag}(\lambda_1, \dots, \lambda_n)$ が存在して
+$$
+U^{-1}AU = U^\dagger A U = \Lambda
+$$
+ならば、$A$ はエルミート行列（$A^\dagger = A$）である。
+
+**証明**：
+
+仮定より
+$$
+U^\dagger A U = \Lambda.
+$$
+$\Lambda$ は実対角行列なので $\Lambda^\dagger = \Lambda$ です。  
+また $U$ はユニタリ行列なので $U^{-1} = U^\dagger$ です。
+
+1. 上式の両辺の随伴（共役転置）を取ると、
+   $$
+   (U^\dagger A U)^\dagger = U^\dagger A^\dagger (U^\dagger)^\dagger = U^\dagger A^\dagger U = \Lambda^\dagger = \Lambda.
+   $$
+
+2. したがって
+   $$
+   U^\dagger A^\dagger U = U^\dagger A U.
+   $$
+
+3. 両辺の左から $U$、右から $U^\dagger$ をかけると、
+   $$
+   U(U^\dagger A^\dagger U)U^\dagger = U(U^\dagger A U)U^\dagger.
+   $$
+   すなわち
+   $$
+   A^\dagger = A.
+   $$
+   よって $A$ はエルミート行列です。
+
+
+以上より、
+
+- (1) $A$ がエルミート行列ならば、ユニタリ行列で実対角行列に対角化可能。
+- (2) ユニタリ行列で実対角行列に対角化可能ならば、$A$ はエルミート行列。
+
+が示されたので、2つの条件は同値です。
 
 ---
 
