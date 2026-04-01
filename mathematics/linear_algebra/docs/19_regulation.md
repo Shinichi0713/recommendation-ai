@@ -870,4 +870,135 @@ __6. 情報理論・符号理論__
 以上が正規行列の定義と概要です。
 
 
+__定理:__
+
+$n$次複素正方行列$A$について、
+- (1) $A$ は正規行列（$A A^\dagger = A^\dagger A$）
+- (2) $A$ はユニタリ行列によって対角化される
+
+
+
+---
+
+__(1) ⇒ (2) の証明（正規行列はユニタリ対角化可能）__
+
+**主張**：$A A^\dagger = A^\dagger A$ ならば、あるユニタリ行列 $U$（$U^\dagger U = I$）と対角行列 $\Lambda$ が存在して
+$$
+U^{-1} A U = U^\dagger A U = \Lambda
+$$
+と書ける。
+
+**証明の流れ**（概略）：
+
+1. **シュール分解の適用**  
+   任意の複素正方行列は、ユニタリ行列 $U$ によって上三角行列 $T$ に三角化できます（シュール分解）：
+   $$
+   U^\dagger A U = T.
+   $$
+   ここで $T$ は上三角行列です。
+
+2. **正規性から $T$ が対角行列になることを示す**  
+   $A$ が正規行列であると仮定します：
+   $$
+   A A^\dagger = A^\dagger A.
+   $$
+   シュール分解 $U^\dagger A U = T$ より、
+   $$
+   A = U T U^\dagger.
+   $$
+   このとき
+   $$
+   A^\dagger = U T^\dagger U^\dagger.
+   $$
+   したがって
+   $$
+   A A^\dagger = U T T^\dagger U^\dagger,\quad A^\dagger A = U T^\dagger T U^\dagger.
+   $$
+   正規性 $A A^\dagger = A^\dagger A$ より
+   $$
+   U T T^\dagger U^\dagger = U T^\dagger T U^\dagger.
+   $$
+   両辺の左から $U^\dagger$、右から $U$ をかけると
+   $$
+   T T^\dagger = T^\dagger T.
+   $$
+   すなわち $T$ も正規行列です。
+
+3. **上三角かつ正規な行列は対角行列**  
+   $T$ は上三角行列なので、$(i,j)$ 成分について $i > j$ なら $T_{ij} = 0$ です。  
+   $T$ が正規であることから、$T T^\dagger = T^\dagger T$ の $(i,i)$ 成分を比較すると、
+   $$
+   |T_{ii}|^2 + \sum_{k>i} |T_{ik}|^2 = |T_{ii}|^2 + \sum_{k<i} |T_{ki}|^2.
+   $$
+   右辺の $\sum_{k<i} |T_{ki}|^2$ は $T$ が上三角であるため 0 です。  
+   したがって
+   $$
+   \sum_{k>i} |T_{ik}|^2 = 0
+   $$
+   となり、$i < k$ に対して $T_{ik} = 0$ です。  
+   よって $T$ は対角行列です。
+
+4. **結論**  
+   以上より $T = \Lambda$（対角行列）であり、
+   $$
+   U^\dagger A U = \Lambda
+   $$
+   が成り立ちます。すなわち $A$ はユニタリ行列 $U$ によって対角化されます。
+
+__(2) ⇒ (1) の証明（ユニタリ対角化可能なら正規）__
+
+**主張**：あるユニタリ行列 $U$（$U^\dagger U = I$）と対角行列 $\Lambda$ が存在して
+$$
+U^{-1} A U = U^\dagger A U = \Lambda
+$$
+ならば、$A$ は正規行列（$A A^\dagger = A^\dagger A$）である。
+
+**証明**：
+
+仮定より
+$$
+U^\dagger A U = \Lambda.
+$$
+$\Lambda$ は対角行列なので $\Lambda^\dagger = \overline{\Lambda}$（成分ごとの共役）であり、対角行列同士は可換なので
+$$
+\Lambda \Lambda^\dagger = \Lambda^\dagger \Lambda
+$$
+が成り立ちます。
+
+1. 上式の左辺と右辺をそれぞれ計算すると、
+   - 左辺：
+     $$
+     A A^\dagger = (U \Lambda U^\dagger)(U \Lambda^\dagger U^\dagger) = U \Lambda \Lambda^\dagger U^\dagger.
+     $$
+   - 右辺：
+     $$
+     A^\dagger A = (U \Lambda^\dagger U^\dagger)(U \Lambda U^\dagger) = U \Lambda^\dagger \Lambda U^\dagger.
+     $$
+
+2. $\Lambda \Lambda^\dagger = \Lambda^\dagger \Lambda$ より、
+   $$
+   U \Lambda \Lambda^\dagger U^\dagger = U \Lambda^\dagger \Lambda U^\dagger.
+   $$
+   したがって
+   $$
+   A A^\dagger = A^\dagger A.
+   $$
+   よって $A$ は正規行列です。
+
+以上より、
+
+- (1) $A$ が正規行列ならば、ユニタリ行列で対角化可能。
+- (2) ユニタリ行列で対角化可能ならば、$A$ は正規行列。
+
+が示されたので、2つの条件は同値です。
+
+
+---
+
+__例題:__
+
+次の行列が正規行列であることを示し、ユニタリ行列によって対角化せよ。
+
+(1) $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} $  &emsp;&emsp;&emsp;&emsp; (2) $\begin{pmatrix} a & -b \\ b & a \end{pmatrix} $ ($a,b$実数)
+
 
