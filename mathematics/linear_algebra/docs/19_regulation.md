@@ -1002,3 +1002,256 @@ __例題:__
 (1) $\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} $  &emsp;&emsp;&emsp;&emsp; (2) $\begin{pmatrix} a & -b \\ b & a \end{pmatrix} $ ($a,b$実数)
 
 
+---
+
+__(1) $A = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$__
+
+__1. 正規行列であることの確認__
+
+$A$ は実行列なので、随伴行列は転置行列 $A^\mathsf{T}$ です。
+
+$$
+A A^\mathsf{T} = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = I,
+$$
+$$
+A^\mathsf{T} A = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix} = I.
+$$
+
+よって $A A^\mathsf{T} = A^\mathsf{T} A$ が成り立ち、$A$ は正規行列です。
+
+__2. 固有値と固有ベクトル__
+
+固有方程式は
+$$
+\det(A - \lambda I) = \det\begin{pmatrix} -\lambda & 1 \\ 1 & -\lambda \end{pmatrix} = \lambda^2 - 1 = 0
+$$
+より、固有値は
+$$
+\lambda_1 = 1,\quad \lambda_2 = -1.
+$$
+
+- $\lambda_1 = 1$ のとき：
+  $$
+  (A - I)\mathbf{v} = \begin{pmatrix} -1 & 1 \\ 1 & -1 \end{pmatrix}\mathbf{v} = \mathbf{0}
+  $$
+  より、$v_1 = v_2$。固有ベクトルとして
+  $$
+  \mathbf{v}_1 = \begin{pmatrix} 1 \\ 1 \end{pmatrix}
+  $$
+  が取れます。
+
+- $\lambda_2 = -1$ のとき：
+  $$
+  (A + I)\mathbf{v} = \begin{pmatrix} 1 & 1 \\ 1 & 1 \end{pmatrix}\mathbf{v} = \mathbf{0}
+  $$
+  より、$v_1 = -v_2$。固有ベクトルとして
+  $$
+  \mathbf{v}_2 = \begin{pmatrix} 1 \\ -1 \end{pmatrix}
+  $$
+  が取れます。
+
+これらは直交します：
+$$
+\mathbf{v}_1 \cdot \mathbf{v}_2 = 1\cdot 1 + 1\cdot(-1) = 0.
+$$
+
+__3. 正規化とユニタリ行列による対角化__
+
+長さを正規化します：
+- $\|\mathbf{v}_1\| = \sqrt{2}$ → $\mathbf{u}_1 = \dfrac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ 1 \end{pmatrix}$
+- $\|\mathbf{v}_2\| = \sqrt{2}$ → $\mathbf{u}_2 = \dfrac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ -1 \end{pmatrix}$
+
+ユニタリ行列（実数なので直交行列）を
+$$
+U = [\mathbf{u}_1 \ \mathbf{u}_2] = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}
+$$
+とおくと、$U^\mathsf{T} U = I$ であり、
+$$
+U^{-1} A U = U^\mathsf{T} A U = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+$$
+となります。
+
+
+__(2) $A = \begin{pmatrix} a & -b \\ b & a \end{pmatrix}$（$a,b$ は実数）__
+
+__1. 正規行列であることの確認__
+
+$A$ は実行列なので、随伴行列は転置行列 $A^\mathsf{T}$ です。
+
+$$
+A A^\mathsf{T} = \begin{pmatrix} a & -b \\ b & a \end{pmatrix} \begin{pmatrix} a & b \\ -b & a \end{pmatrix}
+= \begin{pmatrix} a^2 + b^2 & 0 \\ 0 & a^2 + b^2 \end{pmatrix},
+$$
+$$
+A^\mathsf{T} A = \begin{pmatrix} a & b \\ -b & a \end{pmatrix} \begin{pmatrix} a & -b \\ b & a \end{pmatrix}
+= \begin{pmatrix} a^2 + b^2 & 0 \\ 0 & a^2 + b^2 \end{pmatrix}.
+$$
+
+よって $A A^\mathsf{T} = A^\mathsf{T} A$ が成り立ち、$A$ は正規行列です。
+
+__2. 固有値と固有ベクトル__
+
+固有方程式は
+$$
+\det(A - \lambda I) = \det\begin{pmatrix} a-\lambda & -b \\ b & a-\lambda \end{pmatrix} = (a-\lambda)^2 + b^2 = 0
+$$
+より、固有値は
+$$
+\lambda = a \pm i b.
+$$
+
+- $\lambda_1 = a + i b$ のとき：
+  $$
+  (A - \lambda_1 I)\mathbf{v} = \begin{pmatrix} -ib & -b \\ b & -ib \end{pmatrix}\mathbf{v} = \mathbf{0}
+  $$
+  第1行より $-i b v_1 - b v_2 = 0$ → $v_2 = -i v_1$。  
+  固有ベクトルとして
+  $$
+  \mathbf{v}_1 = \begin{pmatrix} 1 \\ -i \end{pmatrix}
+  $$
+  が取れます。
+
+- $\lambda_2 = a - i b$ のとき：
+  $$
+  (A - \lambda_2 I)\mathbf{v} = \begin{pmatrix} ib & -b \\ b & ib \end{pmatrix}\mathbf{v} = \mathbf{0}
+  $$
+  第1行より $i b v_1 - b v_2 = 0$ → $v_2 = i v_1$。  
+  固有ベクトルとして
+  $$
+  \mathbf{v}_2 = \begin{pmatrix} 1 \\ i \end{pmatrix}
+  $$
+  が取れます。
+
+これらは複素内積に関して直交します：
+$$
+\langle \mathbf{v}_1, \mathbf{v}_2 \rangle = \mathbf{v}_2^\dagger \mathbf{v}_1 = \begin{pmatrix} 1 & -i \end{pmatrix} \begin{pmatrix} 1 \\ -i \end{pmatrix} = 1\cdot 1 + (-i)\cdot(-i) = 1 - 1 = 0.
+$$
+
+__3. 正規化とユニタリ行列による対角化__
+
+長さを正規化します：
+- $\|\mathbf{v}_1\|^2 = 1^2 + |-i|^2 = 1 + 1 = 2$ → $\mathbf{u}_1 = \dfrac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ -i \end{pmatrix}$
+- $\|\mathbf{v}_2\|^2 = 1^2 + |i|^2 = 1 + 1 = 2$ → $\mathbf{u}_2 = \dfrac{1}{\sqrt{2}} \begin{pmatrix} 1 \\ i \end{pmatrix}$
+
+ユニタリ行列を
+$$
+U = [\mathbf{u}_1 \ \mathbf{u}_2] = \frac{1}{\sqrt{2}} \begin{pmatrix} 1 & 1 \\ -i & i \end{pmatrix}
+$$
+とおくと、$U^\dagger U = I$ であり、
+$$
+U^{-1} A U = U^\dagger A U = \begin{pmatrix} a + i b & 0 \\ 0 & a - i b \end{pmatrix}
+$$
+となります。
+
+---
+
+
+__定理:__
+
+$\lambda$を正規行列 $A$ の固有値、$\mathbf{x}$を固有値$\lambda$に属する固有ベクトルとすると、
+$\bar{\lambda}$は$A^*$の固有値で$\mathbf{x}$は$A^*$の固有値$\bar{\lambda}$に属する固有ベクトルである。
+
+
+
+---
+
+証明
+
+1. **正規性の仮定**  
+   $A$ は正規行列なので、
+   $$
+   A A^* = A^* A
+   $$
+   が成り立ちます。
+
+2. **$A^* \mathbf{x}$ が $\mathbf{x}$ と直交するベクトルと直交することを示す**  
+   任意のベクトル $\mathbf{y} \in \mathbb{C}^n$ をとり、内積 $\langle \cdot, \cdot \rangle$ を標準内積（$\langle \mathbf{u}, \mathbf{v} \rangle = \mathbf{v}^* \mathbf{u}$）とします。  
+   まず、
+   $$
+   \langle A^*\mathbf{x}, (A - \lambda I)\mathbf{y} \rangle
+   $$
+   を2通りに計算します。
+
+   - 一つ目：
+     $$
+     \langle A^*\mathbf{x}, (A - \lambda I)\mathbf{y} \rangle
+     = \langle \mathbf{x}, A(A - \lambda I)\mathbf{y} \rangle
+     = \langle \mathbf{x}, (A^2 - \lambda A)\mathbf{y} \rangle.
+     $$
+
+   - 二つ目：正規性 $A A^* = A^* A$ より、
+     $$
+     \langle A^*\mathbf{x}, (A - \lambda I)\mathbf{y} \rangle
+     = \langle \mathbf{x}, A^*(A - \lambda I)\mathbf{y} \rangle
+     = \langle \mathbf{x}, (A^*A - \lambda A^*)\mathbf{y} \rangle.
+     $$
+
+   したがって、任意の $\mathbf{y}$ に対して
+   $$
+   \langle \mathbf{x}, (A^2 - \lambda A)\mathbf{y} \rangle = \langle \mathbf{x}, (A^*A - \lambda A^*)\mathbf{y} \rangle.
+   $$
+   すなわち
+   $$
+   \langle \mathbf{x}, (A^2 - A^*A - \lambda A + \lambda A^*)\mathbf{y} \rangle = 0.
+   $$
+   正規性 $A A^* = A^* A$ より $A^2 - A^*A = A(A - A^*) = 0$ ではありませんが、より直接的に次のように進めます。
+
+3. **別のアプローチ：$(A^* - \overline{\lambda} I)\mathbf{x}$ のノルムを計算**  
+   より簡潔な方法として、$(A^* - \overline{\lambda} I)\mathbf{x}$ のノルムの2乗を計算します。
+
+   $$
+   \|(A^* - \overline{\lambda} I)\mathbf{x}\|^2
+   = \langle (A^* - \overline{\lambda} I)\mathbf{x}, (A^* - \overline{\lambda} I)\mathbf{x} \rangle.
+   $$
+
+   内積を展開すると、
+   $$
+   = \langle A^*\mathbf{x}, A^*\mathbf{x} \rangle
+     - \overline{\lambda} \langle A^*\mathbf{x}, \mathbf{x} \rangle
+     - \lambda \langle \mathbf{x}, A^*\mathbf{x} \rangle
+     + |\lambda|^2 \langle \mathbf{x}, \mathbf{x} \rangle.
+   $$
+
+   ここで、$\langle A^*\mathbf{x}, \mathbf{x} \rangle = \langle \mathbf{x}, A\mathbf{x} \rangle = \langle \mathbf{x}, \lambda \mathbf{x} \rangle = \lambda \|\mathbf{x}\|^2$ より、
+   $$
+   \overline{\lambda} \langle A^*\mathbf{x}, \mathbf{x} \rangle = \overline{\lambda} \lambda \|\mathbf{x}\|^2 = |\lambda|^2 \|\mathbf{x}\|^2,
+   $$
+   同様に $\lambda \langle \mathbf{x}, A^*\mathbf{x} \rangle = |\lambda|^2 \|\mathbf{x}\|^2$ です。
+
+   また、正規性 $A A^* = A^* A$ より、
+   $$
+   \langle A^*\mathbf{x}, A^*\mathbf{x} \rangle
+   = \langle A A^*\mathbf{x}, \mathbf{x} \rangle
+   = \langle A^* A\mathbf{x}, \mathbf{x} \rangle
+   = \langle A^*(\lambda \mathbf{x}), \mathbf{x} \rangle
+   = \lambda \langle A^*\mathbf{x}, \mathbf{x} \rangle
+   = |\lambda|^2 \|\mathbf{x}\|^2.
+   $$
+
+   したがって、
+   $$
+   \|(A^* - \overline{\lambda} I)\mathbf{x}\|^2
+   = |\lambda|^2 \|\mathbf{x}\|^2 - |\lambda|^2 \|\mathbf{x}\|^2 - |\lambda|^2 \|\mathbf{x}\|^2 + |\lambda|^2 \|\mathbf{x}\|^2 = 0.
+   $$
+
+4. **結論**  
+   $\|(A^* - \overline{\lambda} I)\mathbf{x}\| = 0$ より、
+   $$
+   (A^* - \overline{\lambda} I)\mathbf{x} = \mathbf{0},
+   $$
+   すなわち
+   $$
+   A^*\mathbf{x} = \overline{\lambda} \mathbf{x}.
+   $$
+   よって、$\overline{\lambda}$ は $A^*$ の固有値であり、$\mathbf{x}$ はその固有ベクトルです。
+
+- この結果から、正規行列 $A$ の固有ベクトルは、$A$ と $A^*$ の両方の固有ベクトルになることがわかります。
+- 特に、エルミート行列（$A^* = A$）の場合、$\overline{\lambda} = \lambda$ なので固有値は実数であり、固有ベクトルは $A$ と $A^*$ で共通です。
+
+以上で定理が証明されました。
+
+---
+
+
+
+
