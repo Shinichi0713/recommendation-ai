@@ -1253,5 +1253,70 @@ $\bar{\lambda}$は$A^*$の固有値で$\mathbf{x}$は$A^*$の固有値$\bar{\lam
 ---
 
 
+__定理:__
+
+正規行列 $A$ の相異なる固有値に属する固有ベクトルは互いに直交する。
+
+
+
+
+---
+
+証明
+
+以下では、$A$ を $n$ 次複素正規行列（$A A^\dagger = A^\dagger A$）とし、$\lambda, \mu$ を $A$ の相異なる固有値、$\mathbf{v}, \mathbf{w}$ をそれぞれ対応する固有ベクトルとします：
+$$
+A\mathbf{v} = \lambda \mathbf{v}, \quad A\mathbf{w} = \mu \mathbf{w}, \quad \mathbf{v}, \mathbf{w} \neq \mathbf{0}.
+$$
+このとき、$\mathbf{v}$ と $\mathbf{w}$ が直交する、すなわち
+$$
+\langle \mathbf{v}, \mathbf{w} \rangle = 0
+$$
+であることを示します。
+
+1. **内積の定義と仮定**  
+   複素標準内積を $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{y}^\dagger \mathbf{x}$ と定義します。  
+   固有ベクトルの条件は
+   $$
+   A\mathbf{v} = \lambda \mathbf{v}, \quad A\mathbf{w} = \mu \mathbf{w}.
+   $$
+
+2. **$\langle A\mathbf{v}, \mathbf{w} \rangle$ を2通りに計算する**
+
+   - 一つ目の計算：
+     $$
+     \langle A\mathbf{v}, \mathbf{w} \rangle = \langle \lambda \mathbf{v}, \mathbf{w} \rangle = \lambda \langle \mathbf{v}, \mathbf{w} \rangle.
+     $$
+
+   - 二つ目の計算：  
+     正規性 $A A^\dagger = A^\dagger A$ より、$A$ は正規行列です。  
+     一般に正規行列に対しては、随伴行列 $A^\dagger$ の固有値は固有ベクトル $\mathbf{v}$ に対応して $\overline{\lambda}$ であることが知られています（前問で示した定理）。  
+     ここではより直接的に、内積の性質を用います：
+     $$
+     \langle A\mathbf{v}, \mathbf{w} \rangle = \mathbf{w}^\dagger A\mathbf{v} = \mathbf{w}^\dagger A^\dagger \mathbf{v} = (A\mathbf{w})^\dagger \mathbf{v} = \langle \mathbf{v}, A\mathbf{w} \rangle.
+     $$
+     ここで $A\mathbf{w} = \mu \mathbf{w}$ だから、
+     $$
+     \langle \mathbf{v}, A\mathbf{w} \rangle = \langle \mathbf{v}, \mu \mathbf{w} \rangle = \mu \langle \mathbf{v}, \mathbf{w} \rangle.
+     $$
+
+3. **2つの式を比較する**  
+   以上より、
+   $$
+   \lambda \langle \mathbf{v}, \mathbf{w} \rangle = \mu \langle \mathbf{v}, \mathbf{w} \rangle.
+   $$
+   移項して
+   $$
+   (\lambda - \mu) \langle \mathbf{v}, \mathbf{w} \rangle = 0.
+   $$
+
+4. **結論**  
+   $\lambda \neq \mu$ より $\lambda - \mu \neq 0$ なので、両辺を $\lambda - \mu$ で割って
+   $$
+   \langle \mathbf{v}, \mathbf{w} \rangle = 0.
+   $$
+   すなわち、$\mathbf{v}$ と $\mathbf{w}$ は直交します。
+
+---
 
 
