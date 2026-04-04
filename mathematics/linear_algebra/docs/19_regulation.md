@@ -1414,8 +1414,341 @@ $$
 
 - エルミット行列はユニタリ行列で対角化できるため、エルミット2次形式もユニタリ変換によって「主軸」に沿った形に変形できます。
 
+### 3. 2次形式の表記
+
+提示された式は、**実2次形式（real quadratic form）** の定義式ですが、表記に少し誤りがあります。  
+正しくは次のように書きます：
+
+$$
+f(\mathbf{x}) = \sum_{i=1}^{n} a_{ii} x_i^2 + \sum_{1 \le i < j \le n} 2a_{ij} x_i x_j.
+$$
+
+（元の式では `*` が入っていますが、これは「+」の誤りだと思われます。）
+
+__実2次形式の数学的定義__
+
+__1. 多項式としての定義__
+
+$n$ 個の実変数 $\mathbf{x} = (x_1, \dots, x_n)^\mathsf{T} \in \mathbb{R}^n$ について、2次の項だけからなる実数係数の整式を**実2次形式**といいます。  
+一般に、実数係数 $a_{ij}$（$1 \le i \le j \le n$）を用いて
+
+$$
+f(\mathbf{x}) = \sum_{1 \le i \le j \le n} a_{ij} x_i x_j
+$$
+
+と書けます。  
+ここで $i = j$ の項は $a_{ii} x_i^2$、$i < j$ の項は $a_{ij} x_i x_j$ です。
+
+多くの教科書では、$i < j$ の係数を $2a_{ij}$ とおいて
+
+$$
+f(\mathbf{x}) = \sum_{i=1}^{n} a_{ii} x_i^2 + \sum_{1 \le i < j \le n} 2a_{ij} x_i x_j
+$$
+
+と表記します。このようにしておくと、後述の行列表示がきれいになります。
+
+__2. 行列を用いた定義__
+
+実2次形式は、**実対称行列**を用いて
+
+$$
+f(\mathbf{x}) = \mathbf{x}^\mathsf{T} A \mathbf{x}
+$$
+
+と表すことができます。ここで
+
+- $\mathbf{x} = (x_1, \dots, x_n)^\mathsf{T}$（列ベクトル）
+- $A = (a_{ij})$ は $n$ 次実対称行列（$A^\mathsf{T} = A$）
+
+です。
+
+成分で書くと、
+
+$$
+\mathbf{x}^\mathsf{T} A \mathbf{x} = \sum_{i,j=1}^n a_{ij} x_i x_j.
+$$
+
+ここで $A$ を対称にとる（$a_{ij} = a_{ji}$）と、$x_i x_j$ と $x_j x_i$ がまとめられ、
+
+$$
+\sum_{i,j} a_{ij} x_i x_j = \sum_i a_{ii} x_i^2 + \sum_{i<j} (a_{ij} + a_{ji}) x_i x_j = \sum_i a_{ii} x_i^2 + \sum_{i<j} 2a_{ij} x_i x_j
+$$
+
+となります。  
+したがって、提示された式
+
+$$
+f(\mathbf{x}) = \sum_{i=1}^{n} a_{ii} x_i^2 + \sum_{1 \le i < j \le n} 2a_{ij} x_i x_j
+$$
+
+は、対称行列 $A$ を用いた2次形式 $\mathbf{x}^\mathsf{T} A \mathbf{x}$ の成分表示そのものです。
+
+__重要なポイント__
+
+- **係数の対称性**  
+  2次形式を一意に表すためには、$a_{ij} = a_{ji}$ と仮定します。  
+  これにより、$x_i x_j$ と $x_j x_i$ をまとめて $2a_{ij} x_i x_j$ と書けます。
+
+- **行列表示の利点**  
+  2次形式を $\mathbf{x}^\mathsf{T} A \mathbf{x}$ と書くことで、
+  - 直交変換による対角化（標準形への変換）
+  - 正定値・負定値などの符号判定
+  - 最適化問題（2次計画問題）への応用
+  が扱いやすくなります。
+
+- **幾何的な意味**  
+  2次形式は、2次曲面（2次超曲面）の方程式の2次部分を表します。  
+  例えば、2変数の場合 $ax^2 + 2bxy + cy^2$ は楕円・双曲線・放物線などの2次曲線の2次部分に対応します。
+
+### 4. 2次形式の性質
 
 
+2次形式（実2次形式およびエルミット2次形式）には、以下のような重要な性質があります。
+
+__1. 行列表示と対称性__
+
+- 実2次形式は、実対称行列 $A$（$A^\mathsf{T} = A$）を用いて
   $$
-  \mathbf{v}_2 = \begin{pmatrix} 1 \\ i \end{pmatrix}
+  Q(\mathbf{x}) = \mathbf{x}^\mathsf{T} A \mathbf{x}
   $$
+  と一意に表せます。
+
+- エルミット2次形式は、エルミート行列 $A$（$A^\dagger = A$）を用いて
+  $$
+  H(\mathbf{x}) = \mathbf{x}^\dagger A \mathbf{x}
+  $$
+  と一意に表せます。
+
+- 係数行列が対称（エルミート）であるため、2次形式は実数値をとります（エルミット形式の場合）。
+
+__2. 標準形への変形（対角化）__
+
+- 実2次形式 $Q(\mathbf{x}) = \mathbf{x}^\mathsf{T} A \mathbf{x}$ は、直交行列 $P$（$P^\mathsf{T}P = I$）による変数変換 $\mathbf{x} = P\mathbf{y}$ によって
+  $$
+  Q(\mathbf{x}) = \lambda_1 y_1^2 + \lambda_2 y_2^2 + \cdots + \lambda_n y_n^2
+  $$
+  の形（標準形）に変形できます。ここで $\lambda_i$ は $A$ の固有値（実数）です。
+
+- エルミット2次形式 $H(\mathbf{x}) = \mathbf{x}^\dagger A \mathbf{x}$ は、ユニタリ行列 $U$（$U^\dagger U = I$）による変数変換 $\mathbf{x} = U\mathbf{y}$ によって
+  $$
+  H(\mathbf{x}) = \lambda_1 |y_1|^2 + \lambda_2 |y_2|^2 + \cdots + \lambda_n |y_n|^2
+  $$
+  の形に変形できます。ここで $\lambda_i$ は $A$ の固有値（実数）です。
+
+__3. 符号（正定値・負定値など）__
+
+2次形式の符号は、係数行列 $A$ の固有値の符号によって決まります。
+
+- **正定値**：すべての $\mathbf{x} \neq \mathbf{0}$ に対して $Q(\mathbf{x}) > 0$（固有値がすべて正）
+- **負定値**：すべての $\mathbf{x} \neq \mathbf{0}$ に対して $Q(\mathbf{x}) < 0$（固有値がすべて負）
+- **半正定値**：$Q(\mathbf{x}) \ge 0$（固有値がすべて非負）
+- **半負定値**：$Q(\mathbf{x}) \le 0$（固有値がすべて非正）
+- **不定**：正にも負にもなる
+
+この符号は、直交（ユニタリ）変換で不変です（シルヴェスターの慣性法則）。
+
+__4. 変換則（座標変換）__
+
+- 実2次形式：変数変換 $\mathbf{x} = P\mathbf{y}$ に対して
+  $$
+  Q(\mathbf{x}) = \mathbf{y}^\mathsf{T} (P^\mathsf{T} A P) \mathbf{y}.
+  $$
+  特に $P$ が直交行列なら、$P^\mathsf{T} A P$ も対称行列であり、2次形式の形は保たれます。
+
+- エルミット2次形式：変数変換 $\mathbf{x} = U\mathbf{y}$ に対して
+  $$
+  H(\mathbf{x}) = \mathbf{y}^\dagger (U^\dagger A U) \mathbf{y}.
+  $$
+  特に $U$ がユニタリ行列なら、$U^\dagger A U$ もエルミート行列であり、2次形式の形は保たれます。
+
+__5. 双線形形式との関係__
+
+- 実2次形式 $Q(\mathbf{x}) = \mathbf{x}^\mathsf{T} A \mathbf{x}$ から、**対称双線形形式**
+  $$
+  B(\mathbf{x}, \mathbf{y}) = \mathbf{x}^\mathsf{T} A \mathbf{y}
+  $$
+  が定義できます。$B$ は線形かつ対称（$B(\mathbf{x}, \mathbf{y}) = B(\mathbf{y}, \mathbf{x})$）であり、
+  $$
+  Q(\mathbf{x}) = B(\mathbf{x}, \mathbf{x})
+  $$
+  が成り立ちます。
+
+- エルミット2次形式 $H(\mathbf{x}) = \mathbf{x}^\dagger A \mathbf{x}$ から、**エルミット形式**
+  $$
+  H(\mathbf{x}, \mathbf{y}) = \mathbf{y}^\dagger A \mathbf{x}
+  $$
+  が定義できます。$H(\cdot, \cdot)$ は第1変数に対して線形、第2変数に対して共役線形であり、
+  $$
+  H(\mathbf{x}) = H(\mathbf{x}, \mathbf{x})
+  $$
+  が成り立ちます。
+
+__6. 幾何的・物理的意味__
+
+- 実2次形式は、2次曲面（2次超曲面）の方程式の2次部分を表します。  
+  例：$ax^2 + 2bxy + cy^2$ は楕円・双曲線・放物線などの2次曲線の2次部分。
+
+- エルミット2次形式は、量子力学におけるエネルギー期待値や確率振幅の2次形式として現れます。
+
+- 最適化問題では、2次形式の符号が極値（最小値・最大値）の判定に使われます。
+
+__7. その他の性質__
+
+- **斉次性**：2次形式は2次同次関数です。すなわち、スカラー $t$ に対して
+  $$
+  Q(t\mathbf{x}) = t^2 Q(\mathbf{x}),\quad H(t\mathbf{x}) = |t|^2 H(\mathbf{x}).
+  $$
+
+- **連続性**：係数行列が有界なら、2次形式は連続関数です。
+
+- **凸性・凹性**：2次形式が正定値なら凸関数、負定値なら凹関数になります。
+
+以上が2次形式の主な性質です。  
+行列表示と対角化（標準形）が中心的な役割を果たし、符号解析や最適化・幾何学・物理学などに広く応用されます。
+
+
+__例題:__
+
+2次形式の性質（特に符号と幾何的な形）が分かるように、2変数実2次形式の等高線と3D曲面を描くPythonコードを作成します。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# 2次形式 Q(x) = x^T A x を定義
+def quadratic_form(x, A):
+    return x.T @ A @ x
+
+# 等高線と3D曲面を描画する関数
+def plot_quadratic_form(A, title_suffix=""):
+    # グリッド生成
+    x1 = np.linspace(-2, 2, 50)
+    x2 = np.linspace(-2, 2, 50)
+    X1, X2 = np.meshgrid(x1, x2)
+    
+    # 2次形式の値を計算
+    Z = np.zeros_like(X1)
+    for i in range(X1.shape[0]):
+        for j in range(X1.shape[1]):
+            x = np.array([X1[i,j], X2[i,j]])
+            Z[i,j] = quadratic_form(x, A)
+    
+    # 固有値と符号を表示
+    eigvals = np.linalg.eigvalsh(A)
+    sign_type = "正定値" if np.all(eigvals > 0) else \
+               "負定値" if np.all(eigvals < 0) else \
+               "不定"
+    
+    # 等高線プロット
+    plt.figure(figsize=(12, 5))
+    
+    plt.subplot(1, 2, 1)
+    contour = plt.contour(X1, X2, Z, levels=20)
+    plt.clabel(contour, inline=True, fontsize=8)
+    plt.xlabel('$x_1$')
+    plt.ylabel('$x_2$')
+    plt.title(f'2次形式の等高線 ({sign_type}) {title_suffix}')
+    plt.grid(True)
+    plt.axis('equal')
+    
+    # 3D曲面プロット
+    ax = plt.subplot(1, 2, 2, projection='3d')
+    surf = ax.plot_surface(X1, X2, Z, cmap='viridis', alpha=0.8)
+    ax.set_xlabel('$x_1$')
+    ax.set_ylabel('$x_2$')
+    ax.set_zlabel('$Q(x)$')
+    ax.set_title(f'2次形式の3D曲面 ({sign_type}) {title_suffix}')
+    plt.colorbar(surf, ax=ax, shrink=0.5, aspect=10)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    print(f"行列 A = {A}")
+    print(f"固有値: {eigvals}")
+    print(f"符号: {sign_type}\n")
+
+# 例1: 正定値 (楕円的な等高線)
+A1 = np.array([[2, 1],
+               [1, 2]])
+plot_quadratic_form(A1, "例1: 正定値")
+
+# 例2: 負定値 (下に凸な放物面)
+A2 = np.array([[-1, 0],
+               [0, -2]])
+plot_quadratic_form(A2, "例2: 負定値")
+
+# 例3: 不定 (鞍点)
+A3 = np.array([[1, 2],
+               [2, -1]])
+plot_quadratic_form(A3, "例3: 不定")
+
+# 例4: 半正定値 (放物線的)
+A4 = np.array([[1, 1],
+               [1, 1]])
+plot_quadratic_form(A4, "例4: 半正定値")
+```
+
+__結果__
+
+正定値
+
+<img src="image/19_regulation/1775303413215.png" width="700" style="display: block; margin: 0 auto;">
+
+負定値
+
+<img src="image/19_regulation/1775303432692.png" width="700" style="display: block; margin: 0 auto;">
+
+不定
+
+<img src="image/19_regulation/1775303450483.png" width="700" style="display: block; margin: 0 auto;">
+
+半正定値
+
+<img src="image/19_regulation/1775303465976.png" width="700" style="display: block; margin: 0 auto;">
+
+__ポイント__
+
+__1. 2次形式の定義__
+
+- `quadratic_form(x, A)` で $Q(\mathbf{x}) = \mathbf{x}^\mathsf{T} A \mathbf{x}$ を計算します。
+
+__2. グリッドと値の計算__
+
+- $x_1, x_2 \in [-2, 2]$ の範囲でメッシュを作り、各点での2次形式の値を計算します。
+
+__3. 符号の判定__
+
+- `np.linalg.eigvalsh(A)` で対称行列 $A$ の固有値を求め、符号を自動判定します。
+  - すべて正 → 正定値（楕円的）
+  - すべて負 → 負定値（下に凸な放物面）
+  - 正負混在 → 不定（鞍点）
+  - ゼロを含む → 半正定値／半負定値
+
+__4. 可視化__
+
+- **等高線図**：$Q(\mathbf{x}) = \text{const}$ の曲線を描画。正定値なら閉じた楕円、不定なら双曲線的な形になります。
+- **3D曲面**：$z = Q(x_1, x_2)$ の曲面を描画。正定値なら上に凸、負定値なら下に凸、不定なら鞍形になります。
+
+__5. 例__
+
+- **例1（正定値）**：$A = \begin{pmatrix}2 & 1 \\ 1 & 2\end{pmatrix}$  
+  固有値は $1, 3$（ともに正）で、楕円的な等高線と上に凸な曲面になります。
+
+- **例2（負定値）**：$A = \begin{pmatrix}-1 & 0 \\ 0 & -2\end{pmatrix}$  
+  固有値は $-1, -2$（ともに負）で、下に凸な放物面になります。
+
+- **例3（不定）**：$A = \begin{pmatrix}1 & 2 \\ 2 & -1\end{pmatrix}$  
+  固有値は $\sqrt{5}, -\sqrt{5}$（正負混在）で、鞍点（サドル）が現れます。
+
+- **例4（半正定値）**：$A = \begin{pmatrix}1 & 1 \\ 1 & 1\end{pmatrix}$  
+  固有値は $0, 2$ で、ある方向に沿って値が一定（退化した形）になります。
+
+__実行結果の見方__
+
+- **正定値**：等高線が閉じた楕円、曲面が上に凸 → 原点で最小値（極小）。
+- **負定値**：等高線が閉じた楕円、曲面が下に凸 → 原点で最大値（極大）。
+- **不定**：等高線が双曲線的、曲面が鞍形 → 原点は極値ではない（鞍点）。
+
+このコードを実行すると、2次形式の符号と幾何的な形が直感的に理解できるはずです。  
+必要に応じて行列 $A$ を変更して、さまざまな2次形式の振る舞いを試してみてください。

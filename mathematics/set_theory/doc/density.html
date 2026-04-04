@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x6fc3;&#x5ea6;&#x3068;&#x306f;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+/* Amazonカード型のオシャレなデザイン */
+.shop-card {
+    display: flex;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* マウスホップした時の動き */
+.shop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.shop-card-image {
+    width: 150px;
+    min-width: 150px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-card-image img {
+    max-width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.shop-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shop-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shop-card-description {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* Amazonらしいオレンジボタン */
+.shop-card-link a {
+    display: inline-block;
+    background-color: #ff9900;
+    color: #fff !important;
+    text-decoration: none !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.shop-card-link a:hover {
+    background-color: #e68a00;
+}
+
+/* スマホ対応：縦並びにする */
+@media (max-width: 480px) {
+    .shop-card {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    .shop-card-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+
+
+            <p>集合論で出てくる濃度という概念が非常に謎だったので調べてみました。</p>
+<h2 id="濃度とは">濃度とは</h2>
+<p>集合論における<strong>濃度（cardinality）</strong> は、集合の「大きさ」や「要素の個数」を表す概念です。有限集合なら「要素の個数」と同じですが、無限集合にも拡張された抽象的な「大きさ」の指標です。</p>
+<h3 id="1-直観的なイメージ">1. 直観的なイメージ</h3>
+<ul>
+<li>有限集合：<br>
+「集合 A の濃度」は、A に含まれる要素の個数です。<br>
+例：A = {1, 2, 3} なら |A| = 3。</li>
+<li>無限集合：<br>
+自然数全体の集合 ℕ と、整数全体の集合 ℤ はどちらも無限個の要素を持ちますが、<br>
+「同じ種類の無限」かどうかを比較するために濃度を使います。</li>
+</ul>
+<h3 id="2-濃度の厳密な定義同値関係として">2. 濃度の厳密な定義（同値関係として）</h3>
+<p>集合 A, B の濃度が等しい（|A| = |B|）とは、<br>
+<strong>A から B への全単射（一対一対応）が存在する</strong>ことと定義されます。</p>
+<ul>
+<li>全単射とは：
+<ul>
+<li>単射：異なる要素は異なる行き先へ（一対一）</li>
+<li>全射：B のどの要素にも A の要素が対応（漏れなし）</li>
+</ul>
+</li>
+</ul>
+<p>この「全単射が存在する」という関係は同値関係であり、その同値類のことを<strong>濃度</strong>と呼びます。</p>
+<h3 id="3-有限集合の濃度">3. 有限集合の濃度</h3>
+<p>有限集合 A に対しては、濃度 |A| は単に「要素の個数」です。</p>
+<ul>
+<li>A = {a, b, c} → |A| = 3</li>
+<li>B = {1, 2, 3, 4} → |B| = 4</li>
+</ul>
+<p>有限集合の濃度が等しいとは、<strong>要素の個数が同じ</strong>ということです。</p>
+<h3 id="4-無限集合の濃度">4. 無限集合の濃度</h3>
+<p>無限集合にも濃度が定義され、代表的なものに次のようなものがあります。</p>
+<h4 id="1-可算無限countably-infinite">(1) 可算無限（countably infinite）</h4>
+<ul>
+<li>自然数全体 ℕ = {1, 2, 3, …} の濃度を <strong>ℵ₀</strong>（アレフ・ゼロ）と書きます。</li>
+<li>ℕ と全単射が作れる集合は、すべて濃度 ℵ₀ を持つと定義します。
+<ul>
+<li>例：整数全体 ℤ、有理数全体 ℚ は ℵ₀ の濃度です。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-非可算無限uncountably-infinite">(2) 非可算無限（uncountably infinite）</h4>
+<ul>
+<li>実数全体 ℝ の濃度は ℵ₀ より<strong>真に大きい</strong>ことが知られています（カントールの対角線論法）。</li>
+<li>この濃度を <strong>𝔠</strong>（continuum）と書きます。</li>
+<li>さらに、任意の集合 A に対して、そのべき集合 P(A) の濃度は A の濃度より真に大きい（カントールの定理）ので、<br>
+「無限の大きさ」はいくらでも大きいものが存在します。</li>
+</ul>
+<h3 id="5-濃度の比較">5. 濃度の比較</h3>
+<p>集合 A, B について、</p>
+<ul>
+<li>|A| ≤ |B| とは、<strong>A から B への単射が存在する</strong>ことと定義します。</li>
+<li>|A| = |B| とは、全単射が存在すること。</li>
+<li>|A| &lt; |B| とは、|A| ≤ |B| だが |A| ≠ |B| であること。</li>
+</ul>
+<p>これにより、有限・無限を問わず「大きさ」を比較できます。</p>
+<p>集合論における**濃度（cardinality）**は、集合の「大きさ」や「要素の個数」を表す概念です。有限集合なら「要素の個数」と同じですが、無限集合にも拡張された抽象的な「大きさ」の指標です。</p>
+<hr>
+<h3 id="1-直観的なイメージ-1">1. 直観的なイメージ</h3>
+<ul>
+<li>有限集合：<br>
+「集合 A の濃度」は、A に含まれる要素の個数です。<br>
+例：A = {1, 2, 3} なら |A| = 3。</li>
+<li>無限集合：<br>
+自然数全体の集合 ℕ と、整数全体の集合 ℤ はどちらも無限個の要素を持ちますが、<br>
+「同じ種類の無限」かどうかを比較するために濃度を使います。</li>
+</ul>
+<hr>
+<h3 id="2-濃度の厳密な定義同値関係として-1">2. 濃度の厳密な定義（同値関係として）</h3>
+<p>集合 A, B の濃度が等しい（|A| = |B|）とは、<br>
+<strong>A から B への全単射（一対一対応）が存在する</strong>ことと定義されます。</p>
+<ul>
+<li>全単射とは：
+<ul>
+<li>単射：異なる要素は異なる行き先へ（一対一）</li>
+<li>全射：B のどの要素にも A の要素が対応（漏れなし）</li>
+</ul>
+</li>
+</ul>
+<p>この「全単射が存在する」という関係は同値関係であり、その同値類のことを<strong>濃度</strong>と呼びます。</p>
+<hr>
+<h3 id="3-有限集合の濃度-1">3. 有限集合の濃度</h3>
+<p>有限集合 A に対しては、濃度 |A| は単に「要素の個数」です。</p>
+<ul>
+<li>A = {a, b, c} → |A| = 3</li>
+<li>B = {1, 2, 3, 4} → |B| = 4</li>
+</ul>
+<p>有限集合の濃度が等しいとは、<strong>要素の個数が同じ</strong>ということです。</p>
+<hr>
+<h3 id="4-無限集合の濃度-1">4. 無限集合の濃度</h3>
+<p>無限集合にも濃度が定義され、代表的なものに次のようなものがあります。</p>
+<h4 id="1-可算無限countably-infinite-1">(1) 可算無限（countably infinite）</h4>
+<ul>
+<li>自然数全体 ℕ = {1, 2, 3, …} の濃度を <strong>ℵ₀</strong>（アレフ・ゼロ）と書きます。</li>
+<li>ℕ と全単射が作れる集合は、すべて濃度 ℵ₀ を持つと定義します。
+<ul>
+<li>例：整数全体 ℤ、有理数全体 ℚ は ℵ₀ の濃度です。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-非可算無限uncountably-infinite-1">(2) 非可算無限（uncountably infinite）</h4>
+<ul>
+<li>実数全体 ℝ の濃度は ℵ₀ より<strong>真に大きい</strong>ことが知られています（カントールの対角線論法）。</li>
+<li>この濃度を <strong>𝔠</strong>（continuum）と書きます。</li>
+<li>さらに、任意の集合 A に対して、そのべき集合 P(A) の濃度は A の濃度より真に大きい（カントールの定理）ので、<br>
+「無限の大きさ」はいくらでも大きいものが存在します。</li>
+</ul>
+<hr>
+<h3 id="5-濃度の比較-1">5. 濃度の比較</h3>
+<p>集合 A, B について、</p>
+<ul>
+<li>|A| ≤ |B| とは、<strong>A から B への単射が存在する</strong>ことと定義します。</li>
+<li>|A| = |B| とは、全単射が存在すること。</li>
+<li>|A| &lt; |B| とは、|A| ≤ |B| だが |A| ≠ |B| であること。</li>
+</ul>
+<p>これにより、有限・無限を問わず「大きさ」を比較できます。</p>
+<h3 id="6-重要な性質">6. 重要な性質</h3>
+<ul>
+<li>ベルンシュタインの定理：<br>
+|A| ≤ |B| かつ |B| ≤ |A| ならば |A| = |B| が成り立ちます。<br>
+つまり、「A から B への単射」と「B から A への単射」が両方あれば、全単射が存在する（濃度が等しい）ことが保証されます。</li>
+<li>選択公理を仮定すると、任意の集合の濃度は比較可能（|A| ≤ |B| か |B| ≤ |A| のどちらかが成り立つ）と示せます。</li>
+</ul>
+<hr>
+<p><strong>証明</strong></p>
+<p>ベルンシュタインの定理（シュレーダー＝ベルンシュタインの定理）の証明を、できるだけ直観的に説明します。</p>
+<p><strong>定理の再確認</strong></p>
+<ul>
+<li>集合 A, B に対し、<br>
+|A| ≤ |B| かつ |B| ≤ |A| ならば |A| = |B|。</li>
+<li>言い換えると：
+<ul>
+<li>f: A → B が単射</li>
+<li>g: B → A が単射<br>
+が与えられたとき、A から B への全単射が存在する。</li>
+</ul>
+</li>
+</ul>
+<p><strong>証明の方針</strong></p>
+<p>A の要素を「g を何回も使って B から戻ってきたもの」と「そうでないもの」に分け、<br>
+その分類に応じて f と g の逆写像をうまく組み合わせて、A から B への全単射を構成します。</p>
+<p><strong>1. 記号の準備</strong></p>
+<ul>
+<li>f: A → B を単射</li>
+<li>g: B → A を単射</li>
+</ul>
+<p>ここで、A の部分集合を次のように定義します。</p>
+<ul>
+<li>A₀ = A</li>
+<li>A₁ = g(B) ⊆ A（B の g による像）</li>
+<li>A₂ = g(f(A₀)) ⊆ A</li>
+<li>A₃ = g(f(A₁)) ⊆ A</li>
+<li>A₄ = g(f(A₂)) ⊆ A</li>
+<li>…</li>
+</ul>
+<p>一般に、n ≥ 0 に対して</p>
+<ul>
+<li>A₀ = A</li>
+<li>Aₙ₊₁ = g(f(Aₙ))</li>
+</ul>
+<p>と帰納的に定義します。</p>
+<p><strong>2. A の分割</strong></p>
+<p>この列 A₀, A₁, A₂, … は</p>
+<ul>
+<li>A₀ ⊇ A₁ ⊇ A₂ ⊇ …<br>
+という<strong>減少列</strong>になっています（包含関係が逆転しない）。</li>
+</ul>
+<p>そこで、差集合を取って A を互いに素な部分に分けます。</p>
+<ul>
+<li>C₀ = A₀ \ A₁</li>
+<li>C₁ = A₁ \ A₂</li>
+<li>C₂ = A₂ \ A₃</li>
+<li>…</li>
+<li>Cₙ = Aₙ \ Aₙ₊₁</li>
+<li>C_∞ = A₀ ∩ A₁ ∩ A₂ ∩ …（すべての Aₙ の共通部分）</li>
+</ul>
+<p>すると、A は</p>
+<ul>
+<li>A = C₀ ∪ C₁ ∪ C₂ ∪ … ∪ C_∞<br>
+と<strong>互いに素な和集合</strong>に分解されます。</li>
+</ul>
+<p><strong>3. B 側の対応する部分</strong></p>
+<p>B 側も同様に分割します。</p>
+<ul>
+<li>B₀ = B</li>
+<li>B₁ = f(A₀) ⊆ B</li>
+<li>B₂ = f(A₁) ⊆ B</li>
+<li>B₃ = f(A₂) ⊆ B</li>
+<li>…</li>
+</ul>
+<p>ここで、B の部分集合 Dₙ を</p>
+<ul>
+<li>D₀ = B₀ \ B₁</li>
+<li>D₁ = B₁ \ B₂</li>
+<li>D₂ = B₂ \ B₃</li>
+<li>…</li>
+<li>D_∞ = B₀ ∩ B₁ ∩ B₂ ∩ …</li>
+</ul>
+<p>と定義すると、B は</p>
+<ul>
+<li>B = D₀ ∪ D₁ ∪ D₂ ∪ … ∪ D_∞<br>
+と互いに素な和集合に分解されます。</li>
+</ul>
+<p><strong>4. 全単射の構成</strong></p>
+<p>A の各成分 Cₙ と B の各成分 Dₙ の対応を次のように定義します。</p>
+<p><strong>(1) 有限ステップの部分（Cₙ, n 有限）</strong></p>
+<ul>
+<li>C₀ の各元 a ∈ C₀ に対して、f(a) ∈ D₁ を対応させる。</li>
+<li>C₁ の各元 a ∈ C₁ に対して、f(a) ∈ D₂ を対応させる。</li>
+<li>一般に、a ∈ Cₙ に対して f(a) ∈ Dₙ₊₁ を対応させる。</li>
+</ul>
+<p>ここで重要なのは：</p>
+<ul>
+<li>f は単射なので、Cₙ から Dₙ₊₁ への写像は単射。</li>
+<li>さらに、Dₙ₊₁ の任意の元 b は、ある a ∈ Aₙ に対して b = f(a) と書け、<br>
+a が Aₙ₊₁ に属さない（つまり a ∈ Cₙ）ことから、この対応は全射にもなります。</li>
+</ul>
+<p>したがって、各 n について</p>
+<ul>
+<li>Cₙ → Dₙ₊₁ は全単射（f の制限として実現できる）。</li>
+</ul>
+<p><strong>(2) 無限ステップの部分（C_∞）</strong></p>
+<ul>
+<li>C_∞ の元 a は、すべての n について a ∈ Aₙ を満たします。</li>
+<li>このとき、g の逆写像 g⁻¹: g(B) → B を考え、<br>
+a ∈ C_∞ に対して g⁻¹(a) ∈ D_∞ を対応させます。</li>
+</ul>
+<p>ここで：</p>
+<ul>
+<li>g は単射なので、g(B) 上では逆写像 g⁻¹ が定義でき、<br>
+g⁻¹: g(B) → B は全単射です。</li>
+<li>C_∞ ⊆ g(B) なので、g⁻¹ の C_∞ への制限は C_∞ → D_∞ の全単射を与えます。</li>
+</ul>
+<p><strong>5. 全体としての写像 h: A → B</strong></p>
+<p>以上をまとめて、写像 h: A → B を次のように定義します。</p>
+<ul>
+<li>a ∈ Cₙ（n 有限）のとき：h(a) = f(a) ∈ Dₙ₊₁</li>
+<li>a ∈ C_∞ のとき：h(a) = g⁻¹(a) ∈ D_∞</li>
+</ul>
+<p>この h は：</p>
+<ul>
+<li>A の互いに素な分割 C₀, C₁, …, C_∞ のそれぞれで全単射を定め、</li>
+<li>それらの像も B の互いに素な分割 D₁, D₂, …, D_∞ になっているので、</li>
+</ul>
+<p>全体として <strong>h: A → B は全単射</strong>になります。</p>
+<p><strong>6. 結論</strong></p>
+<p>単射 f: A → B と単射 g: B → A が存在するとき、上のように A を分割し、<br>
+f と g⁻¹ を組み合わせることで A から B への全単射 h を構成できます。</p>
+<p>したがって、</p>
+<ul>
+<li>|A| ≤ |B| かつ |B| ≤ |A| ⇒ |A| = |B|
+が成り立ちます。</li>
+</ul>
+<p><strong>補足</strong></p>
+<ul>
+<li>この証明は「背理法」を使わず、<strong>具体的に全単射を構成する</strong>形になっています。</li>
+<li>実は、この構成は「g を繰り返し適用して A に戻れる回数」に応じて A を分類している、と解釈できます。</li>
+<li>選択公理は使っていません（f, g が与えられているので、それらから具体的に h を作れる）。</li>
+</ul>
+<hr>
+<h3 id="7-総括">7. 総括</h3>
+<ul>
+<li>濃度は「集合の大きさ」を表す抽象的な概念。</li>
+<li>有限集合では「要素の個数」と同じ。</li>
+<li>無限集合では「全単射が存在するかどうか」で大きさを比較する。</li>
+<li>可算無限（ℵ₀）と非可算無限（𝔠 など）があり、無限にも大小関係がある。</li>
+</ul>
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+            
+        </body>
+        </html>
