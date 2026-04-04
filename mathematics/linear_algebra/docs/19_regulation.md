@@ -1320,3 +1320,102 @@ $$
 ---
 
 
+## 実2次形式とエルミット形式
+
+実2次形式とエルミット形式は、どちらも「ベクトルを入力として実数値を返す関数」で、行列を用いて表現される形式です。  
+実2次形式は実ベクトル空間上、エルミット形式は複素ベクトル空間上で定義されます。
+
+
+### 1. 実2次形式（real quadratic form）
+
+#### 概要
+
+実2次形式は、実数成分のベクトル $\mathbf{x} \in \mathbb{R}^n$ に対して
+$$
+Q(\mathbf{x}) = \mathbf{x}^\mathsf{T} A \mathbf{x}
+$$
+の形で表される関数です。ここで $A$ は実対称行列（$A^\mathsf{T} = A$）です。  
+2次の同次多項式（2次形式）を、行列を用いて簡潔に表現したものと見なせます。
+
+#### 数学的定義
+
+$n$ 次実対称行列 $A \in \mathbb{R}^{n \times n}$ に対し、関数 $Q : \mathbb{R}^n \to \mathbb{R}$ を
+$$
+Q(\mathbf{x}) = \mathbf{x}^\mathsf{T} A \mathbf{x}
+$$
+で定義するとき、$Q$ を**実2次形式**といいます。
+
+成分で書くと、
+$$
+Q(x_1, \dots, x_n) = \sum_{i,j=1}^n a_{ij} x_i x_j
+$$
+であり、$a_{ij} = a_{ji}$ です。
+
+#### 性質・特徴
+
+- $A$ が対称であるため、$Q(\mathbf{x})$ は常に実数値をとります。
+- 2次形式の符号（正定値・負定値・不定など）は、最適化問題や力学系の安定性解析などで重要です。
+- 実2次形式は、直交変換（回転・鏡映）によって「主軸」に沿った形（対角化）に変形できます。
+
+
+### 2. エルミット形式（Hermitian form）
+
+#### 概要
+
+エルミット形式は、複素数成分のベクトル $\mathbf{x}, \mathbf{y} \in \mathbb{C}^n$ に対して
+$$
+H(\mathbf{x}, \mathbf{y}) = \mathbf{y}^\dagger A \mathbf{x}
+$$
+の形で表される関数です。ここで $A$ はエルミート行列（$A^\dagger = A$）です。  
+実2次形式の複素版にあたり、特に $\mathbf{y} = \mathbf{x}$ とした
+$$
+H(\mathbf{x}) = \mathbf{x}^\dagger A \mathbf{x}
+$$
+は**エルミット2次形式**と呼ばれ、常に実数値をとります。
+
+#### 数学的定義
+
+$n$ 次エルミート行列 $A \in \mathbb{C}^{n \times n}$（$A^\dagger = A$）に対し、関数 $H : \mathbb{C}^n \times \mathbb{C}^n \to \mathbb{C}$ を
+$$
+H(\mathbf{x}, \mathbf{y}) = \mathbf{y}^\dagger A \mathbf{x}
+$$
+で定義するとき、$H$ を**エルミット形式**といいます。
+
+特に、$\mathbf{y} = \mathbf{x}$ とした
+$$
+H(\mathbf{x}) = \mathbf{x}^\dagger A \mathbf{x}
+$$
+を**エルミット2次形式**といいます。
+
+成分で書くと、
+$$
+H(\mathbf{x}, \mathbf{y}) = \sum_{i,j=1}^n \overline{y}_i a_{ij} x_j,
+$$
+であり、$a_{ij} = \overline{a}_{ji}$ です。
+
+#### 性質・特徴
+
+- エルミット形式は**共役線形**（第1変数に対して線形、第2変数に対して共役線形）です：
+  $$
+  H(\alpha \mathbf{x}_1 + \beta \mathbf{x}_2, \mathbf{y}) = \alpha H(\mathbf{x}_1, \mathbf{y}) + \beta H(\mathbf{x}_2, \mathbf{y}),
+  $$
+  $$
+  H(\mathbf{x}, \alpha \mathbf{y}_1 + \beta \mathbf{y}_2) = \overline{\alpha} H(\mathbf{x}, \mathbf{y}_1) + \overline{\beta} H(\mathbf{x}, \mathbf{y}_2).
+  $$
+
+- エルミット2次形式 $H(\mathbf{x}) = \mathbf{x}^\dagger A \mathbf{x}$ は常に**実数**値をとります。  
+  実際、
+  $$
+  \overline{H(\mathbf{x})} = (\mathbf{x}^\dagger A \mathbf{x})^\dagger = \mathbf{x}^\dagger A^\dagger \mathbf{x} = \mathbf{x}^\dagger A \mathbf{x} = H(\mathbf{x})
+  $$
+  より、$H(\mathbf{x})$ は実数です。
+
+- エルミット形式は、複素内積の一般化と見なせます（特に $A = I$ のとき標準内積になります）。
+
+- エルミット行列はユニタリ行列で対角化できるため、エルミット2次形式もユニタリ変換によって「主軸」に沿った形に変形できます。
+
+
+
+  $$
+  \mathbf{v}_2 = \begin{pmatrix} 1 \\ i \end{pmatrix}
+  $$
