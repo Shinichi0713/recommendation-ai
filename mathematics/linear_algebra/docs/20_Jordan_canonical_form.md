@@ -708,5 +708,92 @@ $$
 - 一般化固有空間 $W_\lambda$ 上では $N = A - \lambda I$ がべき零となり、$W_\lambda$ はべき零部分空間とみなせます。
 - べき零部分空間上では、ジョルダンブロックを用いた標準形が構成でき、線形変換の構造解析や微分方程式の解の記述に不可欠です。
 
+__定理:__
+
+
+$V$ を有限次元ベクトル空間、$N: V \to V$ をべき零変換（$N^k = 0$ となる正整数 $k$ が存在）とする。  
+各 $m \ge 0$ に対して
+
+$$
+W_m = \ker N^m = \{\mathbf{v} \in V \mid N^m \mathbf{v} = \mathbf{0}\}
+$$
+
+と定義する。このとき、次が成り立つ：
+
+1. $W_0 = \{0\}$。
+2. $W_1 \subset W_2 \subset \cdots \subset W_k = W_{k+1} = \cdots = V$。
+3. ある $m$ に対して $W_m = W_{m+1}$ ならば、それ以降はすべて等しい：$W_m = W_{m+1} = W_{m+2} = \cdots$。
+4. 特に、$N^k = 0$ となる最小の $k$（べき零指数）に対して
+   $$
+   \{0\} = W_0 \subsetneq W_1 \subsetneq \cdots \subsetneq W_k = V
+   $$
+   が成り立つ（真の増大列）。
+
+---
+
+__証明__
+
+__1. $W_0 = \{0\}$ の確認__
+
+$N^0$ は恒等写像 $I$ と定義されます（あるいは $N^0 = I$ と約束する）。  
+したがって
+
+$$
+W_0 = \ker N^0 = \ker I = \{\mathbf{v} \in V \mid \mathbf{v} = \mathbf{0}\} = \{0\}.
+$$
+
+__2. 包含関係 $W_m \subset W_{m+1}$__
+
+任意の $\mathbf{v} \in W_m$ をとります。定義より $N^m \mathbf{v} = \mathbf{0}$ です。  
+このとき
+
+$$
+N^{m+1} \mathbf{v} = N (N^m \mathbf{v}) = N\mathbf{0} = \mathbf{0}
+$$
+
+より $\mathbf{v} \in W_{m+1}$ です。  
+したがって $W_m \subset W_{m+1}$ が成り立ちます。
+
+__3. 安定性：$W_m = W_{m+1}$ なら $W_m = W_{m+2} = \cdots$__
+
+$W_m = W_{m+1}$ と仮定します。  
+任意の $\mathbf{v} \in W_{m+2}$ をとると、$N^{m+2} \mathbf{v} = \mathbf{0}$ です。  
+このとき
+
+$$
+N^{m+1} (N\mathbf{v}) = N^{m+2} \mathbf{v} = \mathbf{0}
+$$
+
+より $N\mathbf{v} \in W_{m+1}$ です。  
+仮定より $W_{m+1} = W_m$ なので、$N\mathbf{v} \in W_m$、すなわち $N^m (N\mathbf{v}) = N^{m+1} \mathbf{v} = \mathbf{0}$ です。  
+したがって $\mathbf{v} \in W_{m+1}$ です。  
+これより $W_{m+2} \subset W_{m+1}$ ですが、2. より $W_{m+1} \subset W_{m+2}$ でもあるので $W_{m+1} = W_{m+2}$ です。  
+同様に帰納的に、$W_m = W_{m+1} = W_{m+2} = \cdots$ が示されます。
+
+__4. $W_k = V$ となる $k$ の存在と真の増大__
+
+$N$ はべき零なので、ある正整数 $k$ が存在して $N^k = 0$ です。  
+このとき、任意の $\mathbf{v} \in V$ に対して $N^k \mathbf{v} = \mathbf{0}$ なので $\mathbf{v} \in W_k$ です。  
+したがって $W_k = V$ です。
+
+次に、このような $k$ のうち最小のものを $k$ とおきます（べき零指数）。  
+このとき、$m < k$ に対して $W_m \subsetneq W_{m+1}$ であることを示します。
+
+もしある $m < k$ に対して $W_m = W_{m+1}$ なら、3. より $W_m = W_{m+1} = W_{m+2} = \cdots$ です。  
+一方、$N^m \neq 0$（$k$ の最小性より）なので、$W_m \neq V$ です。  
+しかし $W_k = V$ であるから矛盾します。  
+したがって、$m < k$ のときは常に $W_m \subsetneq W_{m+1}$ です。
+
+以上より、
+
+$$
+\{0\} = W_0 \subsetneq W_1 \subsetneq \cdots \subsetneq W_k = V
+$$
+
+が成り立ちます。  
+また $W_k = V$ より、$W_k = W_{k+1} = \cdots = V$ です。
+
+---
+
 
 
