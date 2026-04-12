@@ -1567,7 +1567,8 @@ $$
 
 ### 8. べき零写像によるフィルトレーション
 
-べき零写像によるフィルトレーション（nilpotent filtration）は、**べき零変換 $N$ の核の列 $\ker N^m$ が作る増大列**のことです。  
+次にジョルダン標準形において重要となる、べき零写像によるフィルトレーション（nilpotent filtration）という概念を導入します。
+べき零写像によるフィルトレーションは、**べき零変換 $N$ の核の列 $\ker N^m$ が作る増大列**のことです。  
 ジョルダン標準形の構成や一般化固有ベクトルの段階的構成で中心的な役割を果たします。
 
 __1. フィルトレーションの定義__
@@ -1680,4 +1681,181 @@ __4. なぜ重要か__
 - **ジョルダン標準形の構成**：フィルトレーション $F_m$ を用いて、一般化固有ベクトルを段階的に選び、ジョルダンブロックを構築します。
 - **べき零指数の決定**：$F_m$ が $V$ と一致する最小の $m$ がべき零指数です。
 - **表現論**：べき零変換のフィルトレーションは、リー代数の表現やベクトル束のフィルトレーションなど、より一般の文脈でも現れます。
+
+__例題:__
+
+べき零行列 $N$ に対して、フィルトレーション（核の増大列）$\ker N^m$ を計算し、その次元の変化を可視化する Python コードを作成します。
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def nilpotent_filtration(N, max_m=10, tol=1e-10):
+    """
+    べき零行列 N のフィルトレーション ker(N^m) を計算する。
+    
+    Parameters
+    ----------
+    N : ndarray, shape (n, n)
+        べき零行列
+    max_m : int
+        計算する最大の m
+    tol : float
+        零判定の許容誤差
+    
+    Returns
+    -------
+    dims : list of int
+        dim(ker N^m) のリスト (m=0,...,max_m)
+    stable_index : int
+        安定化する最小の m（べき零指数）
+    """
+    n = N.shape[0]
+    dims = []
+    
+    # m=0: ker(N^0) = ker(I) = {0}
+    dims.append(0)
+    
+    # m>=1 について計算
+    for m in range(1, max_m+1):
+        N_power = np.linalg.matrix_power(N, m)
+        # 零行列かどうかを判定（べき零指数の確認）
+        if np.allclose(N_power, 0, atol=tol):
+            stable_index = m
+            # これ以降はすべて dim = n
+            for _ in range(m, max_m+1):
+                dims.append(n)
+            break
+        
+        # ker(N^m) の次元 = n - rank(N^m)
+        rank = np.linalg.matrix_rank(N_power, tol=tol)
+        dim_ker = n - rank
+        dims.append(dim_ker)
+    else:
+        # max_m までべき零にならなかった場合
+        stable_index = None
+    
+    return dims, stable_index
+
+def plot_filtration(dims, stable_index=None):
+    """
+    フィルトレーションの次元変化をプロットする。
+    """
+    m_values = list(range(len(dims)))
+    
+    plt.figure(figsize=(8, 5))
+    plt.plot(m_values, dims, 'o-', linewidth=2, markersize=6)
+    plt.xlabel('$m$')
+    plt.ylabel('$\dim(\ker N^m)$')
+    plt.title('Nilpotent Filtration: $\dim(\ker N^m)$ vs $m$')
+    plt.grid(True, alpha=0.3)
+    
+    if stable_index is not None:
+        plt.axvline(x=stable_index, color='red', linestyle='--', 
+                   label=f'Stable at m={stable_index}')
+        plt.legend()
+    
+    plt.show()
+
+# --- 例1: 2x2 べき零行列 ---
+N1 = np.array([[0, 1],
+               [0, 0]])
+print("例1: N1 =")
+print(N1)
+dims1, idx1 = nilpotent_filtration(N1, max_m=5)
+print(f"dim(ker N1^m): {dims1}")
+print(f"べき零指数: {idx1}")
+plot_filtration(dims1, idx1)
+print()
+
+# --- 例2: 3x3 べき零行列 ---
+N2 = np.array([[0, 1, 0],
+               [0, 0, 1],
+               [0, 0, 0]])
+print("例2: N2 =")
+print(N2)
+dims2, idx2 = nilpotent_filtration(N2, max_m=6)
+print(f"dim(ker N2^m): {dims2}")
+print(f"べき零指数: {idx2}")
+plot_filtration(dims2, idx2)
+print()
+
+# --- 例3: 4x4 べき零行列（2つのジョルダンブロック） ---
+N3 = np.array([
+    [0, 1, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 1],
+    [0, 0, 0, 0]
+])
+print("例3: N3 =")
+print(N3)
+dims3, idx3 = nilpotent_filtration(N3, max_m=6)
+print(f"dim(ker N3^m): {dims3}")
+print(f"べき零指数: {idx3}")
+plot_filtration(dims3, idx3)
+```
+
+__出力例（イメージ）__
+
+__例1：$N_1 = \begin{pmatrix}0 & 1 \\ 0 & 0\end{pmatrix}$__
+
+```
+例1: N1 =
+[[0 1]
+ [0 0]]
+dim(ker N1^m): [0, 1, 2, 2, 2, 2]
+べき零指数: 2
+```
+
+- $m=0$: $\ker I = \{0\}$ → 次元 0
+- $m=1$: $\ker N_1$（第1成分任意、第2成分 0）→ 次元 1
+- $m\ge 2$: $\ker N_1^2 = \mathbb{R}^2$ → 次元 2（安定）
+
+グラフは、$m=0$ から $m=2$ まで単調増加し、$m=2$ で最大次元 2 に達して水平になります。
+
+<img src="image/20_Jordan_canonical_form/1775768770591.png" width="500" style="display: block; margin: 0 auto;">
+
+__例2：$N_2 = \begin{pmatrix}0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 0\end{pmatrix}$__
+
+```
+例2: N2 =
+[[0 1 0]
+ [0 0 1]
+ [0 0 0]]
+dim(ker N2^m): [0, 1, 2, 3, 3, 3, 3]
+べき零指数: 3
+```
+
+- $m=0$: 次元 0
+- $m=1$: $\ker N_2$（第1成分任意、他 0）→ 次元 1
+- $m=2$: $\ker N_2^2$（第1・第2成分任意、第3成分 0）→ 次元 2
+- $m\ge 3$: $\ker N_2^3 = \mathbb{R}^3$ → 次元 3（安定）
+
+グラフは階段状に増加し、$m=3$ で安定します。
+
+__例3：ブロック対角行列 $N_3 = \operatorname{diag}(N_1, N_2)$__
+
+- べき零指数は各ブロックの最大値（ここでは 3）です。
+- 次元の増え方は、各ブロックのフィルトレーションを「重ね合わせた」形になります。
+
+<img src="image/20_Jordan_canonical_form/1775768793047.png" width="500" style="display: block; margin: 0 auto;">
+
+__解説__
+
+1. **`nilpotent_filtration`**
+   - `np.linalg.matrix_power(N, m)` で $N^m$ を計算。
+   - `np.linalg.matrix_rank` でランクを求め、次元公式 $\dim \ker = n - \operatorname{rank}$ から $\ker N^m$ の次元を計算。
+   - $N^m$ が零行列になった時点でべき零指数を記録し、それ以降は次元 $n$ を返す。
+
+2. **`plot_filtration`**
+   - $\dim(\ker N^m)$ を $m$ に対してプロット。
+   - べき零指数（安定化する $m$）を縦線で表示。
+
+3. **可視化の意味**
+   - グラフの傾きや段差が、ジョルダンブロックのサイズ分布（一般化固有ベクトルの「深さ」）を反映します。
+   - べき零指数が小さいほど、早く全体空間に到達する（フィルトレーションが短い）。
+
+このコードを実行すると、べき零行列のフィルトレーションがどのように増大し、どこで安定するかが視覚的に確認できます。  
+必要に応じて、具体的な基底ベクトル（一般化固有ベクトル）も出力する拡張も可能です。
 
