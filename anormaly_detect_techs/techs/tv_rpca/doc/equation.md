@@ -7,6 +7,7 @@
 ## 1. 元のTV Denoising via ADMMの流れ（Stanfordページの内容）
 
 ### 目的関数
+
 Total Variation Denoisingでは、観測画像 $b$ から真の画像 $x$ を推定する問題を
 
 $$
@@ -42,19 +43,22 @@ $$
 
 ページでは、以下の3ステップを繰り返します[Stanford ADMM TV Denoising](https://web.stanford.edu/~boyd/papers/admm/total_variation/total_variation.html)：
 
-1. **x-update（画像更新）**  
+1. **x-update（画像更新）**
+
    $$
    x^{k+1} = (I + \rho D^\top D)^{-1} \big( b + \rho D^\top (z^k - u^k) \big)
    $$
-   これは線形方程式を解く問題です。
 
-2. **z-update（勾配変数更新）**  
+   これは線形方程式を解く問題です。
+2. **z-update（勾配変数更新）**
+
    $$
    z^{k+1} = \mathrm{shrink}(D x^{k+1} + u^k, \lambda / \rho)
    $$
-   ここで $\mathrm{shrink}(a, \kappa) = \max(0, a - \kappa) - \max(0, -a - \kappa)$ はソフトしきい値関数です。
 
-3. **u-update（双対変数更新）**  
+   ここで $\mathrm{shrink}(a, \kappa) = \max(0, a - \kappa) - \max(0, -a - \kappa)$ はソフトしきい値関数です。
+3. **u-update（双対変数更新）**
+
    $$
    u^{k+1} = u^k + D x^{k+1} - z^{k+1}
    $$
@@ -109,33 +113,39 @@ $$
 
 ### ADMMの更新ステップ（拡張版）
 
-1. **L-update（低ランク成分の更新）**  
+1. **L-update（低ランク成分の更新）**
+
    $$
    L^{k+1} = \arg\min_L \ \|L\|_* + \frac{\rho_1}{2} \|X - L - S^k + U_1^k\|_F^2 + \frac{\rho_2}{2} \|D L - Z^k + U_2^k\|_F^2
    $$
-   これは「核ノルム＋二次項」の最小化問題で、**特異値しきい値処理（SVT）**を含む形になります。  
-   実装上は、勾配降下＋近接オペレータ、あるいは線形方程式を解く形に変形してADMM的に解きます。
 
-2. **S-update（スパース成分の更新）**  
+   これは「核ノルム＋二次項」の最小化問題で、**特異値しきい値処理（SVT）**を含む形になります。実装上は、勾配降下＋近接オペレータ、あるいは線形方程式を解く形に変形してADMM的に解きます。
+2. **S-update（スパース成分の更新）**
+
    $$
    S^{k+1} = \arg\min_S \ \lambda \|S\|_1 + \frac{\rho_1}{2} \|X - L^{k+1} - S + U_1^k\|_F^2
    $$
+
    これは要素ごとの**ソフトしきい値処理**で閉形式に解けます：
+
    $$
    S^{k+1} = \mathrm{shrink}(X - L^{k+1} + U_1^k, \lambda / \rho_1)
    $$
+3. **Z-update（TV成分の更新）**
 
-3. **Z-update（TV成分の更新）**  
    $$
    Z^{k+1} = \arg\min_Z \ \mu \|Z\|_1 + \frac{\rho_2}{2} \|D L^{k+1} - Z + U_2^k\|_F^2
    $$
+
    これも要素ごとのソフトしきい値処理で閉形式に解けます：
+
    $$
    Z^{k+1} = \mathrm{shrink}(D L^{k+1} + U_2^k, \mu / \rho_2)
    $$
-   このステップは、TV Denoisingのz-updateと本質的に同じです[Stanford ADMM TV Denoising](https://web.stanford.edu/~boyd/papers/admm/total_variation/total_variation.html)。
 
-4. **双対変数の更新**  
+   このステップは、TV Denoisingのz-updateと本質的に同じです[Stanford ADMM TV Denoising](https://web.stanford.edu/~boyd/papers/admm/total_variation/total_variation.html)。
+4. **双対変数の更新**
+
    $$
    \begin{aligned}
    U_1^{k+1} &= U_1^k + (X - L^{k+1} - S^{k+1}) \\
@@ -160,11 +170,10 @@ $$
   - 低ランク正則化（核ノルム）の更新（L-update）
   - スパース正則化（L1ノルム）の更新（S-update）
   - TV正則化（勾配のL1ノルム）の更新（Z-update）
-  をADMMの枠組みで交互に解く形になります。
+    をADMMの枠組みで交互に解く形になります。
 - TV Denoisingのz-update（ソフトしきい値）と双対更新は、そのままRPCA＋TVのZ-updateに流用できます。
 
 このように、TV DenoisingのADMM実装をベースに、低ランク成分とスパース成分の更新ステップを追加することで、RPCA＋TV正則化項を解くアルゴリズムを構築できます。
-
 
 ## TV+RPCA
 
@@ -297,7 +306,6 @@ $$
   は、**拡張ラグランジュ関数を $x$ について最小化した結果**として得られます。
 - これは「データフィット」と「TV制約（$Dx \approx z$）」のバランスを取る最小二乗問題の解であり、ADMMの1ステップとして $x$ を更新しています。
 
-
 与えられたラグランジュ関数
 
 $$
@@ -310,8 +318,7 @@ $$
 x - b = z_1,\quad z = z_2,\quad D x - z = z_3,\quad D x - z = z_4
 $$
 
-とおいてADMM的に解く、という意図だと解釈します。  
-ただし、$D x - z$ が2回出てきているのは重複しているので、ここでは
+とおいてADMM的に解く、という意図だと解釈します。ただし、$D x - z$ が2回出てきているのは重複しているので、ここでは
 
 - $x - b = z_1$
 - $z = z_2$
@@ -396,7 +403,7 @@ $$
 (\rho_1 I + \rho_3 D^\top D) x = \rho_1 (b + z_1^k - y_1^k/\rho_1) + \rho_3 D^\top (z^k + z_3^k - y_3^k/\rho_3)
 $$
 
-という線形方程式を解けばよいです。  
+という線形方程式を解けばよいです。
 フーリエ空間で解く場合は、$D$ が循環行列と仮定して
 
 $$
@@ -527,5 +534,5 @@ $$
   - **z₃-update**：閉形式（二次関数の最小化）
   - **双対更新**：各制約の残差に基づく更新
 
-となります。  
+となります。
 ただし、このように細かく変数分割すると更新ステップが増え、実装が複雑になるため、通常は $z_1, z_3$ を省略した形（元のTV DenoisingのADMM）で解くことが多いです。
