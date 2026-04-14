@@ -536,3 +536,358 @@ $$
 
 となります。
 ただし、このように細かく変数分割すると更新ステップが増え、実装が複雑になるため、通常は $z_1, z_3$ を省略した形（元のTV DenoisingのADMM）で解くことが多いです。
+
+
+## 補助更新式の導入
+
+RPCA＋TV（核ノルム＋L1＋TV）に対して、**4つの補助変数 $Z_1, Z_2, Z_3, Z_4$** を導入したADMMの更新式を導出します。
+
+---
+
+## 1. 問題の再定式化（補助変数導入）
+
+RPCA＋TVの目的関数は
+
+$$
+\min_{L, S, Z} \ \|L\|_* + \lambda \|S\|_1 + \mu \|Z\|_1 \quad \text{s.t.} \quad X = L + S,\ Z = D L
+$$
+
+です。ここで、以下のように**4つの補助変数**を導入します：
+
+- $Z_1 = L$（低ランク成分）
+- $Z_2 = S$（スパース成分）
+- $Z_3 = Z$（TV成分）
+- $Z_4 = D L$（勾配）
+
+制約は
+
+$$
+\begin{aligned}
+X &= Z_1 + Z_2 \\
+Z_3 &= Z_4 \\
+Z_1 &= L \\
+Z_4 &= D L
+\end{aligned}
+$$
+
+となります。ただし $Z_3 = Z_4$ は $Z = D L$ を意味します。
+
+目的関数を補助変数で書き直すと：
+
+$$
+\min_{L, S, Z, Z_1, Z_2, Z_3, Z_4} \ \|Z_1\|_* + \lambda \|Z_2\|_1 + \mu \|Z_3\|_1
+$$
+
+subject to
+
+$$
+\begin{aligned}
+X &= Z_1 + Z_2 \\
+Z_3 &= Z_4 \\
+Z_1 &= L \\
+Z_4 &= D L
+\end{aligned}
+$$
+
+---
+
+## 2. 拡張ラグランジュ関数
+
+双対変数を
+
+- $U_1$：$X = Z_1 + Z_2$ に対応
+- $U_2$：$Z_3 = Z_4$ に対応
+- $V_1$：$Z_1 = L$ に対応
+- $V_2$：$Z_4 = D L$ に対応
+
+とすると、拡張ラグランジュ関数は
+
+$$
+\begin{aligned}
+L_\rho &= \|Z_1\|_* + \lambda \|Z_2\|_1 + \mu \|Z_3\|_1 \\
+&\quad + U_1^\top (X - Z_1 - Z_2) + \frac{\rho_1}{2} \|X - Z_1 - Z_2\|_F^2 \\
+&\quad + U_2^\top (Z_3 - Z_4) + \frac{\rho_2}{2} \|Z_3 - Z_4\|_F^2 \\
+&\quad + V_1^\top (Z_1 - L) + \frac{\rho_3}{2} \|Z_1 - L\|_F^2 \\
+&\quad + V_2^\top (Z_4 - D L) + \frac{\rho_4}{2} \|Z_4 - D L\|_F^2
+\end{aligned}
+$$
+
+となります。
+
+---
+
+## 3. ADMMの更新式
+
+ADMMでは、各変数について交互に最小化します。
+
+### (1) L-update
+
+$Z_1, Z_2, Z_3, Z_4$ を固定して $L$ について最小化：
+
+$$
+\begin{aligned}
+L^{k+1} &= \arg\min_L \left\{ 
+- V_1^\top L + \frac{\rho_3}{2} \|Z_1^k - L\|_F^2 
+- V_2^\top D L + \frac{\rho_4}{2} \|Z_4^k - D L\|_F^2
+\right\}
+\end{aligned}
+$$
+
+勾配を0とおくと、
+
+$$
+\rho_3 (L - Z_1^k + V_1^k/\rho_3) + \rho_4 D^\top (D L - Z_4^k + V_2^k/\rho_4) = 0
+$$
+
+より
+
+$$
+(\rho_3 I + \rho_4 D^\top D) L = \rho_3 (Z_1^k - V_1^k/\rho_3) + \rho_4 D^\top (Z_4^k - V_2^k/\rho_4)
+$$
+
+という線形方程式を解けばよいです。  
+フーリエ空間で解く場合は、
+
+$$
+L^{k+1} = \mathcal{F}^{-1}\left( \frac{\mathcal{F}(\rho_3 (Z_1^k - V_1^k/\rho_3) + \rho_4 D^\top (Z_4^k - V_2^k/\rho_4))}{\rho_3 + \rho_4 |\mathcal{F}(D)|^2} \right)
+$$
+
+---
+
+### (2) Z₁-update（低ランク成分）
+
+$L, Z_2, Z_3, Z_4$ を固定して $Z_1$ について最小化：
+
+$$
+\begin{aligned}
+Z_1^{k+1} &= \arg\min_{Z_1} \left\{ 
+\|Z_1\|_* 
+- U_1^\top Z_1 + \frac{\rho_1}{2} \|X - Z_1 - Z_2^k\|_F^2 
++ V_1^\top Z_1 + \frac{\rho_3}{2} \|Z_1 - L^{k+1}\|_F^2
+\right\}
+\end{aligned}
+$$
+
+これは「核ノルム＋二次項」の最小化なので、**特異値しきい値処理（SVT）**で解けます：
+
+$$
+Z_1^{k+1} = \mathrm{prox}_{\|\cdot\|_*}\left( \frac{\rho_1 (X - Z_2^k + U_1^k/\rho_1) + \rho_3 (L^{k+1} - V_1^k/\rho_3)}{\rho_1 + \rho_3} \right)
+$$
+
+---
+
+### (3) Z₂-update（スパース成分）
+
+$L, Z_1, Z_3, Z_4$ を固定して $Z_2$ について最小化：
+
+$$
+\begin{aligned}
+Z_2^{k+1} &= \arg\min_{Z_2} \left\{ 
+\lambda \|Z_2\|_1 
+- U_1^\top Z_2 + \frac{\rho_1}{2} \|X - Z_1^{k+1} - Z_2\|_F^2
+\right\}
+\end{aligned}
+$$
+
+これはL1正則化付き最小二乗なので、**ソフトしきい値処理**で閉形式に解けます：
+
+$$
+Z_2^{k+1} = \mathrm{shrink}(X - Z_1^{k+1} + U_1^k/\rho_1, \lambda / \rho_1)
+$$
+
+---
+
+### (4) Z₃-update（TV成分）
+
+$L, Z_1, Z_2, Z_4$ を固定して $Z_3$ について最小化：
+
+$$
+\begin{aligned}
+Z_3^{k+1} &= \arg\min_{Z_3} \left\{ 
+\mu \|Z_3\|_1 
++ U_2^\top Z_3 + \frac{\rho_2}{2} \|Z_3 - Z_4^k\|_F^2
+\right\}
+\end{aligned}
+$$
+
+これもL1正則化付き最小二乗なので、ソフトしきい値処理：
+
+$$
+Z_3^{k+1} = \mathrm{shrink}(Z_4^k - U_2^k/\rho_2, \mu / \rho_2)
+$$
+
+---
+
+### (5) Z₄-update（勾配成分）
+
+$L, Z_1, Z_2, Z_3$ を固定して $Z_4$ について最小化：
+
+$$
+\begin{aligned}
+Z_4^{k+1} &= \arg\min_{Z_4} \left\{ 
+- U_2^\top Z_4 + \frac{\rho_2}{2} \|Z_3^{k+1} - Z_4\|_F^2 
++ V_2^\top Z_4 + \frac{\rho_4}{2} \|Z_4 - D L^{k+1}\|_F^2
+\right\}
+\end{aligned}
+$$
+
+これは二次関数のみなので、勾配を0とおくと：
+
+$$
+(\rho_2 + \rho_4) Z_4 = \rho_2 (Z_3^{k+1} + U_2^k/\rho_2) + \rho_4 (D L^{k+1} - V_2^k/\rho_4)
+$$
+
+より
+
+$$
+Z_4^{k+1} = \frac{\rho_2 (Z_3^{k+1} + U_2^k/\rho_2) + \rho_4 (D L^{k+1} - V_2^k/\rho_4)}{\rho_2 + \rho_4}
+$$
+
+---
+
+### (6) 双対変数の更新
+
+各制約に対応する双対変数を更新します：
+
+$$
+\begin{aligned}
+U_1^{k+1} &= U_1^k + \rho_1 (X - Z_1^{k+1} - Z_2^{k+1}) \\
+U_2^{k+1} &= U_2^k + \rho_2 (Z_3^{k+1} - Z_4^{k+1}) \\
+V_1^{k+1} &= V_1^k + \rho_3 (Z_1^{k+1} - L^{k+1}) \\
+V_2^{k+1} &= V_2^k + \rho_4 (Z_4^{k+1} - D L^{k+1})
+\end{aligned}
+$$
+
+---
+
+## 4. まとめ
+
+- RPCA＋TVに対して、**4つの補助変数 $Z_1, Z_2, Z_3, Z_4$** を導入し、ADMMの更新式を導出しました。
+- 更新式は：
+  - **L-update**：線形方程式（フーリエ空間で解く）
+  - **Z₁-update**：核ノルムの近接オペレータ（SVT）
+  - **Z₂-update**：L1ソフトしきい値処理
+  - **Z₃-update**：TVソフトしきい値処理
+  - **Z₄-update**：二次関数の最小化（閉形式）
+  - **双対更新**：各制約の残差に基づく更新
+
+となります。  
+ただし、補助変数を増やすと更新ステップが多くなり収束が遅くなる可能性があるため、実用上は**必要最小限の変数分割**（$L, S, Z$ のみ）で解くことが多いです。
+
+## 論文の記事
+
+結論から言うと、**「TV付きRPCAに対して4つの補助変数 $Z_1, Z_2, Z_3, Z_4$ を導入したADMM更新式」を明示的に導出している論文・記事は、公開情報の範囲では見当たりません**。  
+ただし、**ADMMの一般理論**と**TV正則化付き最適化**の論文を組み合わせれば、同様の更新式を自力で導出することは可能です。
+
+以下、関連する文献と導出の考え方を整理します。
+
+---
+
+## 1. ADMMの一般理論（変数分割・補助変数の扱い）
+
+### (1) Distributed Optimization and Statistical Learning via ADMM（Boyd et al.）
+- **PDF**: https://web.stanford.edu/~boyd/papers/admm_diststat.html  
+- **内容**: ADMMの一般形（$f(x) + g(z)$ s.t. $Ax + Bz = c$）と、変数分割・補助変数の導入方法を詳しく解説。  
+- **補助変数の扱い**:  
+  - 目的関数を分離可能な形に書き換えるために、補助変数 $z$ を導入する方法が説明されています。  
+  - 複数の制約がある場合の拡張（複数の双対変数・ペナルティ項）も理論的にカバーされています。
+
+### (2) ADMM: Algorithms using Alternating Direction Method of Multipliers（Rパッケージ資料）
+- **PDF**: https://cran.r-project.org/web/packages/ADMM/ADMM.pdf  
+- **内容**: ADMMの実装例（Lasso, TV Denoisingなど）と、補助変数を導入した変数分割の具体例。  
+- **補助変数の導入**:  
+  - Lassoの例で $\beta = \alpha$ という補助変数を導入し、ADMM更新式を導出しています。  
+  - 同様の考え方をRPCA＋TVに拡張すれば、$Z_1, Z_2, Z_3, Z_4$ のような補助変数を導入した更新式を導出できます。
+
+---
+
+## 2. TV正則化付き最適化（TV Denoising）のADMM
+
+### (1) Total Variation Denoising via ADMM（Stanford）
+- **URL**: https://web.stanford.edu/~boyd/papers/admm/total_variation/total_variation.html  
+- **内容**: TV DenoisingのADMM実装（$u$-update, $z$-update, dual-update）を詳細に解説。  
+- **補助変数の扱い**:  
+  - $z = D u$ という補助変数を導入し、ADMMの更新式（$u$-update: 線形方程式、$z$-update: ソフトしきい値処理）を導出しています。  
+  - RPCA＋TVの $Z_3, Z_4$ 部分は、このTV DenoisingのADMMをそのまま拡張した形になります。
+
+---
+
+## 3. RPCA＋TV（TV正則化付きRPCA）の代表的な論文
+
+### (1) TVRPCA+: Low-rank and sparse decomposition based on spectral norm, structured sparse norm and total variation regularization
+- **Journal**: Signal Processing, 2023  
+- **URL**: https://www.sciencedirect.com/science/article/pii/S0165168423000630  
+- **内容**:  
+  - RPCA＋TVの目的関数とADMM更新式（L, S, Z, 双対）を導出。  
+  - 補助変数（$Z_1, Z_2, Z_3$ に相当）を導入した変数分割の具体例が記載されています。  
+  - ただし、4つの補助変数（$Z_1, Z_2, Z_3, Z_4$）を明示的に使う形ではありませんが、**複数の制約を扱うADMMの拡張**として理解できます。
+
+### (2) An improved total variation regularized RPCA for moving object detection with dynamic background
+- **Journal**: Journal of Industrial and Management Optimization, 2019  
+- **URL**: https://www.aimsciences.org/article/doi/10.3934/jimo.2019106  
+- **内容**:  
+  - 動的背景を持つ動画の前景検出にTV-RPCAを適用。  
+  - ADMMベースの更新式（L, S, Z, 双対）が導出されており、補助変数の導入方法も参考になります。
+
+### (3) Low-Rank Decomposition and Total Variation Regularization of Hyperspectral Video Sequences
+- **Report**: UCLA CAM Report 18-13  
+- **URL**: https://www.math.ucla.edu/applied/cam/index.php?page=cam-reports  
+- **内容**:  
+  - ハイパースペクトル動画に対する低ランク＋TV分解。  
+  - ADMM/PDSの更新式が導出されており、複数の制約を扱う変数分割の例が含まれます。
+
+---
+
+## 4. 導出の考え方（4つの補助変数 $Z_1, Z_2, Z_3, Z_4$）
+
+RPCA＋TVの目的関数
+
+$$
+\min_{L, S, Z} \ \|L\|_* + \lambda \|S\|_1 + \mu \|Z\|_1 \quad \text{s.t.} \quad X = L + S,\ Z = D L
+$$
+
+に対して、補助変数を
+
+- $Z_1 = L$（低ランク成分）
+- $Z_2 = S$（スパース成分）
+- $Z_3 = Z$（TV成分）
+- $Z_4 = D L$（勾配）
+
+と導入し、制約を
+
+$$
+\begin{aligned}
+X &= Z_1 + Z_2 \\
+Z_3 &= Z_4 \\
+Z_1 &= L \\
+Z_4 &= D L
+\end{aligned}
+$$
+
+と書き換えます。  
+拡張ラグランジュ関数を
+
+$$
+\begin{aligned}
+L_\rho &= \|Z_1\|_* + \lambda \|Z_2\|_1 + \mu \|Z_3\|_1 \\
+&\quad + U_1^\top (X - Z_1 - Z_2) + \frac{\rho_1}{2} \|X - Z_1 - Z_2\|_F^2 \\
+&\quad + U_2^\top (Z_3 - Z_4) + \frac{\rho_2}{2} \|Z_3 - Z_4\|_F^2 \\
+&\quad + V_1^\top (Z_1 - L) + \frac{\rho_3}{2} \|Z_1 - L\|_F^2 \\
+&\quad + V_2^\top (Z_4 - D L) + \frac{\rho_4}{2} \|Z_4 - D L\|_F^2
+\end{aligned}
+$$
+
+と定義し、ADMMの更新式（L-update, Z₁-update, Z₂-update, Z₃-update, Z₄-update, dual-update）を導出する、という流れになります。  
+この導出は、上記のADMM一般論とTV DenoisingのADMMを組み合わせることで可能です。
+
+---
+
+## 5. まとめ
+
+- **4つの補助変数 $Z_1, Z_2, Z_3, Z_4$ を明示的に使ったTV付きRPCAのADMM更新式**を導出している論文・記事は、公開情報の範囲では見当たりません。  
+- しかし、**ADMMの一般理論（BoydのPDF）**と**TV DenoisingのADMM（Stanfordページ）**、さらに**TVRPCA+などのRPCA＋TV論文**を組み合わせれば、同様の更新式を自力で導出することは十分可能です。  
+- 実用上は、補助変数を増やしすぎると収束が遅くなるため、**必要最小限の変数分割（$L, S, Z$ のみ）**で解くことが多いです。
+
+したがって、**「4つの補助変数を使ったTV付きRPCAのADMM更新式」そのものを解説した文献はない**ものの、**ADMMとTV正則化の理論を組み合わせれば導出可能**というのが現状の結論です。
+
+
