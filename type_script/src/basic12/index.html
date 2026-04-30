@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeScript タスク管理アプリ</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+    }
+    .input-area {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    #taskInput {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+    }
+    #addBtn {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .filters {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .filters button {
+      margin: 0 5px;
+      padding: 5px 10px;
+    }
+    .filters button.active {
+      background: #2196F3;
+      color: white;
+    }
+    #taskList {
+      list-style: none;
+      padding: 0;
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: white;
+      margin-bottom: 5px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .task-item.completed {
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+    .task-item input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .task-text {
+      flex: 1;
+    }
+    .delete-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>タスク管理アプリ（TypeScript）</h1>
+
+  <div class="input-area">
+    <input type="text" id="taskInput" placeholder="新しいタスクを入力...">
+    <button id="addBtn">追加</button>
+  </div>
+
+  <div class="filters">
+    <button id="filterAll" class="active">すべて</button>
+    <button id="filterActive">未完了</button>
+    <button id="filterCompleted">完了</button>
+  </div>
+
+  <ul id="taskList"></ul>
+
+  <script type="module" src="dist/todo-app.js"></script>
+</body>
+</html>
