@@ -1,173 +1,154 @@
 import numpy as np
 from scipy.fft import fft2, ifft2
 
+# -----------------------------
+# 基本演算
+# -----------------------------
 def soft_thresholding(x, tau):
-    """Soft-thresholding operator."""
     return np.sign(x) * np.maximum(np.abs(x) - tau, 0.0)
 
 def svt(X, tau):
-    """Singular Value Thresholding (prox of nuclear norm)."""
     U, s, Vh = np.linalg.svd(X, full_matrices=False)
-    s_thresh = np.maximum(s - tau, 0.0)
-    return (U * s_thresh) @ Vh
+    s = np.maximum(s - tau, 0.0)
+    return (U * s) @ Vh
 
-def gradient_periodic(L):
+# -----------------------------
+# 3D gradient（周期境界）
+# -----------------------------
+def gradient_3d(L):
+    gx = np.roll(L, -1, axis=1) - L  # x方向
+    gy = np.roll(L, -1, axis=0) - L  # y方向
+    gz = np.roll(L, -1, axis=2) - L  # スペクトル方向
+    return gx, gy, gz
+
+def divergence_3d(px, py, pz):
+    return (
+        (np.roll(px, 1, axis=1) - px) +
+        (np.roll(py, 1, axis=0) - py) +
+        (np.roll(pz, 1, axis=2) - pz)
+    )
+
+# -----------------------------
+# メイン：TV-RPCA (3D TV)
+# -----------------------------
+def tv_rpca_3d_admm(M, lambd=0.01, gamma=0.01, rho=1.0,
+                   max_iter=200, tol=1e-5, verbose=False):
     """
-    Forward differences with periodic boundary conditions.
-    Returns:
-        gx: horizontal gradient
-        gy: vertical gradient
+    M: (H, W, B)
     """
-    gx = np.roll(L, -1, axis=1) - L
-    gy = np.roll(L, -1, axis=0) - L
-    return gx, gy
 
-def divergence_periodic(px, py):
-    """
-    Adjoint of forward differences with periodic boundary conditions.
-    This is the discrete divergence corresponding to gradient_periodic().
-    """
-    return (np.roll(px, 1, axis=1) - px) + (np.roll(py, 1, axis=0) - py)
-
-def tv_rpca_admm(M, lambd=0.01, gamma=0.01, rho=1.0, max_iter=200, tol=1e-5, verbose=False):
-    """
-    TV-RPCA via ADMM.
-
-    Solves:
-        min_{L,S} ||L||_* + lambd ||S||_1 + gamma TV(L)
-        s.t. M = L + S
-
-    with splitting:
-        J = L
-        G = grad(L)
-
-    Parameters
-    ----------
-    M : ndarray, shape (H, W)
-        Input matrix / image.
-    lambd : float
-        Weight for sparse term S.
-    gamma : float
-        Weight for TV term.
-    rho : float
-        ADMM penalty parameter.
-    max_iter : int
-        Maximum iterations.
-    tol : float
-        Stopping tolerance.
-    verbose : bool
-        Print progress if True.
-
-    Returns
-    -------
-    L : ndarray
-        Low-rank component.
-    S : ndarray
-        Sparse component.
-    history : dict
-        Residual history and iteration count.
-    """
-    M = np.asarray(M, dtype=np.float64)
-    if M.ndim != 2:
-        raise ValueError("M must be a 2D array.")
-
-    rows, cols = M.shape
+    H, W, B = M.shape
     eps = 1e-12
 
-    # Variables
+    # 変数
     L = np.zeros_like(M)
     S = np.zeros_like(M)
     J = np.zeros_like(M)
+
     Gx = np.zeros_like(M)
     Gy = np.zeros_like(M)
+    Gz = np.zeros_like(M)
 
-    # Scaled dual variables
-    U1 = np.zeros_like(M)   # for M - L - S = 0
-    U2 = np.zeros_like(M)   # for L - J = 0
-    U3x = np.zeros_like(M)  # for grad_x(L) - Gx = 0
-    U3y = np.zeros_like(M)  # for grad_y(L) - Gy = 0
+    # dual
+    U1 = np.zeros_like(M)
+    U2 = np.zeros_like(M)
+    U3x = np.zeros_like(M)
+    U3y = np.zeros_like(M)
+    U3z = np.zeros_like(M)
 
-    # FFT denominator for solving (2I + grad^T grad) L = rhs
-    # With periodic forward differences:
-    dx = np.zeros((rows, cols))
-    dx[0, 0] = 1.0
-    dx[0, 1] = -1.0
+    # -----------------------------
+    # FFT用カーネル（空間のみ）
+    # -----------------------------
+    dx = np.zeros((H, W))
+    dx[0, 0] = 1; dx[0, 1] = -1
 
-    dy = np.zeros((rows, cols))
-    dy[0, 0] = 1.0
-    dy[1, 0] = -1.0
+    dy = np.zeros((H, W))
+    dy[0, 0] = 1; dy[1, 0] = -1
 
-    lap_symbol = np.abs(fft2(dx))**2 + np.abs(fft2(dy))**2
-    denom = 2.0 + lap_symbol
+    lap_xy = np.abs(fft2(dx))**2 + np.abs(fft2(dy))**2  # (H,W)
+
+    # スペクトル方向のラプラシアン（周期）
+    k = np.arange(B)
+    lap_z = 2 - 2*np.cos(2*np.pi*k / B)   # (B,)
+
+    # broadcast用
+    denom = 2.0 + lap_xy[:, :, None] + lap_z[None, None, :]
     denom = np.maximum(denom, eps)
 
-    history = {
-        "primal_residual": [],
-        "rel_change_L": [],
-    }
-
-    normM = np.linalg.norm(M, ord="fro") + eps
+    normM = np.linalg.norm(M) + eps
 
     for it in range(max_iter):
         L_prev = L.copy()
 
-        # 1) S-update
-        # min lambd||S||_1 + (rho/2)||M - L - S + U1||^2
+        # -------------------------
+        # S更新
+        # -------------------------
         S = soft_thresholding(M - L + U1, lambd / rho)
 
-        # 2) J-update (nuclear norm prox)
-        # min ||J||_* + (rho/2)||L - J + U2||^2
-        J = svt(L + U2, 1.0 / rho)
+        # -------------------------
+        # J更新（低ランク）
+        # reshape: (HW, B)
+        # -------------------------
+        L_mat = (L + U2).reshape(H*W, B)
+        J_mat = svt(L_mat, 1.0 / rho)
+        J = J_mat.reshape(H, W, B)
 
-        # 3) G-update (TV prox)
-        # min gamma||G||_1 + (rho/2)||grad(L) - G + U3||^2
-        gx, gy = gradient_periodic(L)
+        # -------------------------
+        # G更新（3D TV）
+        # -------------------------
+        gx, gy, gz = gradient_3d(L)
+
         Gx = soft_thresholding(gx + U3x, gamma / rho)
         Gy = soft_thresholding(gy + U3y, gamma / rho)
+        Gz = soft_thresholding(gz + U3z, gamma / rho)
 
-        # 4) L-update
-        # min (rho/2)||M - L - S + U1||^2
-        #   + (rho/2)||L - J + U2||^2
-        #   + (rho/2)||grad(L) - G + U3||^2
-        #
-        # => (2I + grad^T grad) L = (M - S + U1) + (J - U2) + grad^T(G - U3)
-        rhs = (M - S + U1) + (J - U2) + divergence_periodic(Gx - U3x, Gy - U3y)
+        # -------------------------
+        # L更新
+        # -------------------------
+        rhs = (
+            (M - S + U1)
+            + (J - U2)
+            + divergence_3d(Gx - U3x, Gy - U3y, Gz - U3z)
+        )
 
-        L = np.real(ifft2(fft2(rhs) / denom))
+        # FFT (空間)
+        RHS_fft = fft2(rhs, axes=(0,1))
+        L = np.real(ifft2(RHS_fft / denom, axes=(0,1)))
 
-        # 5) Dual updates
+        # -------------------------
+        # dual更新
+        # -------------------------
         r1 = M - L - S
         r2 = L - J
-        gx_new, gy_new = gradient_periodic(L)
-        r3x = gx_new - Gx
-        r3y = gy_new - Gy
+        gx, gy, gz = gradient_3d(L)
+
+        r3x = gx - Gx
+        r3y = gy - Gy
+        r3z = gz - Gz
 
         U1 += r1
         U2 += r2
         U3x += r3x
         U3y += r3y
+        U3z += r3z
 
-        # Stopping criteria
+        # -------------------------
+        # 収束判定
+        # -------------------------
         primal = np.sqrt(
-            np.linalg.norm(r1, ord="fro")**2 +
-            np.linalg.norm(r2, ord="fro")**2 +
-            np.linalg.norm(r3x, ord="fro")**2 +
-            np.linalg.norm(r3y, ord="fro")**2
+            np.linalg.norm(r1)**2 +
+            np.linalg.norm(r2)**2 +
+            np.linalg.norm(r3x)**2 +
+            np.linalg.norm(r3y)**2 +
+            np.linalg.norm(r3z)**2
         ) / normM
 
-        rel_change_L = np.linalg.norm(L - L_prev, ord="fro") / (np.linalg.norm(L_prev, ord="fro") + eps)
-
-        history["primal_residual"].append(primal)
-        history["rel_change_L"].append(rel_change_L)
+        rel_L = np.linalg.norm(L - L_prev) / (np.linalg.norm(L_prev) + eps)
 
         if verbose:
-            print(f"iter={it:03d}  primal={primal:.3e}  rel_change_L={rel_change_L:.3e}")
+            print(f"{it:03d}  primal={primal:.3e}  dL={rel_L:.3e}")
 
-        if primal < tol and rel_change_L < tol:
+        if primal < tol and rel_L < tol:
             break
 
-    history["n_iter"] = it + 1
-    history["final_primal_residual"] = history["primal_residual"][-1]
-    history["final_rel_change_L"] = history["rel_change_L"][-1]
-
-    return L, S, history
+    return L, S
