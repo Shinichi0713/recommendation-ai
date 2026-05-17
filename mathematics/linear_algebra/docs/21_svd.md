@@ -1146,5 +1146,308 @@ SVD \( A = U \Sigma V^* \) を、直交分解の観点から書き直すと：
   - 正規直交基底で核・像・随伴の核・像を**直交分解**  
   - ノルム・内積・近似誤差などを扱う応用に強い
 
+## 特異値分解の応用例
+
+
+特異値分解（SVD）は、線形代数の「構造分解」を直交性とノルムの観点から与えるため、多くの応用があります。  
+その中でも代表的なものとして、**低ランク近似**と**擬似逆行列（Moore–Penrose逆行列）** があります。以下、それぞれを説明します。
+
+### 1. 低ランク近似（Eckart–Youngの定理）
+
+__1-1. 問題設定__
+
+\( m \times n \) 行列 \( A \) が与えられたとき、「ランクが \( k \) 以下の行列の中で、\( A \) に最も近い行列」を求めたい、という問題です。  
+「近い」の基準として、フロベニウスノルムやスペクトルノルムを使います。
+
+__1-2. SVDによる低ランク近似__
+
+\( A \) のSVDを
+
+\[
+A = U \Sigma V^* = \sum_{i=1}^r \sigma_i u_i v_i^*
+\]
+
+とします（\( r = \text{rank}(A) \), \( \sigma_1 \ge \dots \ge \sigma_r > 0 \)）。
+
+このとき、**上位 \( k \) 個の特異値と特異ベクトルだけを使った行列**
+
+\[
+A_k = \sum_{i=1}^k \sigma_i u_i v_i^*
+\]
+
+は、ランク \( k \) の行列の中で \( A \) に最も近い近似となります。  
+これを**SVDによる低ランク近似**といいます。
+
+__1-3. Eckart–Youngの定理（概要）__
+
+- フロベニウスノルム \( \|\cdot\|_F \) やスペクトルノルム \( \|\cdot\|_2 \) に関して、
+  \[
+  \min_{\text{rank}(B) \le k} \|A - B\| = \|A - A_k\|
+  \]
+  が成り立ちます。
+- 最小値は、**切り捨てた特異値の2乗和の平方根**で与えられます：
+  \[
+  \|A - A_k\|_F = \sqrt{\sum_{i=k+1}^r \sigma_i^2}
+  \]
+
+__1-4. 幾何的な意味__
+
+- 特異値が大きい方向ほど、「\( A \) が強く伸ばす方向」＝情報が強調される方向
+- 特異値が小さい方向ほど、「\( A \) が弱く伸ばす方向」＝情報が少ない方向
+- 低ランク近似は、**情報の多い上位 \( k \) 方向だけを残し、残りを捨てる**操作です。
+
+__1-5. 具体的な応用__
+
+- **画像圧縮**：画像を行列と見なし、低ランク近似で情報量を削減
+- **データ圧縮・ノイズ除去**：観測データ行列から、重要な成分だけを抽出
+- **推薦システム**：ユーザー×アイテム行列を低ランク近似し、潜在因子を抽出
+
+__例題:__
+
+低ランク近似のイメージが伝わるように、次の2つの例でPythonコードを提示します。
+
+1. **2次元の点群データ**に対する低ランク近似（直線への射影）の可視化
+2. **グレースケール画像**に対する低ランク近似（圧縮・ぼかし）の可視化
+
+__1. 2次元点群の低ランク近似（ランク1近似）__
+
+2次元の点群データを行列とみなし、SVDの上位1つの特異値だけを使う（ランク1近似）と、点群が「1本の直線」上に射影される様子を可視化します。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 2D point cloud data generation
+np.random.seed(0)
+n_points = 100
+mu = np.array([1.0, 2.0])
+cov = np.array([[2.0, 1.5],
+                [1.5, 1.0]])
+
+X = np.random.multivariate_normal(mu, cov, n_points).T  # 2 x n_points
+
+print("Data matrix X shape:", X.shape)
+
+# Center the data
+X_centered = X - X.mean(axis=1, keepdims=True)
+
+# SVD: X_centered = U Sigma V^T
+U, S, Vt = np.linalg.svd(X_centered, full_matrices=False)
+
+print("Singular values S =", S)
+
+# Rank-1 approximation: use only the top singular value/vectors
+k = 1
+U_k = U[:, :k]
+S_k = S[:k]
+Vt_k = Vt[:k, :]
+
+X_approx = U_k @ np.diag(S_k) @ Vt_k
+
+# Add back the mean
+X_approx += X.mean(axis=1, keepdims=True)
+
+# Visualization
+plt.figure(figsize=(8, 6))
+plt.scatter(X[0], X[1], alpha=0.6, label='Original points', color='blue')
+plt.scatter(X_approx[0], X_approx[1], alpha=0.6, label=f'Rank-{k} approximation', color='red')
+
+# Draw the first principal direction (u1)
+u1 = U[:, 0]
+scale = 5.0
+line_dir = u1 * scale
+center = X.mean(axis=1)
+plt.plot([center[0] - line_dir[0], center[0] + line_dir[0]],
+         [center[1] - line_dir[1], center[1] + line_dir[1]],
+         'g-', linewidth=2, label='1st principal direction (u1)')
+
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.title('Rank-1 Approximation of 2D Point Cloud via SVD')
+plt.legend()
+plt.grid(True)
+plt.axis('equal')
+plt.show()
+```
+
+**観察ポイント**：
+- 元の点群（青）は楕円状に広がっています。
+- ランク1近似（赤）は、点群が**1本の直線上に射影**されています。
+- この直線は、第1左特異ベクトル \( u_1 \) の方向（第1主成分方向）です。
+- 低ランク近似は「情報の多い方向（特異値の大きい方向）だけを残し、それ以外の方向を捨てる」操作であることが視覚的にわかります。
+
+<img src="image/21_svd/1779051518045.png" width="500" style="display: block; margin: 0 auto;">
+
+__2. グレースケール画像の低ランク近似（画像圧縮のイメージ）__
+
+グレースケール画像を行列とみなし、SVDの上位 \( k \) 個の特異値だけを使うと、画像が「ぼやける（情報が削られる）」様子を可視化します。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Create a simple grayscale sample image
+def create_sample_image(size=100):
+    img = np.zeros((size, size))
+    center = size // 2
+    radius = size // 4
+    for i in range(size):
+        for j in range(size):
+            if (i - center)**2 + (j - center)**2 <= radius**2:
+                img[i, j] = 1.0
+    return img
+
+img = create_sample_image(100)
+
+print("Image shape:", img.shape)
+
+# SVD of the image matrix
+U, S, Vt = np.linalg.svd(img, full_matrices=False)
+
+print("Number of singular values:", len(S))
+print("Top 5 singular values:", S[:5])
+
+# Compare approximations with different ranks
+ranks = [1, 5, 20, 50]
+n_ranks = len(ranks)
+
+fig, axes = plt.subplots(2, 2, figsize=(10, 10))
+axes = axes.flatten()
+
+# Original image
+axes[0].imshow(img, cmap='gray')
+axes[0].set_title('Original image')
+axes[0].axis('off')
+
+for idx, k in enumerate(ranks[1:], start=1):
+    U_k = U[:, :k]
+    S_k = S[:k]
+    Vt_k = Vt[:k, :]
+    
+    img_approx = U_k @ np.diag(S_k) @ Vt_k
+    img_approx = np.clip(img_approx, 0, 1)
+    
+    axes[idx].imshow(img_approx, cmap='gray')
+    axes[idx].set_title(f'Rank-{k} approximation')
+    axes[idx].axis('off')
+
+plt.tight_layout()
+plt.show()
+
+# Optional: plot singular value decay
+plt.figure(figsize=(8, 4))
+plt.plot(S, 'bo-', markersize=3)
+plt.xlabel('Singular value index')
+plt.ylabel('Singular value')
+plt.title('Singular value decay')
+plt.grid(True)
+plt.show()
+```
+
+**観察ポイント**：
+- **ランク1**：画像がほぼ一様な灰色に近くなり、細かい構造が失われます。
+- **ランク5〜20**：大まかな輪郭は残るが、細部はぼやけます。
+- **ランク50**：元の画像にかなり近くなります（特異値の大きい成分だけで大部分の情報を表現）。
+- 特異値のプロットを見ると、**最初の少数の特異値が大きく、その後は急激に減衰**していることがわかります。  
+  → 低ランク近似が「少数の重要な方向だけでよく近似できる」理由です。
+
+<img src="image/21_svd/1779051685956.png" width="500" style="display: block; margin: 0 auto;">
+
+<img src="image/21_svd/1779051709822.png" width="500" style="display: block; margin: 0 auto;">
+
+<img src="image/21_svd/1779051734002.png" width="500" style="display: block; margin: 0 auto;">
+
+__3. まとめ__
+
+- 低ランク近似は、SVDの**上位 \( k \) 個の特異値・特異ベクトルだけを使い、ランク \( k \) の行列で元の行列を近似**する操作です。
+- 2次元点群の例では、「点群を1本の直線上に射影する」ことで、情報の多い方向だけを残す様子が見えます。
+- 画像の例では、「ランクを下げるほど画像がぼやけ、情報が削られる」様子が視覚的に確認できます。
+- いずれも、**特異値が大きい方向ほど情報が重要**であり、低ランク近似はその重要方向だけを残す操作である、というイメージが伝わるはずです。
+
+これらのコードを実行すると、低ランク近似が「どの方向の情報を残し／捨てるか」を直感的に理解できると思います。
+
+
+### 2. 擬似逆行列（Moore–Penrose逆行列）
+
+__2-1. 問題設定__
+
+線形方程式 \( Ax = b \) を考えます。  
+- \( A \) が正方で正則なら、\( x = A^{-1}b \) と解けます。
+- しかし、\( A \) が正方でない（\( m \ne n \)）や、ランク落ちしている場合は、通常の逆行列は定義できません。
+
+このような場合に、「逆行列に最も近いもの」として導入されるのが**擬似逆行列（Moore–Penrose逆行列）**です。
+
+__2-2. SVDによる擬似逆行列の定義__
+
+\( A \) のSVDを
+
+\[
+A = U \Sigma V^*
+\]
+
+とします。ここで \( \Sigma \) は
+
+\[
+\Sigma =
+\begin{bmatrix}
+\sigma_1 & & & \\
+& \ddots & & \\
+& & \sigma_r & \\
+& & & 0
+\end{bmatrix}
+\]
+
+です。
+
+このとき、**擬似逆行列 \( A^\dagger \)** は
+
+\[
+A^\dagger = V \Sigma^\dagger U^*
+\]
+
+で定義されます。ここで \( \Sigma^\dagger \) は
+
+\[
+\Sigma^\dagger =
+\begin{bmatrix}
+1/\sigma_1 & & & \\
+& \ddots & & \\
+& & 1/\sigma_r & \\
+& & & 0
+\end{bmatrix}
+\]
+
+です（非ゼロ特異値の逆数を並べ、残りは 0）。
+
+__2-3. 最小二乗法との関係__
+
+線形方程式 \( Ax = b \) の**最小二乗解**は、擬似逆行列を使って
+
+\[
+x^* = A^\dagger b
+\]
+
+と書けます。これは
+
+\[
+\min_x \|Ax - b\|^2
+\]
+
+の解の中で、**ノルム最小の解**を与えます。
+
+__2-4. 幾何的な意味__
+
+- \( A^\dagger \) は、出力空間のベクトル \( b \) を、像空間 \( \text{Im}(A) \) に直交射影し、それを入力空間に「戻す」操作です。
+- もし \( b \in \text{Im}(A) \) なら、\( A A^\dagger b = b \)（再現）
+- もし \( b \perp \text{Im}(A) \) なら、\( A^\dagger b = 0 \)（無視）
+
+__2-5. 具体的な応用__
+
+- **最小二乗法**：過剰決定・不足決定の線形方程式を解く
+- **回帰分析**：計画行列がフルランクでない場合の回帰係数の推定
+- **制御理論**：システムの可逆性が不完全な場合の逆システム設計
+- **機械学習**：リッジ回帰や正則化付き最小二乗法の理論的基礎
+
+
 
 
