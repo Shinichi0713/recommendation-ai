@@ -1662,3 +1662,404 @@ __3. まとめ（イメージ）__
 
 これらのコードを実行すると、擬似逆行列が「**最もらしい逆操作**」として、幾何的にどのような意味を持つかが直感的に理解できるはずです。
 
+### 3. SVD
+
+SVD（特異値分解）を用いたPCA（主成分分析）について、**理論的な導出**と**幾何的な意味**、**SVDとの関係**を順に説明します。
+
+__1. PCAの目的と設定__
+
+__1-1. データの表現__
+
+\( n \) 個のデータ点 \( x_1, \dots, x_n \in \mathbb{R}^d \) が与えられたとします。  
+データ行列を
+
+\[
+X = \begin{bmatrix} x_1^\top \\ \vdots \\ x_n^\top \end{bmatrix} \in \mathbb{R}^{n \times d}
+\]
+
+とします（各行が1つのデータ点）。
+
+PCAの目的は：
+- データの**分散が最大になる方向（主成分）**を見つける
+- データを**低次元空間に射影**して、情報を保ちつつ次元を削減する
+
+__2. 共分散行列と固有値問題__
+
+__2-1. データの中心化__
+
+まず、データを平均0に中心化します：
+
+\[
+\tilde{x}_i = x_i - \bar{x}, \quad \bar{x} = \frac{1}{n} \sum_{i=1}^n x_i
+\]
+
+中心化データ行列を
+
+\[
+\tilde{X} = \begin{bmatrix} \tilde{x}_1^\top \\ \vdots \\ \tilde{x}_n^\top \end{bmatrix}
+\]
+
+とします。
+
+__2-2. 共分散行列__
+
+共分散行列は
+
+\[
+C = \frac{1}{n-1} \tilde{X}^\top \tilde{X} \in \mathbb{R}^{d \times d}
+\]
+
+で定義されます（標本共分散）。  
+PCAでは、この \( C \) の**固有値問題**を解きます：
+
+\[
+C v_j = \lambda_j v_j, \quad \lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_d \ge 0
+\]
+
+- \( v_j \)：第 \( j \) 主成分方向（単位ベクトル）
+- \( \lambda_j \)：その方向の分散（固有値）
+
+__3. SVDとの関係__
+
+__3-1. 中心化データ行列のSVD__
+
+中心化データ行列 \( \tilde{X} \in \mathbb{R}^{n \times d} \) のSVDを
+
+\[
+\tilde{X} = U \Sigma V^\top
+\]
+
+とします。ここで：
+- \( U \in \mathbb{R}^{n \times d} \)：左特異ベクトル（直交）
+- \( \Sigma \in \mathbb{R}^{d \times d} \)：特異値行列（対角）
+- \( V \in \mathbb{R}^{d \times d} \)：右特異ベクトル（直交）
+
+__3-2. 共分散行列のSVD表現__
+
+共分散行列は
+
+\[
+C = \frac{1}{n-1} \tilde{X}^\top \tilde{X}
+  = \frac{1}{n-1} (U \Sigma V^\top)^\top (U \Sigma V^\top)
+  = \frac{1}{n-1} V \Sigma^\top U^\top U \Sigma V^\top
+\]
+
+\( U^\top U = I \)（直交性）より、
+
+\[
+C = \frac{1}{n-1} V \Sigma^2 V^\top
+\]
+
+ここで \( \Sigma^2 = \text{diag}(\sigma_1^2, \dots, \sigma_d^2) \) です。
+
+__3-3. 固有値問題との対応__
+
+\[
+C V = V \left( \frac{1}{n-1} \Sigma^2 \right)
+\]
+
+より、
+- \( V \) の列ベクトル \( v_j \) が**主成分方向**（固有ベクトル）
+- \( \frac{\sigma_j^2}{n-1} \) が**固有値（分散）**
+
+つまり：
+- **右特異ベクトル \( V \)** ＝ 主成分方向
+- **特異値の2乗 \( \sigma_j^2 \)** ＝ 共分散行列の固有値のスケール版
+
+__4. PCAのSVDによる実装__
+
+__4-1. 手順__
+
+1. データ行列 \( X \) を中心化して \( \tilde{X} \) を得る
+2. \( \tilde{X} \) のSVDを計算：\( \tilde{X} = U \Sigma V^\top \)
+3. 主成分方向：\( V \) の列ベクトル \( v_1, v_2, \dots \)
+4. 寄与率：\( \frac{\sigma_j^2}{\sum_{k=1}^d \sigma_k^2} \)
+5. 上位 \( k \) 個の主成分で低次元表現：  
+   \[
+   Z = \tilde{X} V_k \in \mathbb{R}^{n \times k}
+   \]
+   ここで \( V_k = [v_1, \dots, v_k] \)
+
+__4-2. 幾何的な意味__
+
+- \( \tilde{X} v_j \)：データを第 \( j \) 主成分方向に射影したスコア（主成分得点）
+- \( \sigma_j \)：その方向の「伸び」の大きさ（分散の平方根）
+- SVDの「伸縮＋回転」の解釈：
+  - \( V^\top \)：データを主成分軸に回転
+  - \( \Sigma \)：各主成分方向にどれだけ伸ばすか（分散の大きさ）
+  - \( U \)：主成分得点を正規化した表現
+
+__例題:__
+
+SVDを用いてPCAを実装し、2次元データの主成分方向と低次元表現を可視化してみます。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# サンプルデータ生成（2次元）
+np.random.seed(0)
+n = 100
+X = np.random.multivariate_normal(mean=[1, 2], 
+                                   cov=[[2, 1.5], [1.5, 1]], 
+                                   size=n)
+
+print("Data shape:", X.shape)
+
+# 1. 中心化
+X_centered = X - X.mean(axis=0)
+
+# 2. SVD: X_centered = U Sigma V^T
+U, S, Vt = np.linalg.svd(X_centered, full_matrices=False)
+V = Vt.T
+
+print("Singular values S =", S)
+print("V shape:", V.shape)
+
+# 主成分方向（右特異ベクトル）
+pc1 = V[:, 0]  # 第1主成分
+pc2 = V[:, 1]  # 第2主成分
+
+print("PC1 direction:", pc1)
+print("PC2 direction:", pc2)
+
+# 寄与率
+explained_variance = S**2 / (n - 1)
+total_variance = explained_variance.sum()
+explained_variance_ratio = explained_variance / total_variance
+
+print("Explained variance ratio:", explained_variance_ratio)
+
+# 可視化：元データと主成分軸
+plt.figure(figsize=(8, 6))
+plt.scatter(X_centered[:, 0], X_centered[:, 1], alpha=0.6, label='Centered data')
+
+# 主成分軸を描画
+scale = 5.0
+plt.arrow(0, 0, scale * pc1[0], scale * pc1[1], 
+          head_width=0.2, head_length=0.2, fc='red', ec='red', 
+          label='PC1 direction')
+plt.arrow(0, 0, scale * pc2[0], scale * pc2[1], 
+          head_width=0.2, head_length=0.2, fc='green', ec='green', 
+          label='PC2 direction')
+
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.title('PCA via SVD: Principal Component Directions')
+plt.legend()
+plt.grid(True)
+plt.axis('equal')
+plt.show()
+
+# 低次元表現（1次元への射影）
+k = 1
+Z = X_centered @ V[:, :k]  # n x k
+
+print("Low-dimensional representation Z shape:", Z.shape)
+```
+
+**観察ポイント**：
+- 赤い矢印が第1主成分方向（分散が最大の方向）
+- 緑の矢印が第2主成分方向
+- `Z` が1次元に射影されたデータ（主成分得点）
+
+
+<img src="image/21_svd/image-1.png" width="500" style="display: block; margin: 0 auto;">
+
+__6. まとめ__
+
+- **PCAの本質**：共分散行列の固有値問題（分散最大化）
+- **SVDとの関係**：
+  - 中心化データ行列 \( \tilde{X} \) のSVD：\( \tilde{X} = U \Sigma V^\top \)
+  - 共分散行列：\( C = \frac{1}{n-1} V \Sigma^2 V^\top \)
+  - **右特異ベクトル \( V \)** ＝ 主成分方向
+  - **特異値の2乗 \( \sigma_j^2 \)** ＝ 分散（固有値）のスケール版
+- **実装**：データを中心化 → SVD → \( V \) の列を主成分として利用
+- **幾何的解釈**：SVDの「回転＋伸縮」が、そのまま「主成分軸への回転」と「各方向の分散の大きさ」に対応
+
+SVDを用いることで、PCAを**行列分解の観点から一貫して理解**でき、実装もシンプルになります。  
+特に大規模データや疎行列に対しては、SVDベースのPCAが数値的にも効率的です。
+
+## 行列のノルムや条件数
+
+SVD（特異値分解）は、行列の**ノルム**や**条件数**を計算するうえで非常に強力な道具です。  
+以下、SVDを用いた行列ノルム・条件数の定義と性質、および計算方法を説明します。
+
+__1. 行列ノルムの基本__
+
+行列 \( A \in \mathbb{C}^{m \times n} \) のノルムは、ベクトルノルムから誘導される**作用素ノルム**として定義されます：
+
+\[
+\|A\| = \max_{x \ne 0} \frac{\|Ax\|}{\|x\|}
+\]
+
+ここで \( \|\cdot\| \) はベクトルノルムです。  
+特に重要なのは：
+
+- **2-ノルム（スペクトルノルム）**：\( \|A\|_2 \)
+- **フロベニウスノルム**：\( \|A\|_F \)
+
+__2. SVDによる行列ノルムの表現__
+
+\( A \) のSVDを
+
+\[
+A = U \Sigma V^*, \quad \Sigma = \text{diag}(\sigma_1, \dots, \sigma_r, 0, \dots)
+\]
+
+とします（\( \sigma_1 \ge \dots \ge \sigma_r > 0 \), \( r = \text{rank}(A) \)）。
+
+__2-1. 2-ノルム（スペクトルノルム）__
+
+2-ノルムは、**最大特異値**で与えられます：
+
+\[
+\|A\|_2 = \sigma_1
+\]
+
+**理由**：
+- 任意の単位ベクトル \( x \) に対し、\( \|Ax\|_2 \le \sigma_1 \|x\|_2 \)
+- 特に \( x = v_1 \)（第1右特異ベクトル）のとき、\( \|A v_1\|_2 = \sigma_1 \)
+- よって最大値は \( \sigma_1 \)
+
+__2-2. フロベニウスノルム__
+
+フロベニウスノルムは、**特異値の2乗和の平方根**で与えられます：
+
+\[
+\|A\|_F = \sqrt{\sum_{i=1}^r \sigma_i^2}
+\]
+
+**理由**：
+- \( \|A\|_F^2 = \text{trace}(A^* A) = \text{trace}(V \Sigma^2 V^*) = \text{trace}(\Sigma^2) = \sum \sigma_i^2 \)
+
+__2-3. 核ノルム（トレースノルム）__
+
+核ノルム（nuclear norm）は、**特異値の和**で定義されます：
+
+\[
+\|A\|_* = \sum_{i=1}^r \sigma_i
+\]
+
+これは、行列の「ランク」を緩和した正則化項として、機械学習や最適化でよく使われます。
+
+__3. 条件数（condition number）__
+
+__3-1. 定義__
+
+正方行列 \( A \in \mathbb{C}^{n \times n} \) が正則のとき、条件数は
+
+\[
+\kappa(A) = \|A\| \cdot \|A^{-1}\|
+\]
+
+で定義されます。ノルムの選び方に依存しますが、**2-ノルムに対する条件数**が最も一般的です。
+
+__3-2. SVDによる2-ノルム条件数__
+
+\( A \) のSVDを
+
+\[
+A = U \Sigma V^*
+\]
+
+とすると、逆行列は
+
+\[
+A^{-1} = V \Sigma^{-1} U^*
+\]
+
+です（\( \Sigma^{-1} = \text{diag}(1/\sigma_1, \dots, 1/\sigma_n) \)）。
+
+したがって：
+
+- \( \|A\|_2 = \sigma_1 \)（最大特異値）
+- \( \|A^{-1}\|_2 = 1 / \sigma_n \)（最小特異値の逆数）
+
+よって、**2-ノルム条件数**は
+
+\[
+\kappa_2(A) = \frac{\sigma_1}{\sigma_n}
+\]
+
+で与えられます。
+
+__3-3. 幾何的な意味__
+
+- \( \sigma_1 \)：\( A \) がベクトルを最も強く伸ばす倍率
+- \( \sigma_n \)：\( A \) がベクトルを最も弱く伸ばす倍率
+- 条件数 \( \sigma_1 / \sigma_n \) は、**伸びの比率**＝「どれだけアスペクト比が大きいか」を表します。
+
+条件数が大きい（≫1）ほど：
+- 行列が**数値的に悪条件（ill-conditioned）**
+- 連立一次方程式 \( Ax = b \) の解が**入力誤差に対して敏感**
+- 逆行列計算や線形方程式の求解が不安定
+
+__例題:__
+
+SVDを用いて、行列の各種ノルムと条件数を計算してみようと思います。
+
+
+```python
+import numpy as np
+
+# 例として 2x2 行列
+A = np.array([[3, 1],
+              [1, 2]], dtype=float)
+
+print("A =")
+print(A)
+
+# SVD を計算
+U, S, Vt = np.linalg.svd(A)
+print("Singular values S =", S)
+
+# 2-ノルム（スペクトルノルム）
+norm_2 = S[0]  # 最大特異値
+print("2-norm (spectral norm) =", norm_2)
+
+# フロベニウスノルム
+norm_F = np.sqrt(np.sum(S**2))
+print("Frobenius norm =", norm_F)
+
+# 核ノルム（トレースノルム）
+norm_nuclear = np.sum(S)
+print("Nuclear norm =", norm_nuclear)
+
+# 条件数（2-ノルム）
+cond_2 = S[0] / S[-1]
+print("Condition number (2-norm) =", cond_2)
+
+# numpy の関数による検算
+print("np.linalg.norm(A, 2) =", np.linalg.norm(A, 2))
+print("np.linalg.norm(A, 'fro') =", np.linalg.norm(A, 'fro'))
+print("np.linalg.cond(A, 2) =", np.linalg.cond(A, 2))
+```
+
+**出力**：
+
+この問題は可視化せず計算しているのみです。
+上記を実行すると以下の結果が得られます。
+
+```
+Singular values S = [3.61803399 1.38196601]
+2-norm (spectral norm) = 3.618033988749895
+Frobenius norm = 3.872983346207417
+Nuclear norm = 5.0
+Condition number (2-norm) = 2.618033988749895
+np.linalg.norm(A, 2) = 3.618033988749895
+np.linalg.norm(A, 'fro') = 3.872983346207417
+np.linalg.cond(A, 2) = 2.618033988749895
+```
+
+__5. まとめ__
+
+- **2-ノルム**：最大特異値 \( \sigma_1 \)
+- **フロベニウスノルム**：特異値の2乗和の平方根 \( \sqrt{\sum \sigma_i^2} \)
+- **核ノルム**：特異値の和 \( \sum \sigma_i \)
+- **2-ノルム条件数**：最大特異値 / 最小特異値 \( \sigma_1 / \sigma_n \)
+
+SVDは、行列の「伸び縮み」を特異値として明示的に与えるため、**ノルムや条件数といった「行列の大きさ・安定性」を測る指標**を自然に導出できます。  
+数値的にも、SVDは安定なアルゴリズムで計算できるため、実用上も広く用いられています。
+
+
