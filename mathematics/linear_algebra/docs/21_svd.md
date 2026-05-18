@@ -1449,5 +1449,216 @@ __2-5. 具体的な応用__
 - **機械学習**：リッジ回帰や正則化付き最小二乗法の理論的基礎
 
 
+__例題:__
 
+擬似逆行列（Moore–Penrose逆行列）のイメージが伝わるように、**線形方程式 \( Ax = b \) の最小二乗解**をSVDと擬似逆行列で求める様子を可視化するPythonコードを提示します。  
+
+__1. 2次元平面での最小二乗解の可視化（過剰決定系）__
+
+行列 \( A \) が \( 3 \times 2 \)（行 > 列）のとき、方程式 \( Ax = b \) は一般には解を持たず、**最小二乗解** \( x^* = A^\dagger b \) を求めます。  
+これを2次元平面（\( x \) 空間）と3次元空間（\( b \) 空間）の両方で可視化します。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Overdetermined system: A is 3x2, b is 3x1
+A = np.array([[1, 0],
+              [0, 1],
+              [1, 1]], dtype=float)
+
+b = np.array([1.0, 2.0, 2.8])  # chosen so that Ax = b has no exact solution
+
+print("A shape:", A.shape)
+print("b shape:", b.shape)
+
+# SVD for reference
+U, S, Vt = np.linalg.svd(A, full_matrices=False)
+print("Singular values S =", S)
+print("U shape:", U.shape)
+print("Vt shape:", Vt.shape)
+
+# Pseudoinverse via numpy.linalg.pinv
+A_dagger = np.linalg.pinv(A)
+print("A_dagger shape:", A_dagger.shape)
+
+# Least-squares solution
+x_star = A_dagger @ b
+print("Least-squares solution x* =", x_star)
+
+# Residual vector
+r_vec = b - A @ x_star
+print("Residual norm ||b - A x*|| =", np.linalg.norm(r_vec))
+
+# --- Visualization in the x-space (2D) ---
+plt.figure(figsize=(6, 6))
+
+# Solution point
+plt.plot(x_star[0], x_star[1], 'ro', markersize=8, label='Least-squares solution x*')
+
+# Column directions of A (scaled)
+col1 = A[:, 0]
+col2 = A[:, 1]
+scale = 0.5
+plt.arrow(0, 0, scale * col1[0], scale * col1[1], 
+          head_width=0.05, head_length=0.05, fc='blue', ec='blue', 
+          label='Col1 direction (scaled)')
+plt.arrow(0, 0, scale * col2[0], scale * col2[1], 
+          head_width=0.05, head_length=0.05, fc='green', ec='green', 
+          label='Col2 direction (scaled)')
+
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.title('Least-squares solution x* in the x-space')
+plt.legend()
+plt.grid(True)
+plt.axis('equal')
+plt.show()
+
+# --- Visualization in the b-space (3D) ---
+fig = plt.figure(figsize=(8, 6))
+ax = fig.add_subplot(111, projection='3d')
+
+# Column space of A (plane)
+col1 = A[:, 0]
+col2 = A[:, 1]
+
+# Generate points on the column-space plane
+s, t = np.meshgrid(np.linspace(-1, 2, 10), np.linspace(-1, 2, 10))
+X_plane = s * col1[0] + t * col2[0]
+Y_plane = s * col1[1] + t * col2[1]
+Z_plane = s * col1[2] + t * col2[2]
+
+ax.plot_surface(X_plane, Y_plane, Z_plane, alpha=0.3, color='blue', label='Column space of A')
+
+# Original vector b
+ax.quiver(0, 0, 0, b[0], b[1], b[2], color='red', linewidth=2, 
+          label='b', arrow_length_ratio=0.1)
+
+# Projection of b onto col(A): A x*
+b_proj = A @ x_star
+ax.quiver(0, 0, 0, b_proj[0], b_proj[1], b_proj[2], color='green', linewidth=2, 
+          label='A x* (projection)', arrow_length_ratio=0.1)
+
+# Residual vector r = b - A x*
+ax.quiver(b_proj[0], b_proj[1], b_proj[2], r_vec[0], r_vec[1], r_vec[2], 
+          color='orange', linewidth=2, label='Residual b - A x*', arrow_length_ratio=0.1)
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Pseudoinverse and least-squares projection in the b-space')
+ax.legend()
+plt.show()
+```
+
+**観察ポイント**:
+- **x空間（2D）**では、\( x^* \) は \( \|Ax - b\|^2 \) を最小化する点です。
+- **b空間（3D）**では：
+  - 青い平面は \( A \) の列空間（\( Ax \) の形のベクトル全体）です。
+  - 赤いベクトルが \( b \) です。
+  - 緑のベクトルが \( A x^* \) であり、\( b \) の列空間への**直交射影**です。
+  - オレンジのベクトルが残差 \( b - A x^* \) であり、列空間と直交しています。
+- 擬似逆行列 \( A^\dagger \) は、\( b \) をこの直交射影 \( A x^* \) に対応する唯一の \( x^* \) に写す写像です。
+
+<img src="image/21_svd/1779052161000.png" width="500" style="display: block; margin: 0 auto;">
+
+<img src="image/21_svd/1779052199419.png" width="500" style="display: block; margin: 0 auto;">
+
+__2. ランク落ち行列の擬似逆行列（不足決定系）__
+
+行列 \( A \) が \( 2 \times 3 \)（行 < 列）かつランク落ち（rank=1）のとき、方程式 \( Ax = b \) は無数に解を持ちます。  
+このとき、擬似逆行列は**ノルム最小の解**を与えます。その様子を可視化します。
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Underdetermined system: A is 2x3, rank=1
+A = np.array([[1, 1, 1],
+              [2, 2, 2]], dtype=float)  # rows are linearly dependent
+
+b = np.array([3.0, 6.0])
+
+print("A shape:", A.shape)
+print("b shape:", b.shape)
+
+# SVD of A
+U, S, Vt = np.linalg.svd(A, full_matrices=True)
+print("Singular values S =", S)
+
+# Pseudoinverse A†
+Sigma_dagger = np.zeros((A.shape[1], A.shape[0]))
+r = np.sum(S > 1e-10)
+Sigma_dagger[:r, :r] = np.diag(1.0 / S[:r])
+
+A_dagger = Vt.T @ Sigma_dagger @ U.T
+
+print("A_dagger shape:", A_dagger.shape)
+
+# Minimum-norm solution
+x_star = A_dagger @ b
+print("Minimum-norm solution x* =", x_star)
+print("Norm of x* =", np.linalg.norm(x_star))
+
+# Check: A x* = b (since b is in the column space)
+print("A x* =", A @ x_star)
+
+# --- Visualization in the x-space (3D) ---
+fig = plt.figure(figsize=(8, 6))
+ax = fig.add_subplot(111, projection='3d')
+
+# The solution set: { x | A x = b } is a line in R^3
+# Since A has rank 1, the nullspace is 2D, but the affine solution set is 1D.
+
+# Find a particular solution (any solution to A x = b)
+# Here, we can take x_particular = [1, 1, 1]^T, since A @ [1,1,1] = [3,6]^T
+x_particular = np.array([1.0, 1.0, 1.0])
+
+# Basis for the nullspace of A (2 vectors)
+# Since A = [1,1,1; 2,2,2], nullspace basis: e.g., [-1,1,0] and [-1,0,1]
+null_basis = np.array([[-1, 1, 0],
+                       [-1, 0, 1]], dtype=float).T  # 3x2
+
+# Parameterize the solution set: x = x_particular + null_basis @ [t1, t2]
+t1_vals = np.linspace(-1, 1, 20)
+t2_vals = np.linspace(-1, 1, 20)
+
+T1, T2 = np.meshgrid(t1_vals, t2_vals)
+X_sol = x_particular[0] + null_basis[0,0]*T1 + null_basis[0,1]*T2
+Y_sol = x_particular[1] + null_basis[1,0]*T1 + null_basis[1,1]*T2
+Z_sol = x_particular[2] + null_basis[2,0]*T1 + null_basis[2,1]*T2
+
+ax.plot_surface(X_sol, Y_sol, Z_sol, alpha=0.3, color='blue', label='Solution set {x | A x = b}')
+
+# Plot the minimum-norm solution x*
+ax.scatter(x_star[0], x_star[1], x_star[2], color='red', s=100, label='Minimum-norm solution x*')
+
+ax.set_xlabel('x1')
+ax.set_ylabel('x2')
+ax.set_zlabel('x3')
+ax.set_title('Pseudoinverse gives the minimum-norm solution')
+ax.legend()
+plt.show()
+```
+
+**観察ポイント**:
+- 青い面は \( Ax = b \) を満たす**すべての解**の集合（アフィン部分空間）です。
+- この解集合の中から、擬似逆行列は**赤い点 \( x^* \)** を選びます。
+- この \( x^* \) は、解集合の中で**原点に最も近い点**（ユークリッドノルム最小）です。
+- 幾何的には、\( x^* \) は**原点から解集合への直交射影**です。
+
+<img src="image/21_svd/1779052246274.png" width="500" style="display: block; margin: 0 auto;">
+
+__3. まとめ（イメージ）__
+
+- **過剰決定系**（行 > 列）:
+  - 擬似逆行列は、\( b \) を列空間に直交射影した \( A x^* \) に対応する \( x^* \) を与える。
+  - 可視化では、\( b \) と列空間（平面）の関係、および残差ベクトルが平面と直交する様子が見える。
+
+- **不足決定・ランク落ち系**（行 < 列 or rank-deficient）:
+  - 解が無数にある中で、擬似逆行列は**ノルム最小の解**を選ぶ。
+  - 可視化では、解集合（平面や直線）の中で原点に最も近い点が \( x^* \) であることがわかる。
+
+これらのコードを実行すると、擬似逆行列が「**最もらしい逆操作**」として、幾何的にどのような意味を持つかが直感的に理解できるはずです。
 
