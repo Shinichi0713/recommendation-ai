@@ -1420,3 +1420,174 @@ __3. Tucker分解とテンソルSVDの関係__
 
 __例題:__
 
+テンソルSVD（HOSVD: Higher-Order Singular Value Decomposition）は、**各モードの行列化に対してSVDを行い、その左特異ベクトルを因子行列として用いるTucker分解**です。  
+ここでは、**3階テンソル**に対するHOSVDをNumPyで実装し、**モードごとの特異値の寄与度を可視化**する例を示します。
+
+__HOSVDの定義（3階テンソル）__
+
+テンソル \( \mathcal{X} \in \mathbb{R}^{I \times J \times K} \) に対して、HOSVDは
+
+\[
+\mathcal{X} = \mathcal{G} \times_1 U^{(1)} \times_2 U^{(2)} \times_3 U^{(3)}
+\]
+
+- \( U^{(k)} \in \mathbb{R}^{I_k \times I_k} \)：各モード行列化 \( X_{(k)} \) のSVDから得られる**左特異ベクトル行列**（直交行列）
+- \( \mathcal{G} \in \mathbb{R}^{I \times J \times K} \)：コアテンソル（**直交性を持つ**）
+
+__Python実装__
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+def hosvd(X):
+    """
+    3階テンソルに対するHOSVD（Higher-Order SVD）修正版
+    """
+    I, J, K = X.shape
+    
+    # モード-1行列化のSVD
+    X1 = X.reshape(I, -1)  # (I, J*K)
+    U1, S1, Vh1 = np.linalg.svd(X1, full_matrices=False)
+    
+    # モード-2行列化のSVD
+    X2 = X.transpose(1, 0, 2).reshape(J, -1)  # (J, I*K)
+    U2, S2, Vh2 = np.linalg.svd(X2, full_matrices=False)
+    
+    # モード-3行列化のSVD
+    X3 = X.transpose(2, 0, 1).reshape(K, -1)  # (K, I*J)
+    U3, S3, Vh3 = np.linalg.svd(X3, full_matrices=False)
+    
+    # コアテンソルの計算
+    # G = X ×1 U1^T ×2 U2^T ×3 U3^T
+    # 転置をせず、インデックス 'ir, js, kt' で各モードの縮約を正しく表現します
+    G = np.einsum('ijk,ir,js,kt->rst', X, U1, U2, U3, optimize=True)
+    
+    return G, U1, U2, U3, (S1, S2, S3)
+
+def reconstruct_hosvd(G, U1, U2, U3):
+    """
+    HOSVDからテンソルを再構成する修正版
+    """
+    # 数字（r1, r2, r3）の代わりに 'rst' などのアルファベットを使用
+    return np.einsum('rst,ir,js,kt->ijk', G, U1, U2, U3, optimize=True)
+
+# 小さなテンソルを作成（例：2x3x2）
+X = np.array([
+    [[1, 2],
+     [3, 4],
+     [5, 6]],
+    [[7, 8],
+     [9, 10],
+     [11, 12]]
+], dtype=float)
+
+print("元のテンソル X:")
+print(X)
+print("形状:", X.shape)
+
+# HOSVD
+G, U1, U2, U3, (S1, S2, S3) = hosvd(X)
+
+print("\nコアテンソル G:")
+print(G)
+print("形状:", G.shape)
+
+print("\n因子行列 U1 (I x I):")
+print(U1)
+print("因子行列 U2 (J x J):")
+print(U2)
+print("因子行列 U3 (K x K):")
+print(U3)
+
+print("\nモード-1特異値 S1:", S1)
+print("モード-2特異値 S2:", S2)
+print("モード-3特異値 S3:", S3)
+
+# 再構成
+X_hat = reconstruct_hosvd(G, U1, U2, U3)
+
+print("\n再構成テンソル X_hat:")
+print(X_hat)
+
+print("\n誤差（Frobeniusノルム）:", np.linalg.norm(X - X_hat))
+
+# 可視化：各モードの特異値の寄与度
+fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+
+modes = ['Mode-1', 'Mode-2', 'Mode-3']
+singular_values = [S1, S2, S3]
+
+for i, (ax, sv, mode) in enumerate(zip(axes, singular_values, modes)):
+    ax.plot(range(1, len(sv)+1), sv, 'o-', markersize=8)
+    ax.set_title(f'{mode} Singular Values')
+    ax.set_xlabel('Singular Value Index')
+    ax.set_ylabel('Singular Value')
+    ax.grid(True)
+
+plt.tight_layout()
+plt.show()
+plt.tight_layout()
+plt.show()
+```
+
+__処理イメージのポイント__
+
+1. **各モード行列化のSVD**  
+   - モード-1行列化 \( X_{(1)} \in \mathbb{R}^{I \times (J K)} \) に対してSVDを行い、**左特異ベクトル行列 \( U^{(1)} \)** を得ます。
+   - 同様にモード-2, モード-3でもSVDを行い、\( U^{(2)}, U^{(3)} \) を得ます。
+
+2. **コアテンソルの計算**  
+   - 各因子行列の転置をモード積で作用させてコアを計算：
+     \[
+     \mathcal{G} = \mathcal{X} \times_1 U^{(1)T} \times_2 U^{(2)T} \times_3 U^{(3)T}
+     \]
+   - NumPyでは `np.einsum` で一括計算できます。
+
+3. **再構成**  
+   - HOSVDはTucker分解の一種なので、再構成は同じ：
+     \[
+     \hat{\mathcal{X}} = \mathcal{G} \times_1 U^{(1)} \times_2 U^{(2)} \times_3 U^{(3)}
+     \]
+
+4. **可視化（特異値の寄与度）**  
+   - 各モードの特異値 \( S_k \) をプロットすることで、**どのモードのどの成分が重要か**が視覚的に分かります。
+   - 特異値が大きい成分ほど、そのモード方向の変動が大きい（情報量が多い）ことを示します。
+
+__実行イメージ__
+
+- 元のテンソル \( X \) は (2,3,2) の小さなテンソルです。
+- HOSVDでは、**各モードの行列化に対してSVDを行い、その左特異ベクトルを因子行列**として用います。
+- コアテンソル \( \mathcal{G} \) は (2,3,2) と同じ形状ですが、**直交性を持つ**（非対角成分が小さくなる）ことが特徴です。
+- 再構成誤差は**丸め誤差レベル**になり、HOSVDが理論通りに機能していることが確認できます。
+- 可視化では、**各モードの特異値の大きさ**がグラフで表示され、どのモードのどの成分が支配的かが一目で分かります。
+
+このコードを実行すると、**「各モードのSVD → 直交因子行列＋コア → 再構成」** というHOSVDの処理イメージが、数値的・視覚的に理解しやすくなります。
+
+実際コードを実行して得られる結果は以下です。
+
+
+1. **再構成精度**  
+   - 誤差：`6.23e-15`（Frobeniusノルム）  
+   - 相対誤差：`~2.4e-16`（丸め誤差レベル）  
+   → **理論的に完全再現**できている。
+
+2. **コアテンソル \( \mathcal{G} \)**  
+   - 形状：(2,3,2)（元テンソルと同じ）  
+   - 対角成分付近に大きな値、非対角はほぼゼロ  
+   → **ほぼ対角構造**（HOSVDの直交性を反映）。
+
+3. **因子行列 \( U^{(k)} \)**  
+   - \( U^{(1)}, U^{(2)}, U^{(3)} \) はいずれも**直交行列**  
+   → 各モード行列化のSVDから得られた**左特異ベクトル行列**。
+
+4. **特異値 \( S_k \)**  
+   - モード1：`[25.38, 2.42]`  
+   - モード2：`[25.39, 2.35, ~0]`  
+   - モード3：`[25.48, 0.80]`  
+   → **第1特異値が支配的**、モード2は第2成分も重要、第3成分はほぼ寄与なし。
+
+
+<img src="image/22_tensor/1779829818099.png" width="500" style="display: block; margin: 0 auto;">
+
+
