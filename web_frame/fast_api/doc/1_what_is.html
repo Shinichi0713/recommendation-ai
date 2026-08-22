@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x6982;&#x8981;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+/* 目次全体のコンテナ */
+nav {
+    background-color: #f8f9fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0 40px 0;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* 「目次」というタイトル */
+nav h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0969da;
+    color: #24292f;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+/* タイトルの前にアイコン（絵文字）を追加 */
+nav h3::before {
+    content: "📖";
+    margin-right: 8px;
+}
+
+/* リストのスタイル調整 */
+#toc {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+#toc li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+/* リンクのスタイル */
+#toc a {
+    color: #0969da;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+#toc a:hover {
+    color: #cf222e;
+    transform: translateX(5px); /* ホバー時に少し右に動く */
+}
+
+/* h3（小見出し）がある場合のネスト表現（JSの修正も必要） */
+.toc-h3 {
+    padding-left: 20px;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+
+/* 記事タイトル (h1) */
+h1 {
+    font-size: 2rem;
+    color: #24292f;
+    line-height: 1.3;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 3px double #e1e4e8; /* 二重線で上品に */
+    text-align: center; /* タイトルを中央に寄せて特別感を出す */
+}
+
+/* セクション見出し (h2) */
+h2 {
+    font-size: 1.5rem;
+    color: #24292f;
+    padding: 0.5rem 1rem;
+    margin: 40px 0 20px 0;
+    background: linear-gradient(transparent 70%, #e8f0fe 70%); /* 下側に薄い色のアクセント */
+    border-left: 6px solid #0969da; /* 目次のテーマカラーと合わせる */
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+}
+
+/* 強調文字 (strong) */
+strong {
+    font-weight: bold;
+    color: #cf222e; /* ホバー時の赤色と合わせて統一感を出す */
+    background: linear-gradient(transparent 60%, #fff2cc 60%); /* 黄色のマーカー風 */
+    padding: 0 2px;
+}
+
+/* 引用のコンテナ */
+blockquote {
+    position: relative;
+    padding: 20px 30px;
+    margin: 30px 0;
+    background-color: #f6f8fa; /* 目次の背景より少しだけ濃いグレー */
+    border-left: 5px solid #d0d7de; /* 落ち着いたグレーの境界線 */
+    color: #57606a; /* 文字色は少し薄くして引用らしさを出す */
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+/* 引用符のアイコンを装飾として追加 */
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -5px;
+    left: 10px;
+    font-size: 40px;
+    color: #d0d7de;
+    font-family: serif;
+    line-height: 1;
+}
+
+/* 読者になるボタンのデザイン */
+.btn-subscribe {
+    display: inline-block;
+    padding: 12px 35px; /* 横幅を広めにとって存在感を出します */
+    background-color: #383838; /* お好みの色に変更してください */
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-subscribe:hover {
+    background-color: #555555;
+    text-decoration: none;
+}
+
+/* はてなブログで見えてしまう数式データを非表示にする */
+.katex-html {
+    display: none !important;
+}
+
+.katex-mathml {
+    display: inline !important;
+}
+/* Amazonカード型のオシャレなデザイン */
+.shop-card {
+    display: flex;
+    max-width: 500px;
+    margin: 20px auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* マウスホップした時の動き */
+.shop-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.shop-card-image {
+    width: 150px;
+    min-width: 150px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-card-image img {
+    max-width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.shop-card-content {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shop-card-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shop-card-description {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 16px;
+}
+
+/* Amazonらしいオレンジボタン */
+.shop-card-link a {
+    display: inline-block;
+    background-color: #ff9900;
+    color: #fff !important;
+    text-decoration: none !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.shop-card-link a:hover {
+    background-color: #e68a00;
+}
+
+/* スマホ対応：縦並びにする */
+@media (max-width: 480px) {
+    .shop-card {
+        flex-direction: column;
+        max-width: 100%;
+    }
+    .shop-card-image {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+<nav>
+        <h3>目次</h3>
+        <ul id="toc"></ul> 
+</nav>
+            <span id="markdown-mermaid" aria-hidden="true" data-config="{&quot;darkModeTheme&quot;:&quot;vscode&quot;,&quot;lightModeTheme&quot;:&quot;vscode&quot;,&quot;maxTextSize&quot;:50000,&quot;clickDrag&quot;:&quot;alt&quot;,&quot;showControls&quot;:&quot;onHoverOrFocus&quot;,&quot;resizable&quot;:true,&quot;maxHeight&quot;:&quot;&quot;}"></span>
+				<p>自分が作った機能を公開するときに、普段はWEBアプリで公開するということが多かったのですが、先日&quot;それ、Web APIフレームワークで公開する&quot;と言われ、Webアプリではないの？と感じました。</p>
+<p>Web APIフレームワークって結局何なの？というような疑問が生じたわけです。</p>
+<p>本日テーマ：</p>
+<blockquote>
+<p>Web APIフレームワークが何かを調べる</p>
+</blockquote>
+
+<button id="bgm-trigger" style="padding: 10px 20px; font-size: 16px; background-color: #008cba; color: white; border: none; border-radius: 5px; cursor: pointer;">
+  🎵 BGMを再生する
+</button>
+
+<h2 id="概要">概要</h2>
+<p>Web APIフレームワークとは、<strong>「Web APIサーバーを効率的に開発するための土台（フレームワーク）」</strong> です。</p>
+<h3 id="1-web-apiとは">1. Web APIとは</h3>
+<p>まず前提として、<strong>Web API</strong>とは：</p>
+<ul>
+<li>HTTP（HTTPS）を通じて</li>
+<li>プログラム同士がデータをやり取りするための<strong>インターフェース</strong></li>
+</ul>
+<p>です。</p>
+<p>例：</p>
+<ul>
+<li>モバイルアプリがサーバーから「ユーザー情報」を取得する</li>
+<li>フロントエンド（Reactなど）がサーバーから「商品一覧」を取得する</li>
+<li>別のサービスが「決済情報」を送信する</li>
+</ul>
+<p>このような<strong>プログラム同士の通信</strong>を実現するのがWeb APIです。</p>
+<h3 id="2-web-apiフレームワークの役割">2. Web APIフレームワークの役割</h3>
+<p>Web APIフレームワークは、そのWeb APIサーバーを<strong>楽に・安全に・高速に</strong>作るための仕組みを提供します。</p>
+<p>主な役割：</p>
+<ul>
+<li><strong>HTTPリクエストの受け取り・ルーティング</strong>
+<ul>
+<li>例：<code>GET /users</code> というリクエストを「ユーザー一覧を返す関数」に紐づける</li>
+</ul>
+</li>
+<li><strong>リクエストデータのバリデーション</strong>
+<ul>
+<li>送られてきたJSONの形式が正しいか、必須項目があるかなどをチェック</li>
+</ul>
+</li>
+<li><strong>レスポンスデータのシリアライズ</strong>
+<ul>
+<li>PythonオブジェクトなどをJSONに変換して返す</li>
+</ul>
+</li>
+<li><strong>認証・認可のサポート</strong>
+<ul>
+<li>APIキー、JWTトークンなどによるアクセス制御</li>
+</ul>
+</li>
+<li><strong>自動ドキュメント生成</strong>
+<ul>
+<li>Swagger UIなどで「どのAPIがあるか」「どう使うか」を自動で表示</li>
+</ul>
+</li>
+<li><strong>エラーハンドリング</strong>
+<ul>
+<li>エラー時に適切なHTTPステータスコードとメッセージを返す</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-代表的なweb-apiフレームワークの例">3. 代表的なWeb APIフレームワークの例</h3>
+<ul>
+<li>
+<p><strong>FastAPI（Python）</strong></p>
+<ul>
+<li>型ヒントを活用した高速なAPIフレームワーク</li>
+<li>自動ドキュメント生成が強力</li>
+</ul>
+</li>
+<li>
+<p><strong>Flask + Flask-RESTful（Python）</strong></p>
+<ul>
+<li>軽量で柔軟なマイクロフレームワーク</li>
+<li>REST API構築用の拡張が豊富</li>
+</ul>
+</li>
+<li>
+<p><strong>Express.js（Node.js）</strong></p>
+<ul>
+<li>JavaScript/TypeScriptでWebサーバー・APIサーバーを構築</li>
+<li>ミドルウェア（認証、ログ、CORSなど）をプラグイン的に追加可能</li>
+</ul>
+</li>
+<li>
+<p><strong>Spring Boot（Java/Kotlin）</strong></p>
+<ul>
+<li>エンタープライズ向けの本格的なREST APIサーバー構築</li>
+<li>セキュリティ、トランザクション、監査などが充実</li>
+</ul>
+</li>
+<li>
+<p><strong>Ruby on Rails API mode（Ruby）</strong></p>
+<ul>
+<li>RailsをAPI専用サーバーとして使うモード</li>
+<li>モデル・マイグレーション・認証などをそのまま利用可能</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-web-apiフレームワークを使うメリット">4. Web APIフレームワークを使うメリット</h3>
+<p><strong>(1) 開発スピードが上がる</strong></p>
+<ul>
+<li>ルーティング、バリデーション、シリアライズを<strong>ほぼ自動で</strong>行ってくれる</li>
+<li>ボイラープレート（毎回書く定型的なコード）が減る</li>
+</ul>
+<p><strong>(2) 安全性・保守性が高まる</strong></p>
+<ul>
+<li>入力チェックや型チェックをフレームワークが肩代わり</li>
+<li>エラーハンドリングを共通化しやすい</li>
+</ul>
+<p><strong>(3) ドキュメントが自動で整う</strong></p>
+<ul>
+<li>OpenAPI仕様に基づいた<strong>インタラクティブなAPIドキュメント</strong>を自動生成</li>
+<li>フロントエンド開発者や他チームとの連携がスムーズになる</li>
+</ul>
+<p><strong>(4) テストしやすい</strong></p>
+<ul>
+<li>単体テスト・統合テスト用のユーティリティが用意されていることが多い</li>
+<li>モックやテストクライアントを使いやすい</li>
+</ul>
+<h2 id="webアプリケーションとの違い">WEBアプリケーションとの違い</h2>
+<p>「Web APIフレームワーク」と「Webアプリケーションフレームワーク」は、<strong>目的</strong>と<strong>提供する機能</strong>が異なります。</p>
+<h3 id="1-それぞれのざっくりした役割">1. それぞれのざっくりした役割</h3>
+<p><strong>Webアプリケーションフレームワーク</strong></p>
+<ul>
+<li><strong>Webブラウザで見る「Webサイト」を作る</strong>ためのフレームワーク</li>
+<li>例：Django（Python）、Ruby on Rails（Ruby）、Laravel（PHP）、Spring MVC（Java）など</li>
+<li>主な出力：<strong>HTMLページ</strong>（＋CSS、JavaScript）</li>
+<li>主な利用者：<strong>人間（エンドユーザー）</strong></li>
+</ul>
+<p><strong>Web APIフレームワーク</strong></p>
+<ul>
+<li><strong>プログラム同士が通信するための「APIサーバー」を作る</strong>ためのフレームワーク</li>
+<li>例：FastAPI（Python）、Flask-RESTful（Python）、Express + JSON API（Node.js）、Spring Boot（REST API用途）など</li>
+<li>主な出力：<strong>JSONやXMLなどのデータ形式</strong></li>
+<li>主な利用者：<strong>別のプログラム（フロントエンド、モバイルアプリ、他サービスなど）</strong></li>
+</ul>
+<h3 id="2-機能面での違い">2. 機能面での違い</h3>
+<p><strong>Webアプリケーションフレームワークがよく持つ機能</strong></p>
+<ul>
+<li><strong>テンプレートエンジン</strong>（HTMLを動的に生成）</li>
+<li><strong>セッション管理</strong>（ログイン状態の保持）</li>
+<li><strong>フォーム処理</strong>（入力フォームのバリデーション、CSRF対策）</li>
+<li><strong>静的ファイル配信</strong>（CSS、画像、JSファイル）</li>
+<li><strong>ページネーション</strong>や<strong>レイアウト機能</strong>（サイトの見た目を整える）</li>
+<li>多くの場合、<strong>フルスタック</strong>で、DB接続・認証・管理画面まで含む</li>
+</ul>
+<p><strong>Web APIフレームワークがよく持つ機能</strong></p>
+<ul>
+<li><strong>JSON/XMLのシリアライズ・デシリアライズ</strong></li>
+<li><strong>HTTPステータスコード</strong>や<strong>ヘッダー制御</strong>のサポート</li>
+<li>**認証トークン（JWTなど）**の扱い</li>
+<li><strong>CORS設定</strong>（異なるドメインからのアクセス許可）</li>
+<li><strong>OpenAPI/Swagger</strong>による自動ドキュメント生成</li>
+<li>多くの場合、<strong>テンプレートやHTML生成は最小限 or なし</strong></li>
+</ul>
+<h3 id="3-典型的な使い分け">3. 典型的な使い分け</h3>
+<p><strong>Webアプリケーションフレームワークを使う場面</strong></p>
+<ul>
+<li>ブログ、ECサイト、社内管理画面など、<strong>ブラウザで直接見るサイト</strong>を作る</li>
+<li>サーバー側でHTMLを生成し、ブラウザに返す</li>
+<li>例：Djangoで「商品一覧ページ」や「管理画面」を作る</li>
+</ul>
+<p><strong>Web APIフレームワークを使う場面</strong></p>
+<ul>
+<li>フロントエンド（React/Vue/Angularなど）やモバイルアプリ（iOS/Android）が<strong>データを取得・更新するためのバックエンド</strong>を作る</li>
+<li>サーバーはJSONなどを返し、<strong>UIの描画はクライアント側</strong>で行う</li>
+<li>例：FastAPIで「商品一覧API」「注文API」を作り、Reactアプリから呼び出す</li>
+</ul>
+<h3 id="4-実際の開発スタイルの違い例">4. 実際の開発スタイルの違い（例）</h3>
+<p><strong>Webアプリケーションフレームワーク（例：Django）</strong></p>
+<pre><code class="language-python"><span class="hljs-comment"># views.py</span>
+<span class="hljs-keyword">from</span> django.shortcuts <span class="hljs-keyword">import</span> render
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> Product
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">product_list</span>(<span class="hljs-params">request</span>):
+    products = Product.objects.<span class="hljs-built_in">all</span>()
+    <span class="hljs-keyword">return</span> render(request, <span class="hljs-string">&quot;products/list.html&quot;</span>, {<span class="hljs-string">&quot;products&quot;</span>: products})
+</code></pre>
+<ul>
+<li>サーバー側でHTMLを組み立てて返す</li>
+</ul>
+<p><strong>Web APIフレームワーク（例：FastAPI）</strong></p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI
+<span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel
+
+app = FastAPI()
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span>(<span class="hljs-title class_ inherited__">BaseModel</span>):
+    <span class="hljs-built_in">id</span>: <span class="hljs-built_in">int</span>
+    name: <span class="hljs-built_in">str</span>
+
+<span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">&quot;/products/&quot;</span>, response_model=<span class="hljs-built_in">list</span>[Product]</span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_products</span>():
+    <span class="hljs-comment"># DBから取得してJSONで返す</span>
+    <span class="hljs-keyword">return</span> [{<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;商品A&quot;</span>}, {<span class="hljs-string">&quot;id&quot;</span>: <span class="hljs-number">2</span>, <span class="hljs-string">&quot;name&quot;</span>: <span class="hljs-string">&quot;商品B&quot;</span>}]
+</code></pre>
+<ul>
+<li>サーバーはJSONを返し、フロントエンドがそれを描画する</li>
+</ul>
+<h3 id="5-最近のトレンド分離フロントエンドとバックエンドの分離">5. 最近のトレンド：分離（フロントエンドとバックエンドの分離）</h3>
+<p>近年は、</p>
+<ul>
+<li><strong>バックエンド</strong>：Web APIフレームワーク（FastAPI、Spring Bootなど）</li>
+<li><strong>フロントエンド</strong>：React / Vue / Angular / Svelte など</li>
+</ul>
+<p>というように、<strong>役割を分離</strong>する構成が一般的です。</p>
+<p>そのため、Webアプリケーションフレームワークの中にも「REST API機能」が追加され、<br>
+Django REST framework や Rails API mode のように、<strong>WebアプリケーションフレームワークをAPIサーバーとして使う</strong>ケースも増えています。</p>
+<h2 id="web-apiの仕組み">Web APIの仕組み</h2>
+<p>FastAPIの仕組みは、大きく分けて次の4つの要素で成り立っています。</p>
+<ol>
+<li><strong>ASGIサーバー（Uvicornなど）</strong> – HTTPリクエストを受け取る土台</li>
+<li><strong>Starlette</strong> – 低レベルのWebフレームワーク（ルーティング・ミドルウェアなど）</li>
+<li><strong>Pydantic</strong> – データのバリデーションとシリアライズ</li>
+<li><strong>FastAPI本体</strong> – これらを統合し、型ヒントからAPI仕様を自動生成する層</li>
+</ol>
+<p>順に説明します。</p>
+<h3 id="1-asgiサーバーがhttpリクエストを受け取る">1. ASGIサーバーがHTTPリクエストを受け取る</h3>
+<p>FastAPIは<strong>ASGI（Asynchronous Server Gateway Interface）</strong> というPythonの標準インターフェースに準拠しています。</p>
+<ul>
+<li>ASGIサーバー（例：Uvicorn）が、HTTPリクエストを<strong>Pythonの非同期オブジェクト</strong>として受け取る</li>
+<li>それをFastAPI（Starlette）に渡す</li>
+</ul>
+<p>イメージ：</p>
+<pre><code>ブラウザ/クライアント
+    ↓ HTTPリクエスト (GET /items/1)
+ASGIサーバー (Uvicorn)
+    ↓ ASGI形式のリクエストオブジェクト
+FastAPIアプリ
+</code></pre>
+<h3 id="2-starletteがルーティングとミドルウェアを処理">2. Starletteがルーティングとミドルウェアを処理</h3>
+<p>FastAPIは内部で<strong>Starlette</strong>という軽量ASGIフレームワークを使っています。</p>
+<p><strong>ルーティング</strong></p>
+<ul>
+<li><code>@app.get(&quot;/items/&quot;)</code> のようなデコレータで、<strong>URLパスとHTTPメソッド</strong>を関数に紐づける</li>
+<li>リクエストが来ると、Starletteが「どの関数を呼ぶか」を決定する</li>
+</ul>
+<p><strong>ミドルウェア</strong></p>
+<ul>
+<li>CORS、GZip圧縮、ログ出力など、<strong>リクエスト・レスポンスの前処理・後処理</strong>を行う</li>
+<li>Starletteのミドルウェア機構をFastAPIが利用している</li>
+</ul>
+<h3 id="3-pydanticがリクエストレスポンスの型を検証変換">3. Pydanticがリクエスト・レスポンスの型を検証・変換</h3>
+<p>FastAPIは<strong>Pydantic</strong>というライブラリを使って、データの<strong>バリデーション</strong>と<strong>シリアライズ</strong>を行います。</p>
+<p><strong>リクエスト側</strong></p>
+<ul>
+<li>リクエストボディ（JSONなど）を、Pydanticの<code>BaseModel</code>に基づいて<strong>Pythonオブジェクト</strong>に変換</li>
+<li>型ヒントに基づき、自動でバリデーション（必須チェック、型チェックなど）を行う</li>
+</ul>
+<p>例：</p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel
+
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Item</span>(<span class="hljs-title class_ inherited__">BaseModel</span>):
+    name: <span class="hljs-built_in">str</span>
+    price: <span class="hljs-built_in">float</span>
+
+<span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">&quot;/items/&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">create_item</span>(<span class="hljs-params">item: Item</span>):
+    <span class="hljs-comment"># itemはすでにバリデーション済みのPythonオブジェクト</span>
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;item&quot;</span>: item}
+</code></pre>
+<p><strong>レスポンス側</strong></p>
+<ul>
+<li>関数の戻り値を、<code>response_model</code>で指定した型に基づいて<strong>JSONに変換</strong></li>
+<li>不要なフィールドを除外したり、ネストしたオブジェクトを正しくシリアライズ</li>
+</ul>
+<h3 id="4-fastapiが型ヒントからopenapi仕様を自動生成">4. FastAPIが型ヒントからOpenAPI仕様を自動生成</h3>
+<p>FastAPIの特徴的な仕組みとして、<strong>Pythonの型ヒントからOpenAPI（Swagger）仕様を自動生成</strong>する機能があります。</p>
+<p><strong>仕組みの概要</strong></p>
+<ul>
+<li>デコレータ（<code>@app.get(...)</code>）と関数の型ヒントを解析</li>
+<li>各エンドポイントの
+<ul>
+<li>パス</li>
+<li>HTTPメソッド</li>
+<li>パラメータ（クエリ、パス、ボディ）</li>
+<li>レスポンスの型<br>
+を収集し、**OpenAPIスキーマ（JSON）**を構築</li>
+</ul>
+</li>
+</ul>
+<p><strong>自動ドキュメント</strong></p>
+<ul>
+<li>生成されたOpenAPIスキーマを元に、<code>/docs</code>（Swagger UI）や<code>/redoc</code>で<strong>インタラクティブなAPIドキュメント</strong>を表示</li>
+<li>ブラウザ上から直接APIを試せる</li>
+</ul>
+<h3 id="5-依存性注入dependency-injection">5. 依存性注入（Dependency Injection）</h3>
+<p>FastAPIは<strong>依存性注入</strong>の仕組みを持っています。</p>
+<ul>
+<li>DB接続、認証、設定など、「複数のエンドポイントで共通して使う処理」を<strong>依存性関数</strong>として定義</li>
+<li>それをエンドポイントの引数に注入することで、<strong>再利用とテスト容易性</strong>を高める</li>
+</ul>
+<p>例：</p>
+<pre><code class="language-python"><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_db</span>():
+    <span class="hljs-comment"># DB接続を返す</span>
+    ...
+
+<span class="hljs-meta">@app.get(<span class="hljs-params"><span class="hljs-string">&quot;/users/&quot;</span></span>)</span>
+<span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_users</span>(<span class="hljs-params">db = Depends(<span class="hljs-params">get_db</span>)</span>):
+    <span class="hljs-comment"># dbは自動でget_db()から注入される</span>
+    ...
+</code></pre>
+<h3 id="6-非同期処理asyncawait">6. 非同期処理（async/await）</h3>
+<p>FastAPIは<strong>非同期処理（async/await）</strong> を前提に設計されています。</p>
+<ul>
+<li>エンドポイント関数を<code>async def</code>で定義</li>
+<li>I/O待ち（DBアクセス、外部API呼び出しなど）の間、<strong>他のリクエストを処理できる</strong></li>
+<li>これにより、<strong>高いスループット</strong>を実現</li>
+</ul>
+<h2 id="総括">総括</h2>
+<p>Web APIフレームワークは、<strong>プログラム同士がHTTPでデータをやり取りするためのAPIサーバーを、効率よく・安全に構築するための土台</strong>です。</p>
+<p>主な役割は次の通りです。</p>
+<ul>
+<li><strong>HTTPリクエストの受け取りとルーティング</strong><br>
+（例：<code>GET /users</code> を特定の関数に紐づける）</li>
+<li><strong>リクエストデータのバリデーション</strong><br>
+（JSONの形式や必須項目のチェック）</li>
+<li><strong>レスポンスデータのシリアライズ</strong><br>
+（PythonオブジェクトなどをJSONに変換）</li>
+<li><strong>認証・認可、エラーハンドリング、自動ドキュメント生成</strong>などの共通機能提供</li>
+</ul>
+<p>代表的な例として、Pythonの<strong>FastAPI</strong>、Node.jsの<strong>Express.js</strong>、Javaの<strong>Spring Boot</strong>などがあります。</p>
+<h3 id="webアプリケーションフレームワークとの違い">Webアプリケーションフレームワークとの違い</h3>
+<ul>
+<li>
+<p><strong>Webアプリケーションフレームワーク</strong></p>
+<ul>
+<li>ブラウザで見る<strong>Webサイト</strong>を作るためのもの</li>
+<li>主な出力は<strong>HTML</strong>（＋CSS/JS）</li>
+<li>テンプレートエンジン、セッション管理、フォーム処理などが中心</li>
+</ul>
+</li>
+<li>
+<p><strong>Web APIフレームワーク</strong></p>
+<ul>
+<li>フロントエンドやモバイルアプリなど<strong>別のプログラム</strong>が使う<strong>APIサーバー</strong>を作るためのもの</li>
+<li>主な出力は<strong>JSON/XML</strong>などのデータ形式</li>
+<li>JSONシリアライズ、HTTPステータス制御、CORS、OpenAPIドキュメントなどが中心</li>
+</ul>
+</li>
+</ul>
+<p>近年は、<strong>バックエンド＝Web APIフレームワーク、フロントエンド＝React/Vueなど</strong>という役割分離が一般的です。</p>
+<h3 id="fastapiの仕組み">FastAPIの仕組み</h3>
+<p>FastAPIは、次の要素で構成されています。</p>
+<p><img src="file:///d:\PycharmProjects\ScienceCalculation\recommendation-ai\web_frame\fast_api\doc\image\1_what_is\1782421207103.png" alt="1782421207103"></p>
+<ol>
+<li>
+<p><strong>ASGIサーバー（Uvicornなど）</strong></p>
+<ul>
+<li>HTTPリクエストを受け取り、ASGI形式でFastAPIに渡す</li>
+</ul>
+</li>
+<li>
+<p><strong>Starlette</strong></p>
+<ul>
+<li>ルーティング（<code>@app.get(...)</code>）とミドルウェア（CORS、ログなど）を担当</li>
+</ul>
+</li>
+<li>
+<p><strong>Pydantic</strong></p>
+<ul>
+<li>リクエストボディ・レスポンスの<strong>型チェックとバリデーション</strong></li>
+<li>Pythonオブジェクト ⇔ JSON の相互変換</li>
+</ul>
+</li>
+<li>
+<p><strong>FastAPI本体</strong></p>
+<ul>
+<li>型ヒントから<strong>OpenAPI仕様を自動生成</strong>し、<code>/docs</code>でインタラクティブなAPIドキュメントを提供</li>
+<li><strong>依存性注入</strong>（DB接続や認証処理の共通化）</li>
+<li><strong>非同期処理（async/await）</strong> を前提に設計され、I/O待ち中も他のリクエストを処理可能</li>
+</ul>
+</li>
+</ol>
+<p>これにより、FastAPIは「型安全」「自動ドキュメント」「高パフォーマンス」を兼ね備えたWeb APIフレームワークとして広く利用されています。</p>
+
+
+<div style="width: 1px; height: 1px; overflow: hidden; opacity: 0; position: absolute;">
+  <iframe id="bgm-player" width="100" height="100" 
+  src="https://www.youtube.com/embed/FgrpF3MLlQM?enablejsapi=1" 
+  title="BGM Player" frameborder="0" allow="autoplay">
+  </iframe>
+</div>
+
+<script>
+const toc = document.getElementById('toc');
+// h2 と h3 の両方を取得
+const headings = document.querySelectorAll('h2, h3');
+
+headings.forEach((heading, i) => {
+    if (!heading.id) heading.id = `heading-${i}`;
+    
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    
+    // h3 の場合はクラスを付与して字下げする
+    if (heading.tagName === 'H3') {
+        li.classList.add('toc-h3');
+    }
+    
+    li.appendChild(link);
+    toc.appendChild(li);
+});
+
+// スムーズスクロールを有効にする
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+  document.getElementById('bgm-trigger').addEventListener('click', function() {
+    var iframe = document.getElementById('bgm-player');
+    
+    // すでに再生中の場合は一時停止、停止中の場合は再生するトグル処理
+    if (this.innerText.includes('再生')) {
+      // JavaScript API経由で再生コマンドを送信
+      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      this.innerText = '⏸ BGMを停止する';
+      this.style.backgroundColor = '#f44336'; // ボタンの色を赤系に
+    } else {
+      iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+      this.innerText = '🎵 BGMを再生する';
+      this.style.backgroundColor = '#008cba'; // ボタンの色を青系に
+    }
+  });
+</script>
+
+            
+        </body>
+        </html>
